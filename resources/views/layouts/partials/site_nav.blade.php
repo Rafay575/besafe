@@ -21,7 +21,7 @@
         <li class="nav-item">
           <a data-bs-toggle="collapse" href="#dashboardsExamples" class="nav-link {{ (request()->is('users')) ? 'active' : '' }}" aria-controls="dashboardsExamples" role="button" aria-expanded="false">
             <div class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
-              <img src="{{asset('website/nav_icons/user.ico')}}" alt="" width="18">
+              <img src="{{asset('website/nav_icons/User.ico')}}" alt="" width="18">
             </div>
             <span class="nav-link-text ms-1 ">Users Management</span>
           </a>
@@ -48,7 +48,7 @@
         <li class="nav-item">
           <a class="nav-link {{ (request()->is('unsafe-behaviors')) ? 'active' : '' }}" href="{{route('unsafe-behaviors.index')}}" target="_blank" >
             <div class="icon icon-shape icon-sm text-center  me-2 d-flex align-items-center justify-content-center">
-              <img src="{{asset('website/nav_icons/unsafe-behaviour.ico')}}" alt="" width="18">
+              <img src="{{asset('website/nav_icons/Unsafe-Behaviour.ico')}}" alt="" width="18">
             </div>
             <span class="nav-link-text ms-1">Health & Unsafe Behaviors</span>
           </a>
@@ -57,7 +57,7 @@
         <li class="nav-item">
           <a class="nav-link {{ (request()->is('hazards')) ? 'active' : '' }}" href="{{route('hazards.index')}}" target="_blank">
             <div class="icon icon-shape icon-sm text-center  me-2 d-flex align-items-center justify-content-center">
-              <img src="{{asset('website/nav_icons/unsafe-behaviour.ico')}}" alt="" width="18">
+              <img src="{{asset('website/nav_icons/Unsafe-Behaviour.ico')}}" alt="" width="18">
             </div>
             <span class="nav-link-text ms-1">Hazards</span>
           </a>
@@ -127,7 +127,7 @@
         <li class="nav-item">
           <a class="nav-link {{ (request()->is('meta-data')) ? 'active' : '' }}" href="{{route('meta-data.index')}}" target="_blank">
             <div class="icon icon-shape icon-sm text-center  me-2 d-flex align-items-center justify-content-center">
-              <img src="{{asset('website/nav_icons/meta-data.ico')}}" alt="" width="18">
+              <img src="{{asset('website/nav_icons/Meta-Data.ico')}}" alt="" width="18">
             
             </div>
             <span class="nav-link-text ms-1"> Meta Data </span>
@@ -136,7 +136,7 @@
         <li class="nav-item">
           <a class="nav-link" href="" target="_blank">
             <div class="icon icon-shape icon-sm text-center  me-2 d-flex align-items-center justify-content-center">
-              <img src="{{asset('website/nav_icons/reports.ico')}}" alt="" width="18">
+              <img src="{{asset('website/nav_icons/Reports.ico')}}" alt="" width="18">
             </div>
             <span class="nav-link-text ms-1"> Reports</span>
           </a>
@@ -147,7 +147,7 @@
               {{-- <i class="text-primary text-sm opacity-10">
 
               </i> --}}
-              <img src="{{asset('website/nav_icons/settings.ico')}}" alt="" width="18">
+              <img src="{{asset('website/nav_icons/Settings.ico')}}" alt="" width="18">
             </div>
             <span class="nav-link-text ms-1">Settings</span>
           </a>
