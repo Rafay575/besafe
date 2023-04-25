@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('breadcrumb')
-<x-templates.breadcrumb page-title="Injuries List">
-</x-templates.breadcrumb>
+<x-templates.bread-crumb page-title="Injuries List">
+</x-templates.bread-crumb>
 @endsection
 
 @section('content')

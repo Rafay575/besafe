@@ -1,8 +1,8 @@
 @extends('layouts.main')
 @section('breadcrumb')
-<x-templates.breadcrumb page-title="Add New Hazard">
+<x-templates.bread-crumb page-title="Add New Hazard">
   <li class="breadcrumb-item text-sm text-white"><a class="text-white" href="{{route('hazards.index')}}">List of Hazards</a></li>
-</x-templates.breadcrumb>
+</x-templates.bread-crumb>
 @endsection
 
 @section('content')

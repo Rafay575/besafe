@@ -1,8 +1,8 @@
 @extends('layouts.main')
 @section('breadcrumb')
-<x-templates.breadcrumb page-title="Near-Miss Create">
+<x-templates.bread-crumb page-title="Near-Miss Create">
   <li class="breadcrumb-item text-sm text-white"><a class="text-white" href="{{route('near-miss.index')}}">Near-Miss List</a></li>
-</x-templates.breadcrumb>
+</x-templates.bread-crumb>
 @endsection
 
 @section('content')

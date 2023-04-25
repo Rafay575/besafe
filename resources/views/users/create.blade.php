@@ -1,8 +1,8 @@
 @extends('layouts.main')
 @section('breadcrumb')
-<x-templates.breadcrumb page-title="User Create">
+<x-templates.bread-crumb page-title="User Create">
   <li class="breadcrumb-item text-sm text-white"><a class="text-white" href="{{route('users.index')}}">Users List</a></li>
-</x-templates.breadcrumb>
+</x-templates.bread-crumb>
 @endsection
 
 @section('content')

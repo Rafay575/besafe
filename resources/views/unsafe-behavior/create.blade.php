@@ -1,8 +1,8 @@
 @extends('layouts.main')
 @section('breadcrumb')
-<x-templates.breadcrumb page-title="Add New Unsafe Behavior">
+<x-templates.bread-crumb page-title="Add New Unsafe Behavior">
   <li class="breadcrumb-item text-sm text-white"><a class="text-white" href="{{route('unsafe-behaviors.index')}}">List of Unsafe Behavior</a></li>
-</x-templates.breadcrumb>
+</x-templates.bread-crumb>
 @endsection
 
 @section('content')

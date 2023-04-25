@@ -1,8 +1,8 @@
 @extends('layouts.main')
 @section('breadcrumb')
-<x-templates.breadcrumb page-title="Fire / Property Demage Create">
+<x-templates.bread-crumb page-title="Fire / Property Demage Create">
   <li class="breadcrumb-item text-sm text-white"><a class="text-white" href="{{route('fire-property.index')}}">Fire / Property Demage List</a></li>
-</x-templates.breadcrumb>
+</x-templates.bread-crumb>
 @endsection
 
 @section('content')
