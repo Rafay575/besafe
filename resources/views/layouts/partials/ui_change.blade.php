@@ -18,10 +18,20 @@
       <hr class="horizontal dark my-1">
       <div class="card-body pt-sm-3 pt-0 overflow-auto">
         <div class="my-2">
-            <a>Logout</a><br>
+            <a href="{{ route('logout') }}" 
+                onclick="event.preventDefault();
+                document.getElementById('logout-form').submit();"
+            
+            
+            >Logout</a><br>
             <a>Change Password</a><br>
             <a>Profile Settings</a><br>
         </div>  
+
+        {{-- logout form  --}}
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+          @csrf
+        </form>
         <hr class="horizontal dark my-1">
         <!-- Sidebar Backgrounds -->
         <div>
