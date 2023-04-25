@@ -57,9 +57,9 @@
     {{-- forms --}}
 
     <x-forms.basic-input label="Email Address" name="user_email" type="number" value="email address" width="col-4" input-class="form-control-lg"></x-forms.basic-input>
-    <x-forms.checkbox label="Email Address" name="user_email"  value="email address" width="col-6" check-box-class="" checked="false"></x-forms.checkbox>
-    <x-forms.togglecheck label="Email Address" name="user_email"  value="email address" width="col-6" check-box-class="" checked="true"></x-forms.togglecheck>
-    <x-forms.radiobox label="Email Address" name="user_email"  value="" width="col-6" radio-box-class="" checked="true" disabled></x-forms.radiobox>  
+    <x-forms.check-box label="Email Address" name="user_email"  value="email address" width="col-6" check-box-class="" checked="false"></x-forms.check-box>
+    <x-forms.toggle-check label="Email Address" name="user_email"  value="email address" width="col-6" check-box-class="" checked="true"></x-forms.toggle-check>
+    <x-forms.radio-box label="Email Address" name="user_email"  value="" width="col-6" radio-box-class="" checked="true" disabled></x-forms.radio-box>  
     <x-forms.textarea label="Email Address" name="user_email"  width="col-12" text-area-class="" cols="10" rows="10">Something here</x-forms.textarea>
   <x-forms.dropdown id="mydorpdown" btnClass="bg-gradient-primary btn-sm" label="Actions" >
     <li><a class="dropdown-item" href="ahah">Action</a></li>
@@ -67,11 +67,11 @@
     <li><a class="dropdown-item" href="#">Something else here</a></li>
   </x-forms.dropdown>
 
-  <x-forms.selectoption name="name" selectClass="form-control-sm" label="Names">
+  <x-forms.select-option name="name" selectClass="form-control-sm" label="Names">
     <option value="Choice 2">Bucharest</option>
     <option value="Choice 3">London</option>
     <option value="Choice 4">USA</option>
-  </x-forms.selectoption>
+  </x-forms.select-option>
 
   {{-- fomrs end here --}}
 </x-templates.basic-page-temp>

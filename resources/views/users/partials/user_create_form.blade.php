@@ -59,18 +59,18 @@
                 <h5 class="font-weight-bolder">Work Place</h5>
                 <div class="multisteps-form__content">
                   <div class="row mt-3">
-                    <x-forms.selectoption name="unit" selectClass="form-control-sm" divClass="col-6" label="Unit" required>
+                    <x-forms.select-option name="unit" selectClass="form-control-sm" divClass="col-6" label="Unit" required>
                       <option value="Unit 1">Unit 1</option>
-                    </x-forms.selectoption>
-                    <x-forms.selectoption name="designation" selectClass="form-control-sm" divClass="col-6" label="Designation" required>
+                    </x-forms.select-option>
+                    <x-forms.select-option name="designation" selectClass="form-control-sm" divClass="col-6" label="Designation" required>
                       <option value="Designation 1 ">Designation 1</option>
-                    </x-forms.selectoption>
-                    <x-forms.selectoption name="department" selectClass="form-control-sm" divClass="col-6" label="Department" required>
+                    </x-forms.select-option>
+                    <x-forms.select-option name="department" selectClass="form-control-sm" divClass="col-6" label="Department" required>
                       <option value="Department 1">Department 1</option>
-                    </x-forms.selectoption>
-                    <x-forms.selectoption name="line" selectClass="form-control-sm" divClass="col-6" label="Line" required>
+                    </x-forms.select-option>
+                    <x-forms.select-option name="line" selectClass="form-control-sm" divClass="col-6" label="Line" required>
                       <option value="line 1 ">line 1</option>
-                    </x-forms.selectoption>
+                    </x-forms.select-option>
                   </div>
                   <div class="row">
                     <div class="button-row d-flex mt-4 col-12">
@@ -85,14 +85,14 @@
                 <h5 class="font-weight-bolder">User Credential</h5>
                 <div class="multisteps-form__content mt-3">
                   <div class="row mt-3">
-                    <x-forms.selectoption name="role" selectClass="form-control-sm" divClass="col-6" label="Role" required>
+                    <x-forms.select-option name="role" selectClass="form-control-sm" divClass="col-6" label="Role" required>
                       <option value="">Employee</option>
                       <option value="">Admin</option>
-                    </x-forms.selectoption>
-                    <x-forms.selectoption name="status" selectClass="form-control-sm" divClass="col-6" label="Status" required>
+                    </x-forms.select-option>
+                    <x-forms.select-option name="status" selectClass="form-control-sm" divClass="col-6" label="Status" required>
                       <option value="">Active</option>
                       <option value="">InActive</option>
-                    </x-forms.selectoption>
+                    </x-forms.select-option>
 
                     <x-forms.basic-input label="Password" name="password" type="password" placeholder="password" value="" width="col-6" input-class="multisteps-form__input" required></x-forms.basic-input>
                     <x-forms.basic-input label="Confirm Password" name="password_confirmation" type="password" placeholder="confirm password" value="" width="col-6" input-class="multisteps-form__input" required></x-forms.basic-input>

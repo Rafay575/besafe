@@ -32,10 +32,10 @@
                    <x-forms.basic-input label="Reference" name="ref" type="text" placeholder="" value="" width="col-12 col-sm-6 mt-3 mt-sm-0" input-class="multisteps-form__input" required></x-forms.basic-input>
                   </div>
                   <div class="row mt-3">
-                    <x-forms.selectoption name="unit" selectClass="form-control-sm" label="Unit" divClass="col-12 col-sm-6">
+                    <x-forms.select-option name="unit" selectClass="form-control-sm" label="Unit" divClass="col-12 col-sm-6">
                         <option value="Value">Value 1</option>
                         <option value="Value">Value 1</option>
-                    </x-forms.selectoption>
+                    </x-forms.select-option>
                    <x-forms.basic-input label="Location" name="location" type="text" placeholder="type location"  value="" width="col-12 col-sm-6" input-class="multisteps-form__input" required></x-forms.basic-input>
                   </div>
                   <div class="row mt-3">

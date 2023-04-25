@@ -28,14 +28,14 @@
                 <div class="multisteps-form__content">
                   
                   <div class="row mt-3">
-                    <x-forms.selectoption name="incident_category" selectClass="form-control-sm multisteps-form__input" label="Incident Category" divClass="col-12 col-sm-6">
+                    <x-forms.select-option name="incident_category" selectClass="form-control-sm multisteps-form__input" label="Incident Category" divClass="col-12 col-sm-6">
                         <option value="Value">Value 1</option>
                         <option value="Value">Value 1</option>
-                    </x-forms.selectoption>
-                    <x-forms.selectoption name="injury_category" selectClass="form-control-sm multisteps-form__input" label="Injury Category" divClass="col-12 col-sm-6">
+                    </x-forms.select-option>
+                    <x-forms.select-option name="injury_category" selectClass="form-control-sm multisteps-form__input" label="Injury Category" divClass="col-12 col-sm-6">
                         <option value="Value">Value 1</option>
                         <option value="Value">Value 1</option>
-                    </x-forms.selectoption>
+                    </x-forms.select-option>
                   </div>
                   <div class="row mt-3">
                     <x-forms.basic-input label="Employee Involved" name="employee_involved" type="text" placeholder="name"  value="" width="col-12 col-sm-4" input-class="multisteps-form__input" ></x-forms.basic-input>
@@ -76,27 +76,27 @@
                   </div>
 
                   <div class="row mt-3">
-                    <x-forms.selectoption name="substandard_actions" selectClass="form-control-sm multisteps-form__input" label="Substandard Actions" divClass="col-12 col-sm-6">
+                    <x-forms.select-option name="substandard_actions" selectClass="form-control-sm multisteps-form__input" label="Substandard Actions" divClass="col-12 col-sm-6">
                         <option value="Value">Action 1</option>
                         <option value="Value">Action 1</option>
-                    </x-forms.selectoption>
+                    </x-forms.select-option>
 
-                    <x-forms.selectoption name="substandard_condition" selectClass="form-control-sm multisteps-form__input" label="Substandard Conditions" divClass="col-12 col-sm-6">
+                    <x-forms.select-option name="substandard_condition" selectClass="form-control-sm multisteps-form__input" label="Substandard Conditions" divClass="col-12 col-sm-6">
                         <option value="Value">Conditon 1</option>
                         <option value="Value">Condition 2</option>
-                    </x-forms.selectoption>
+                    </x-forms.select-option>
                   </div>
 
                   <div class="row mt-3">
-                    <x-forms.selectoption name="basic_claue" selectClass="form-control-sm multisteps-form__input" label="Basic Clause" divClass="col-12 col-sm-6">
+                    <x-forms.select-option name="basic_claue" selectClass="form-control-sm multisteps-form__input" label="Basic Clause" divClass="col-12 col-sm-6">
                         <option value="Value">Clause 1</option>
                         <option value="Value">Clause 1</option>
-                    </x-forms.selectoption>
+                    </x-forms.select-option>
 
-                    <x-forms.selectoption name="contract_type" selectClass="form-control-sm multisteps-form__input" label="Type of Contract" divClass="col-12 col-sm-6">
+                    <x-forms.select-option name="contract_type" selectClass="form-control-sm multisteps-form__input" label="Type of Contract" divClass="col-12 col-sm-6">
                         <option value="Value">type 1</option>
                         <option value="Value">type 2</option>
-                    </x-forms.selectoption>
+                    </x-forms.select-option>
                   </div>
                   <div class="row mt-3">
                     <x-forms.textarea label="Root Cause" name="root_cause"  width="col-12" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.textarea>
