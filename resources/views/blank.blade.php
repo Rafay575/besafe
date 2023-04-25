@@ -60,7 +60,7 @@
     <x-forms.check-box label="Email Address" name="user_email"  value="email address" width="col-6" check-box-class="" checked="false"></x-forms.check-box>
     <x-forms.toggle-check label="Email Address" name="user_email"  value="email address" width="col-6" check-box-class="" checked="true"></x-forms.toggle-check>
     <x-forms.radio-box label="Email Address" name="user_email"  value="" width="col-6" radio-box-class="" checked="true" disabled></x-forms.radio-box>  
-    <x-forms.textarea label="Email Address" name="user_email"  width="col-12" text-area-class="" cols="10" rows="10">Something here</x-forms.textarea>
+    <x-forms.text-area label="Email Address" name="user_email"  width="col-12" text-area-class="" cols="10" rows="10">Something here</x-forms.text-area>
   <x-forms.dropdown id="mydorpdown" btnClass="bg-gradient-primary btn-sm" label="Actions" >
     <li><a class="dropdown-item" href="ahah">Action</a></li>
     <li><a class="dropdown-item" href="#">Another action</a></li>

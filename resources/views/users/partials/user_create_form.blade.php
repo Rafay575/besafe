@@ -38,8 +38,8 @@
                   </div>
                   <div class="row mt-3">
                      <div class="col-6 row">
-                       <x-forms.textarea label="Permanent Address" name="p_address"  width="col-12" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.textarea>
-                       <x-forms.textarea label="Residential Address" name="r_address"  width="col-12" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.textarea>
+                       <x-forms.text-area label="Permanent Address" name="p_address"  width="col-12" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.text-area>
+                       <x-forms.text-area label="Residential Address" name="r_address"  width="col-12" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.text-area>
                      </div>
                       <div class="col-6 row">
                        <img src="{{asset('website/img/logo.png')}}" class="col-12" alt="avatar"><br>

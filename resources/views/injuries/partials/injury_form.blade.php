@@ -47,8 +47,8 @@
                     
                  </div>
                  <div class="row mt-3">
-                    <x-forms.textarea label="Description" name="description"  width="col-6" text-area-class="" cols="" rows="3"></x-forms.textarea>
-                    <x-forms.textarea label="Immediate Actions" name="immediate_action"  width="col-6" text-area-class="" cols="" rows="3"></x-forms.textarea>
+                    <x-forms.text-area label="Description" name="description"  width="col-6" text-area-class="" cols="" rows="3"></x-forms.text-area>
+                    <x-forms.text-area label="Immediate Actions" name="immediate_action"  width="col-6" text-area-class="" cols="" rows="3"></x-forms.text-area>
                  </div>
                 
                  <div class="button-row d-flex mt-4">
@@ -71,8 +71,8 @@
                 <h5 class="font-weight-bolder">Stage 2</h5>
                 <div class="multisteps-form__content mt-3">
                   <div class="row mt-3">
-                    <x-forms.textarea label="Key Findings" name="key_finding"  width="col-6" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.textarea>
-                    <x-forms.textarea label="Preventative Measure" name="preventative_measure"  width="col-6" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.textarea>
+                    <x-forms.text-area label="Key Findings" name="key_finding"  width="col-6" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.text-area>
+                    <x-forms.text-area label="Preventative Measure" name="preventative_measure"  width="col-6" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.text-area>
                   </div>
 
                   <div class="row mt-3">
@@ -99,7 +99,7 @@
                     </x-forms.select-option>
                   </div>
                   <div class="row mt-3">
-                    <x-forms.textarea label="Root Cause" name="root_cause"  width="col-12" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.textarea>
+                    <x-forms.text-area label="Root Cause" name="root_cause"  width="col-12" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.text-area>
                   </div>
                   <div class="row mt-3">
                     <table class="table table-flush  table-bordered">

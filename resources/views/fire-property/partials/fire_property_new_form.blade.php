@@ -51,8 +51,8 @@
                     </x-forms.radio-and-check-box-div>
                  </div>
                  <div class="row mt-3">
-                    <x-forms.textarea label="Description" name="description"  width="col-6" text-area-class="" cols="" rows="3"></x-forms.textarea>
-                    <x-forms.textarea label="Immediate Action" name="immediate_action"  width="col-6" text-area-class="" cols="" rows="3"></x-forms.textarea>
+                    <x-forms.text-area label="Description" name="description"  width="col-6" text-area-class="" cols="" rows="3"></x-forms.text-area>
+                    <x-forms.text-area label="Immediate Action" name="immediate_action"  width="col-6" text-area-class="" cols="" rows="3"></x-forms.text-area>
                  </div>
 
                  <div class="button-row d-flex mt-4">
@@ -75,12 +75,12 @@
                 <h5 class="font-weight-bolder">Section 2 Fire / Property Demage</h5>
                 <div class="multisteps-form__content">
                   <div class="row mt-3">
-                    <x-forms.textarea label="Immediate Cuase" name="immediate_cause"  width="col-6" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.textarea>
-                    <x-forms.textarea label="Root Cause" name="root_cause"  width="col-6" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.textarea>
+                    <x-forms.text-area label="Immediate Cuase" name="immediate_cause"  width="col-6" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.text-area>
+                    <x-forms.text-area label="Root Cause" name="root_cause"  width="col-6" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.text-area>
                   </div>
                   <div class="row mt-3">
-                    <x-forms.textarea label="Has similar incident happend before?" name="similar_incident_details"  width="col-6" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.textarea>
-                    <x-forms.textarea label="Root Cause" name="root_cause"  width="col-6" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.textarea>
+                    <x-forms.text-area label="Has similar incident happend before?" name="similar_incident_details"  width="col-6" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.text-area>
+                    <x-forms.text-area label="Root Cause" name="root_cause"  width="col-6" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.text-area>
                   </div>
                   <div class="row mt-3">
 
@@ -126,8 +126,8 @@
                 <div class="multisteps-form__content mt-3">
                   <div class="row mt-3 table-responsive">
 
-                    <x-forms.textarea label="Loss Recovery Method" name="loss_recovery_method"  width="col-6" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.textarea>
-                    <x-forms.textarea label="Preventative Measure" name="preventative_measure"  width="col-6" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.textarea>
+                    <x-forms.text-area label="Loss Recovery Method" name="loss_recovery_method"  width="col-6" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.text-area>
+                    <x-forms.text-area label="Preventative Measure" name="preventative_measure"  width="col-6" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.text-area>
 
                     
                     <table class="table table-flush  table-bordered">

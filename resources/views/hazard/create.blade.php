@@ -28,8 +28,8 @@
                         <x-forms.select-option name="line" selectClass="form-control-sm" label="Line" divClass="col-12 col-sm-6">
                             <option value="Value">Value 1</option>
                         </x-forms.select-option>
-                        <x-forms.textarea label="Description" name="description"  width="col-6" text-area-class="" cols="" rows="3"></x-forms.textarea>
-                        <x-forms.textarea label="Solution" name="solution"  width="col-6" text-area-class="" cols="" rows="3"></x-forms.textarea>
+                        <x-forms.text-area label="Description" name="description"  width="col-6" text-area-class="" cols="" rows="3"></x-forms.text-area>
+                        <x-forms.text-area label="Solution" name="solution"  width="col-6" text-area-class="" cols="" rows="3"></x-forms.text-area>
 
                           <x-forms.select-option name="tag_assign" selectClass="form-control-sm" label="Tag Assign" divClass="col-12 col-sm-6">
                             <option value="Value">Tag 1</option>

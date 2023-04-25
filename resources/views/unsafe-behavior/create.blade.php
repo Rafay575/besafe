@@ -21,7 +21,7 @@
                             <option value="Value">Value 1</option>
                         </x-forms.select-option>
                         <x-forms.basic-input label="Location" name="location" type="text" value="" width="col-6" input-class="form-control-lg"></x-forms.basic-input>
-                        <x-forms.textarea label="Details of Unsafe Behavior" name="details"  width="col-6" text-area-class="" cols="" rows="3"></x-forms.textarea>
+                        <x-forms.text-area label="Details of Unsafe Behavior" name="details"  width="col-6" text-area-class="" cols="" rows="3"></x-forms.text-area>
 
                         <x-forms.select-option name="type" multiple selectClass="form-control-sm" label="Type of Unsafe Behavior" divClass="col-12 col-sm-6">
                             <option value="Value">Value 1</option>
