@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\View\Components\Templates\BreadCrumb;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
@@ -25,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
-        Blade::component('templates.breadcrumb', Breadcrumb::class);
+        Blade::component('templates.breadcrumb', BreadCrumb::class);
 
     }
 }
