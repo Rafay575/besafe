@@ -95,19 +95,19 @@
             <div class="icon icon-shape icon-sm text-center  me-2 d-flex align-items-center justify-content-center">
               <img src="{{asset('website/nav_icons/Permission-to-Work-System.ico')}}" alt="" width="18">
             </div>
-            <span class="nav-link-text ms-1"> Permission to Work System </span>
+            <span class="nav-link-text ms-1">PTW</span>
           </a>
         </li>
 
-        <li class="nav-item">
+        {{-- <li class="nav-item">
           <a class="nav-link" href="#">
             <div class="icon icon-shape icon-sm text-center  me-2 d-flex align-items-center justify-content-center">
               <img src="{{asset('website/nav_icons/Internal External Audit Closures.ico')}}" alt="" width="18">
             </div>
             <span class="nav-link-text ms-1">Internal/External Audit Closures</span>
           </a>
-        </li>
-        <li class="nav-item">
+        </li> --}}
+        {{-- <li class="nav-item">
           <a class="nav-link" href="#">
             <div class="icon icon-shape icon-sm text-center  me-2 d-flex align-items-center justify-content-center">
               <img src="{{asset('website/nav_icons/Management Walk Through Audits.ico')}}" alt="" width="18">
@@ -115,13 +115,13 @@
             <span class="nav-link-text ms-1"> Management Walk Through Audits
             </span>
           </a>
-        </li>
+        </li> --}}
         <li class="nav-item">
           <a class="nav-link" href="#">
             <div class="icon icon-shape icon-sm text-center  me-2 d-flex align-items-center justify-content-center">
               <img src="{{asset('website/nav_icons/Internal External Audit Closures.ico')}}" alt="" width="18">
             </div>
-            <span class="nav-link-text ms-1">Internal/External Audit Closures</span>
+            <span class="nav-link-text ms-1">Int/Ext Audit Closures</span>
           </a>
         </li>
         <li class="nav-item">

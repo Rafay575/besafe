@@ -33,10 +33,13 @@
                   </div>
                   <div class="row mt-3">
                    <x-forms.basic-input label="Location" name="location" type="text" placeholder="type location"  value="" width="col-12 col-sm-6" input-class="multisteps-form__input" required></x-forms.basic-input>
-                   <x-forms.basic-input label="Injured Person" name="injured_person" type="text" placeholder="eg. Ali" value="" width="col-12 col-sm-6 mt-3 mt-sm-0" input-class="multisteps-form__input"></x-forms.basic-input>
+                   <x-forms.text-area label="Incident Description" name="incident_desc"  width="col-6" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.text-area>
+                   {{-- <x-forms.basic-input label="Injured Person" name="injured_person" type="text" placeholder="eg. Ali" value="" width="col-12 col-sm-6 mt-3 mt-sm-0" input-class="multisteps-form__input"></x-forms.basic-input> --}}
                   </div>
                   <div class="row mt-3">
-                       <x-forms.text-area label="Incident Description" name="incident_desc"  width="col-6" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.text-area>
+                    
+                  </div>
+                  <div class="row mt-3">
                        <x-forms.text-area label="Immediate Action" name="immediate_action"  width="col-6" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.text-area>
                  </div>
 
