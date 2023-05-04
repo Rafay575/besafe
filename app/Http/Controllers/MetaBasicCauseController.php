@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MetaData;
+use App\Models\MetaBasicCause;
 use Illuminate\Http\Request;
 
-class MetaDataController extends Controller
+class MetaBasicCauseController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class MetaDataController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(MetaData $metaData)
+    public function show(MetaBasicCause $metaBasicCause)
     {
         //
     }
@@ -42,7 +42,7 @@ class MetaDataController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(MetaData $metaData)
+    public function edit(MetaBasicCause $metaBasicCause)
     {
         //
     }
@@ -50,7 +50,7 @@ class MetaDataController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, MetaData $metaData)
+    public function update(Request $request, MetaBasicCause $metaBasicCause)
     {
         //
     }
@@ -58,7 +58,7 @@ class MetaDataController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(MetaData $metaData)
+    public function destroy(MetaBasicCause $metaBasicCause)
     {
         //
     }

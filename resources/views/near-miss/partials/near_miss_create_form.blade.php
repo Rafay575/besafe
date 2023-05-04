@@ -83,10 +83,10 @@
                     
                     <table class="table table-flush  table-bordered">
                         <thead class="thead-light">
-                            <x-table.tblhead heads="S.No,Description,Responsibility,Timeline,Status" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" ></x-table.tblhead>
+                            <x-table.tblhead heads="Action,Responsibility,Target Date,Actual Completion,Remarks" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" ></x-table.tblhead>
                         </thead>
                         <tbody>
-                            <tr>
+                            {{-- <tr>
                                 <td>
                                     <span class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">1</span>
                                 </td>
@@ -105,47 +105,8 @@
                                     <option value="">InActive</option>
                                    </select>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">2</span>
-                                </td>
-                                <td>
-                                     <x-forms.basic-input label="" name="recmd_desc_2" type="text" placeholder="Description here"  value="" width="" input-class="form-control-sm"></x-forms.basic-input>
-                                </td>
-                                <td>
-                                     <x-forms.basic-input label="" name="recmd_resp_2" type="text" placeholder="Responsibility"  value="" width="" input-class="form-control-sm"></x-forms.basic-input>
-                                </td>
-                                <td>
-                                     <x-forms.basic-input label="" name="recmd_timeline_2" type="text" placeholder="Timeline"  value="" width="" input-class="form-control-sm"></x-forms.basic-input>
-                                </td>
-                                <td>
-                                   <select name="recmd_status_2" id="" class="form-control form-control-sm">
-                                    <option value="">Active</option>
-                                    <option value="">InActive</option>
-                                   </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">3</span>
-                                </td>
-                                <td>
-                                     <x-forms.basic-input label="" name="recmd_desc_3" type="text" placeholder="Description here"  value="" width="" input-class="form-control-sm"></x-forms.basic-input>
-                                </td>
-                                <td>
-                                     <x-forms.basic-input label="" name="recmd_resp_3" type="text" placeholder="Responsibility"  value="" width="" input-class="form-control-sm"></x-forms.basic-input>
-                                </td>
-                                <td>
-                                     <x-forms.basic-input label="" name="recmd_timeline_3" type="text" placeholder="Timeline"  value="" width="" input-class="form-control-sm"></x-forms.basic-input>
-                                </td>
-                                <td>
-                                   <select name="recmd_status_3" id="" class="form-control form-control-sm">
-                                    <option value="">Active</option>
-                                    <option value="">InActive</option>
-                                   </select>
-                                </td>
-                            </tr>
+                            </tr> --}}
+                         
                         </tbody>
                     </table>
                     

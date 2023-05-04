@@ -8,4 +8,49 @@ use Illuminate\Database\Eloquent\Model;
 class Hazard extends Model
 {
     use HasFactory;
+    // meta
+    public function unsafe_behavior_types()
+    {
+        return $this->belongsToMany(MetaUnsafeBehaviorType::class);
+    }
+
+    public function unit()
+    {
+        return $this->belongsTo(MetaUnit::class);
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(MetaDepartment::class);
+    }
+
+    public function line()
+    {
+        return $this->belongsTo(MetaLine::class);
+    }
+
+    public function risk_level()
+    {
+        return $this->belongsTo(MetaRiskLevel::class);
+    }
+
+    public function department_tag()
+    {
+        return $this->belongsTo(MetaDepartmentTag::class);
+    }
+
+    public function incident_status()
+    {
+        return $this->belongsTo(MetaIncidentStatus::class);
+    }
+    // meta ends above
+    public function initiator()
+    {
+        return $this->belongsTo(User::class, 'initiated_by');
+    }
+
+    public function common_attachements()
+    {
+        return $this->hasMany(CommonAttachement::class, 'incident_id')->where('form_name', $this->getTable());
+    }
 }
