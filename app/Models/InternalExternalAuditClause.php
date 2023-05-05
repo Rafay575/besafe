@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class InternalExternalAuditClause extends Model
 {
     use HasFactory;
-
+    protected $table = "ie_audit_clauses";
     public function audit_hall()
     {
         return $this->belongsTo(MetaAuditHall::class);

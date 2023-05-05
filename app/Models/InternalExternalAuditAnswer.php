@@ -9,6 +9,8 @@ class InternalExternalAuditAnswer extends Model
 {
     use HasFactory;
 
+    protected $table = "ie_audit_answers";
+
     public function audit_clause()
     {
         return $this->belongsTo(InternalExternalAuditClause::class);
