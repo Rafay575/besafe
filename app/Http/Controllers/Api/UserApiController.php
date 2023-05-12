@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FormValidatitionDispatcherController;
+use App\Http\Controllers\UserController;
+use App\Http\Resources\UserCollection;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,19 +13,38 @@ use Illuminate\Support\Facades\Validator;
 
 class UserApiController extends Controller
 {
-    public function show()
+
+    /**
+     * Summary of show
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show(Request $request)
     {
-        $user = auth()->user();
-        if ($user) {
-            return $user;
-            // return new UserCollection($user);
+        if ($request->user_id != null) {
+            $user = User::where('id', $request->user_id)->first();
         } else {
-            return response()->json([
-                'error' => ['message' => 'Problem While Fetching User'],
-            ], 400);
+            $user = auth()->user();
+        }
+
+        if ($user) {
+            $data = [
+                'user' => new UserCollection($user),
+                'roles' => $user->roles()->pluck('name'),
+                'permissions' => $user->getAllPermissions()->pluck('name'),
+            ];
+            return ApiResponseController::successWithJustData($data);
+        } else {
+            return ApiResponseController::error('Problem while fetching user.', 400);
         }
     }
 
+
+    /**
+     * Summary of authUserLogin
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse|array|bool
+     */
     public function authUserLogin(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -35,27 +56,80 @@ class UserApiController extends Controller
             return $formErrorsResponse;
         }
         if (!Auth::attempt($request->only('email', 'password'))) {
-            return response()->json([
-                'error' => ['message' => 'Invalid Login Credentials'],
-            ], 401);
+
+            return ApiResponseController::error('Invalid Login Credentials');
         }
 
         $user = User::where('email', $request->email)->firstOrFail();
         if ($user->status == 0) {
-            return response()->json([
-                'error' => ['message' => 'User is not active.'],
-            ], 401);
+            return ApiResponseController::error('User is not active');
         }
-        if (count($user->tokens) > 0) {
-            $token = $user->tokens->first();
-            $token = $token->id . "|" . $token->plain_text;
+
+        $token = $user->createToken('auth_token');
+        $data = [
+            'access_token' => $token->plainTextToken,
+            'token_name' => 'auth_token',
+            'token_type' => 'Bearer',
+            'user' => new UserCollection($user),
+            'roles' => $user->roles()->pluck('name'),
+            'permissions' => $user->getAllPermissions()->pluck('name'),
+        ];
+        return ApiResponseController::successWithData('Logged In Successfully', $data);
+
+    }
+
+
+    /**
+     * Summary of registerUser
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse|array|bool
+     */
+
+
+    public function registerUser(Request $request)
+    {
+
+        $response = (new UserController)->store($request, 'api');
+        if ($response) {
+            return $response;
         } else {
-            $token = $user->createToken('auth_token');
-            $token = $token->id . "|" . $token->plainTextToken;
+            return ApiResponseController::error('Problem while registering User.', 400);
         }
-        return response()->json([
-            'success' => ['message' => 'Logged In Succesfully'],
-            'data' => ['access_token' => $token, 'token_type' => 'Bearer', 'user' => $user],
-        ], 200);
+
+    }
+
+    /**
+     * Summary of update
+     * @param Request $request
+     * @param mixed $user_id
+     * @return \Illuminate\Http\JsonResponse|array|bool
+     */
+
+    public function update(Request $request, $user_id)
+    {
+
+
+        $response = (new UserController)->update($request, $user_id, 'api');
+        if ($response) {
+            return $response;
+        } else {
+            return ApiResponseController::error('Problem while updating User.', 400);
+        }
+    }
+
+    /**
+     * Summary of destroy
+     * @param mixed $user_id
+     * @return \Illuminate\Http\JsonResponse|array<string>
+     */
+
+    public function destroy($user_id)
+    {
+        $response = (new UserController)->destroy($user_id, 'api');
+        if ($response) {
+            return $response;
+        } else {
+            return ApiResponseController::error('Problem while deleting User.', 400);
+        }
     }
 }

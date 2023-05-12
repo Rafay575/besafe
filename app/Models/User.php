@@ -19,11 +19,12 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'first',
-        'last',
+        'first_name',
+        'last_name',
         'email',
         'password',
     ];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -43,6 +44,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
 
     public function unsafe_behaviors()
     {
@@ -86,22 +89,22 @@ class User extends Authenticatable
 
     public function unit()
     {
-        return $this->belongsTo(MetaUnit::class);
+        return $this->belongsTo(MetaUnit::class, 'meta_unit_id');
     }
 
     public function department()
     {
-        return $this->belongsTo(MetaDepartment::class);
+        return $this->belongsTo(MetaDepartment::class, 'meta_department_id');
     }
 
     public function designation()
     {
-        return $this->belongsTo(MetaDesignation::class);
+        return $this->belongsTo(MetaDesignation::class, 'meta_designation_id');
     }
 
     public function line()
     {
-        return $this->belongsTo(MetaLine::class);
+        return $this->belongsTo(MetaLine::class, 'meta_line_id');
     }
 
     public function audit_attachs()

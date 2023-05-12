@@ -6,6 +6,7 @@ use App\View\Components\Templates\BreadCrumb;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,9 +16,9 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         //
-        if (env(key: 'APP_ENV') !=='local') {
-            URL::forceScheme(scheme:'https');
-          }
+        if (env(key: 'APP_ENV') !== 'local') {
+            URL::forceScheme(scheme: 'https');
+        }
     }
 
     /**
@@ -27,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         Blade::component('templates.breadcrumb', BreadCrumb::class);
+
 
     }
 }

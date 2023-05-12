@@ -24,8 +24,8 @@ return new class extends Migration {
             $table->string('ein')->unique()->nullable();
             $table->string('gender')->nullable();
             $table->date('dob')->nullable();
-            $table->string('res_addres')->nullable();
-            $table->string('perm_addres')->nullable();
+            $table->string('res_address')->nullable();
+            $table->string('perm_address')->nullable();
             $table->string('id_type')->nullable();
             $table->string('id_no')->unique()->nullable();
             $table->timestamps();

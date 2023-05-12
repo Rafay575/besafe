@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->foreignId('meta_line_id')->constrained();
             $table->foreignId('meta_risk_level_id')->constrained();
             $table->foreignId('meta_department_tag_id')->constrained();
-            $table->foreignId('meta_incident_status')->constrained();
+            $table->foreignId('meta_incident_status_id')->constrained();
             $table->string('location')->nullable();
             $table->text('description')->nullable();
             $table->date('date');

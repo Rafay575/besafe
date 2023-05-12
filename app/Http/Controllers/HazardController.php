@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Api\ApiResponseController;
+use App\Models\CommonAttachement;
 use App\Models\Hazard;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class HazardController extends Controller
 {
@@ -26,17 +29,46 @@ class HazardController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, $channel = 'web')
     {
-        //
+
+        $validator = $this->validateData($request);
+
+        $formErrorsResponse = FormValidatitionDispatcherController::Response($validator, $channel);
+        if ($formErrorsResponse) {
+            return $formErrorsResponse;
+        }
+
+        $hazard = new Hazard();
+
+        $hazard->meta_unit_id = $request->meta_unit_id ?? null;
+        $hazard->meta_department_id = $request->meta_department_id ?? null;
+        $hazard->meta_risk_level_id = $request->meta_risk_level_id ?? null;
+        $hazard->meta_department_tag_id = $request->meta_department_tag_id ?? null;
+        $hazard->meta_line_id = $request->meta_line_id ?? null;
+        $hazard->meta_incident_status_id = $request->meta_incident_status_id ?? null;
+        $hazard->initiated_by = auth()->user()->id;
+        $hazard->location = $request->location;
+        $hazard->description = $request->description;
+        $hazard->date = $request->date;
+        $hazard->action_cost = $request->action_cos;
+        $hazard->save();
+        if ($request->has('attachements')) {
+            CommonAttachementController::uploadedArray($request->attachements, $hazard, 'attachements');
+        }
+
+        if ($channel === 'api') {
+            return ApiResponseController::successWithData('Hazard Incident created.', $hazard);
+        }
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Hazard $hazard)
+    public function show($hazard_id, $channel = "web")
     {
-        //
+        return Hazard::where('id', $hazard_id)->first();
     }
 
     /**
@@ -61,5 +93,23 @@ class HazardController extends Controller
     public function destroy(Hazard $hazard)
     {
         //
+    }
+
+
+    public function validateData(Request $request)
+    {
+        return
+            Validator::make($request->all(), [
+                'meta_unit_id' => 'required|exists:meta_units,id',
+                'meta_department_id' => 'required|exists:meta_departments,id',
+                'meta_line_id' => 'required|exists:meta_lines,id',
+                'meta_risk_level_id' => 'required|exists:meta_risk_levels,id',
+                'meta_department_tag_id' => 'required|exists:meta_department_tags,id',
+                'meta_incident_status_id' => 'required|exists:meta_incident_statuses,id',
+                'location' => 'nullable|string|max:255',
+                'description' => 'nullable|string',
+                'date' => 'required|date',
+                'action_cost' => 'nullable|numeric|min:0|max:9999999.99',
+            ]);
     }
 }

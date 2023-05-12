@@ -7,59 +7,22 @@ use Illuminate\Http\Request;
 
 class CommonAttachementController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public static function uploadedArray($filesArray, $model, $inputName)
     {
-        //
-    }
+        if (!empty($filesArray)) {
+            $tableName = $model->getTable();
+            foreach ($filesArray as $file) {
+                $file_name = time() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path("attachements/{$tableName}/{$inputName}/"), $file_name);
+                $attachement = new CommonAttachement();
+                $attachement->incident_id = $model->id;
+                $attachement->form_name = $model->getTable();
+                $attachement->form_input_name = $inputName;
+                $attachement->file_name = $file_name;
+                $attachement->user_id = auth()->user()->id;
+                $attachement->save();
+            }
+        }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(CommonAttachement $commonAttachement)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(CommonAttachement $commonAttachement)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, CommonAttachement $commonAttachement)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(CommonAttachement $commonAttachement)
-    {
-        //
     }
 }

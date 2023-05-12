@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\HazardApiController;
+use App\Http\Controllers\Api\MetaDataApiController;
 use App\Http\Controllers\Api\UserApiController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -16,13 +18,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
 
 Route::post('login', [UserApiController::class, 'authUserLogin']);
+Route::post('register', [UserApiController::class, 'registerUser']);
 Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
+    Route::post('/user/{user_id}/update', [UserApiController::class, 'update']);
+    Route::get('/user', [UserApiController::class, 'show']);
+    Route::get('/meta-data', [MetaDataApiController::class, 'index']);
+    Route::post('/hazards/create', [HazardApiController::class, 'store']);
+    Route::get('/hazards/{hazard_id}/show', [HazardApiController::class, 'show']);
+
 });

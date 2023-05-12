@@ -11,10 +11,10 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('meta_unit_id')->constrained('meta_units');
-            $table->foreignId('meta_designation_id')->constrained('meta_designations');
-            $table->foreignId('meta_department_id')->constrained('meta_departments');
-            $table->foreignId('meta_line_id')->constrained('meta_lines');
+            $table->foreignId('meta_unit_id')->nullable()->constrained('meta_units');
+            $table->foreignId('meta_designation_id')->nullable()->constrained('meta_designations');
+            $table->foreignId('meta_department_id')->nullable()->constrained('meta_departments');
+            $table->foreignId('meta_line_id')->nullable()->constrained('meta_lines');
         });
     }
 

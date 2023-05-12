@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('question');
             $table->boolean('status')->default(1);
             $table->string('group_name')->nullable();
+            $table->decimal('weight', 8, 2)->default(100); // 8 total digits, 2 decimal places
             $table->timestamps();
         });
     }

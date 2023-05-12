@@ -6,12 +6,7 @@ use Illuminate\Http\Request;
 
 class FormValidatitionDispatcherController extends Controller
 {
-    /**
-     * Summary of Response
-     * @param mixed $validator
-     * @param mixed $channel
-     * @return \Illuminate\Http\JsonResponse|array|bool
-     */
+    /** */
     public static function Response($validator, $channel)
     {
         if ($validator->fails()) {

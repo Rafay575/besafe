@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FirePropertyDamageController;
 use App\Http\Controllers\HazardController;
 use App\Http\Controllers\InjuryController;
@@ -29,17 +30,15 @@ Route::get('/', function () {
 Route::redirect('/', '/dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    });
-    Route::resource('users',UserController::class);
-    Route::resource('meta-data',MetaDataController::class);
-    Route::resource('unsafe-behaviors',UnsafeBehaviorController::class);
-    Route::resource('near-miss',NearMissController::class);
-    Route::resource('profile',ProfileController::class);
-    Route::resource('hazards',HazardController::class);
-    Route::resource('fire-property',FirePropertyDamageController::class);
-    Route::resource('injuries',InjuryController::class);
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::resource('users', UserController::class);
+    Route::resource('meta-data', MetaDataController::class);
+    Route::resource('unsafe-behaviors', UnsafeBehaviorController::class);
+    Route::resource('near-miss', NearMissController::class);
+    Route::resource('profile', ProfileController::class);
+    Route::resource('hazards', HazardController::class);
+    Route::resource('fire-property', FirePropertyDamageController::class);
+    Route::resource('injuries', InjuryController::class);
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
