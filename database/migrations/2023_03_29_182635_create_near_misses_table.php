@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->text('immediate_cause')->nullable();
             $table->text('root_cause')->nullable();
             $table->json('actions')->nullable();
+            $table->foreignId('meta_incident_status_id')->default(0)->constrained();
             // $table->photographs it has hasMany relationship with common_attacement table
             $table->timestamps();
         });

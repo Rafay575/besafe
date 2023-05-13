@@ -16,6 +16,11 @@ class Hazard extends Model
         return $this->belongsToMany(MetaUnsafeBehaviorType::class);
     }
 
+    public function assignedUsers()
+    {
+        return $this->hasMany(IncidentAssign::class, 'incident_id')->where('form_name', $this->getTable());
+    }
+
 
     public function risk_level()
     {

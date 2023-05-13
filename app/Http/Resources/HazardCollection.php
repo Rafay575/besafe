@@ -4,7 +4,6 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class HazardCollection extends JsonResource
 {
@@ -14,6 +13,7 @@ class HazardCollection extends JsonResource
      * @return array<int|string, mixed>
      */
     public $withAttachs = false;
+    public $withAssignUser = false;
 
     public function toArray(Request $request): array
     {
@@ -21,6 +21,9 @@ class HazardCollection extends JsonResource
             $params = explode(',', $request->with);
             if (in_array('attachements', $params)) {
                 $this->withAttachs = true;
+            }
+            if (in_array('assigned_users', $params)) {
+                $this->withAssignUser = true;
             }
         }
         $data = [
@@ -45,6 +48,9 @@ class HazardCollection extends JsonResource
         ];
         if ($this->withAttachs) {
             $data['attachements'] = CommonAttachsCollection::collection($this->common_attachements);
+        }
+        if ($this->withAssignUser) {
+            $data['assigned_users'] = IncidentAssignCollection::collection($this->assignedUsers);
         }
 
         return $data;

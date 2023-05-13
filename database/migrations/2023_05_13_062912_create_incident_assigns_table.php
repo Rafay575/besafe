@@ -16,7 +16,6 @@ return new class extends Migration {
             $table->string('form_name'); //such as hazard,unsafe_behavior,fire_and_property_demage
             $table->foreignId('assign_by')->references('id')->on('users')->constrained(); //assign by user
             $table->foreignId('assign_to')->references('id')->on('users')->constrained(); //assign to by user
-            $table->boolean('status')->default(1);
             $table->boolean('allowed_assign')->default(0);
             $table->integer('assign_count')->default(0);
             $table->timestamps();
