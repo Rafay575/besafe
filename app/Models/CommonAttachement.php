@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class CommonAttachement extends Model
 {
     use HasFactory;
+
+
 }

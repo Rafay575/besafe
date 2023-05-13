@@ -51,7 +51,7 @@ class HazardController extends Controller
         $hazard->location = $request->location;
         $hazard->description = $request->description;
         $hazard->date = $request->date;
-        $hazard->action_cost = $request->action_cos;
+        $hazard->action_cost = $request->action_cost;
         $hazard->save();
         if ($request->has('attachements')) {
             CommonAttachementController::uploadedArray($request->attachements, $hazard, 'attachements');
@@ -68,7 +68,10 @@ class HazardController extends Controller
      */
     public function show($hazard_id, $channel = "web")
     {
-        return Hazard::where('id', $hazard_id)->first();
+        $hazard = Hazard::where('id', $hazard_id)->first();
+        if ($channel === 'api') {
+            return $hazard;
+        }
     }
 
     /**
@@ -82,19 +85,81 @@ class HazardController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Hazard $hazard)
+    public function update(Request $request, $hazard_id, $channel)
     {
-        //
+        $validator = $this->validateData($request);
+
+        $formErrorsResponse = FormValidatitionDispatcherController::Response($validator, $channel);
+        if ($formErrorsResponse) {
+            return $formErrorsResponse;
+        }
+
+        $hazard = Hazard::where('id', $hazard_id)->first();
+        if (!$hazard && $channel === 'api') {
+            return ApiResponseController::error('Hazard not found', 404);
+        }
+        $hazard->meta_unit_id = $request->meta_unit_id ?? null;
+        $hazard->meta_department_id = $request->meta_department_id ?? null;
+        $hazard->meta_risk_level_id = $request->meta_risk_level_id ?? null;
+        $hazard->meta_department_tag_id = $request->meta_department_tag_id ?? null;
+        $hazard->meta_line_id = $request->meta_line_id ?? null;
+        $hazard->meta_incident_status_id = $request->meta_incident_status_id ?? null;
+        // $hazard->initiated_by = auth()->user()->id;
+        $hazard->location = $request->location;
+        $hazard->description = $request->description;
+        $hazard->date = $request->date;
+        $hazard->action_cost = $request->action_cost;
+        $hazard->save();
+        if ($request->has('attachements')) {
+            CommonAttachementController::uploadedArray($request->attachements, $hazard, 'attachements');
+        }
+
+        if ($channel === 'api') {
+            return ApiResponseController::successWithData('Hazard Incident updated.', $hazard);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Hazard $hazard)
+    public function destroy($hazard_id, $channel = 'web')
     {
-        //
+        $hazard = Hazard::find($hazard_id);
+        if (!$hazard && $channel === "api") {
+            return ApiResponseController::error('hazard not found', 404);
+        }
+
+        if (!$hazard) {
+            return ['error', 'hazard not found'];
+        }
+
+        // deleting the hazard
+        if ($hazard->delete()) {
+            if ($channel === 'api') {
+                return ApiResponseController::success('hazard has been delete');
+            } else {
+                return ['success', 'hazard has been deleted'];
+            }
+        } else {
+            if ($channel === 'api') {
+                return ApiResponseController::error('Could not delete the hazard.');
+            } else {
+                return ['error', 'Could not delete the hazard'];
+            }
+        }
     }
 
+    public function assign(Request $request, $hazard_id, $channel = 'web')
+    {
+        $hazard = Hazard::where('id', $hazard_id)->first();
+        if ($hazard) {
+            $assignHazard = (new IncidentAssignController)->store($request, $hazard, $channel);
+            return $assignHazard;
+
+        } else {
+            return ApiResponseController::error('Hazard not found.', 404);
+        }
+    }
 
     public function validateData(Request $request)
     {

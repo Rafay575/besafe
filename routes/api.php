@@ -28,5 +28,8 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::get('/meta-data', [MetaDataApiController::class, 'index']);
     Route::post('/hazards/create', [HazardApiController::class, 'store']);
     Route::get('/hazards/{hazard_id}/show', [HazardApiController::class, 'show']);
+    Route::post('/hazards/{hazard_id}/update', [HazardApiController::class, 'update']);
+    Route::post('/hazards/{hazard_id}/assign', [HazardApiController::class, 'assign']);
+    Route::delete('/hazards/{hazard_id}/delete', [HazardApiController::class, 'destroy']);
 
 });

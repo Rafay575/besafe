@@ -31,7 +31,7 @@ class UserCollection extends JsonResource
             "department_title" => $this->department ? $this->department->department_title : null,
             "meta_unit_id" => $this->unit ? $this->unit->id : null,
             "unit_title" => $this->unit ? $this->unit->unit_title : null,
-            "mea_line_id" => $this->line ? $this->line->id : null,
+            "meta_line_id" => $this->line ? $this->line->id : null,
             "line_title" => $this->line ? $this->line->line_title : null,
             "meta_designation_id" => $this->designation ? $this->designation->id : null,
             "designation_title" => $this->designation ? $this->designation->designation_title : null,

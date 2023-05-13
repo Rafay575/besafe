@@ -56,10 +56,10 @@ class UserController extends Controller
         $user->perm_address = $request->perm_address;
         $user->id_type = $request->id_type;
         $user->id_no = $request->id_no;
-        $user->meta_department_id = $request->department_id ?? null;
-        $user->meta_line_id = $request->line_id ?? null;
-        $user->meta_designation_id = $request->designation_id ?? null;
-        $user->meta_unit_id = $request->unit_id ?? null;
+        $user->meta_department_id = $request->meta_department_id ?? null;
+        $user->meta_line_id = $request->meta_line_id ?? null;
+        $user->meta_designation_id = $request->meta_designation_id ?? null;
+        $user->meta_unit_id = $request->meta_unit_id ?? null;
 
         if ($request->hasFile('image')) {
             $imageName = time() . '.' . $request->image->getClientOriginalExtension();
@@ -100,13 +100,12 @@ class UserController extends Controller
      */
     public function update(Request $request, string $user_id, $channel)
     {
-        $validator = $this->validateData($request);
+        $validator = $this->validateData($request, $user_id);
 
         $formErrorsResponse = FormValidatitionDispatcherController::Response($validator, $channel);
         if ($formErrorsResponse) {
             return $formErrorsResponse;
         }
-
         $user = User::find($user_id);
         if (!$user && $channel === 'api') {
             return ApiResponseController::error('User not found', 404);
@@ -130,10 +129,10 @@ class UserController extends Controller
         $user->perm_address = $request->perm_address;
         $user->id_type = $request->id_type;
         $user->id_no = $request->id_no;
-        $user->meta_department_id = $request->department_id ?? null;
-        $user->meta_line_id = $request->line_id ?? null;
-        $user->meta_designation_id = $request->designation_id ?? null;
-        $user->meta_unit_id = $request->unit_id ?? null;
+        $user->meta_department_id = $request->meta_department_id ?? null;
+        $user->meta_line_id = $request->meta_line_id ?? null;
+        $user->meta_designation_id = $request->meta_designation_id ?? null;
+        $user->meta_unit_id = $request->meta_unit_id ?? null;
 
         if ($request->hasFile('image')) {
             $imageName = time() . '.' . $request->image->getClientOriginalExtension();
@@ -191,26 +190,29 @@ class UserController extends Controller
      * @param Request $request
      * @return \Illuminate\Validation\Validator
      */
-    public function validateData(Request $request)
+    public function validateData(Request $request, $user_id = 0)
     {
 
-        return
-            Validator::make($request->all(), [
-                'first_name' => 'required|string|max:255',
-                'last_name' => 'required|string|max:255',
-                'mobile' => 'nullable|regex:/^[0-9]{10,}$/',
-                'status' => 'boolean',
-                'roles' => 'nullable|string|max:30|min:3',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'email' => 'required|email|unique:users,email|max:255',
-                'password' => 'required|string|min:8|max:255|confirmed',
-                'ein' => 'nullable|string|unique:users,ein|max:255',
-                'gender' => ['nullable', Rule::in(['Male', 'Female', 'male', 'female'])],
-                'dob' => 'nullable|date',
-                'res_addres' => 'nullable|string|max:255',
-                'perm_addres' => 'nullable|string|max:255',
-                'id_type' => 'nullable|string|max:255',
-                'id_no' => 'nullable|string|unique:users,id_no|max:255',
-            ]);
+        $rules = [
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'mobile' => 'nullable|regex:/^[0-9]{10,}$/',
+            'status' => 'boolean',
+            'roles' => 'nullable|string|max:30|min:3',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'email' => 'required|email|unique:users,email,' . $user_id . '|max:255',
+            // 'password' => 'required|string|min:8|max:255|confirmed',
+            'ein' => 'nullable|string|unique:users,ein|max:255',
+            'gender' => ['nullable', Rule::in(['Male', 'Female', 'male', 'female'])],
+            'dob' => 'nullable|date',
+            'res_addres' => 'nullable|string|max:255',
+            'perm_addres' => 'nullable|string|max:255',
+            'id_type' => 'nullable|string|max:255',
+            'id_no' => 'nullable|string|unique:users,id_no|max:255',
+        ];
+        if ($request->has('password')) {
+            $rules['password'] = 'required|string|min:8|max:255|confirmed';
+        }
+        return Validator::make($request->all(), $rules);
     }
 }
