@@ -76,7 +76,7 @@ class IncidentAssignController extends Controller
         $incidentAssigned->assign_count = $incidentAssignedCollection->last() ? $incidentAssignedCollection->last()->assign_count + 1 : 1;
         $incidentAssigned->save();
 
-        return true;
+        return ['success', $incident];
     }
 
 

@@ -26,6 +26,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::post('/user/{user_id}/update', [UserApiController::class, 'update']);
     Route::get('/user', [UserApiController::class, 'show']);
     Route::get('/meta-data', [MetaDataApiController::class, 'index']);
+    Route::get('/hazards', [HazardApiController::class, 'index']);
     Route::post('/hazards/create', [HazardApiController::class, 'store']);
     Route::get('/hazards/{hazard_id}/show', [HazardApiController::class, 'show']);
     Route::post('/hazards/{hazard_id}/update', [HazardApiController::class, 'update']);

@@ -45,6 +45,8 @@ class HazardCollection extends JsonResource
             'description' => $this->description,
             'date' => $this->date,
             'action_cost' => $this->action_cost,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
         if ($this->withAttachs) {
             $data['attachements'] = CommonAttachsCollection::collection($this->common_attachements);

@@ -9,9 +9,40 @@ use Illuminate\Http\Request;
 
 class HazardApiController extends Controller
 {
-    public function index(Request $requst)
+    public function index(Request $request)
     {
+        $limit = 20;
+        $hazards = (new HazardController)->index('api');
+        if ($request->has('limit')) {
+            $limit = $request->limit;
+        }
+        if ($request->has('from_date') and $request->has('to_date')) {
+            $hazards = $hazards->whereBetween('created_at', [$request->from_date, $request->to_date]);
+        }
+        if ($request->has('meta_status_id')) {
+            $hazards = $hazards->where('meta_status_id', $request->meta_status_id);
+        }
+        if ($request->has('meta_department_id')) {
+            $hazards = $hazards->where('meta_department_id', $request->meta_department_id);
+        }
+        if ($request->has('meta_line_id')) {
+            $hazards = $hazards->where('meta_line_id', $request->meta_line_id);
+        }
+        if ($request->has('meta_unit_id')) {
+            $hazards = $hazards->where('meta_unit_id', $request->meta_unit_id);
+        }
+        if ($request->has('meta_incident_status_id')) {
+            $hazards = $hazards->where('meta_incident_status_id', $request->meta_incident_status_id);
+        }
+        if ($request->has('initiated_by')) {
+            $hazards = $hazards->where('initiated_by', $request->initiated_by);
+        }
 
+        if ($hazards) {
+            return ApiResponseController::successWithJustData(HazardCollection::collection($hazards->paginate($limit)));
+        } else {
+            return ApiResponseController::error('Problme while fetching hazards');
+        }
     }
 
     public function store(Request $request)
@@ -45,7 +76,17 @@ class HazardApiController extends Controller
 
     public function assign(Request $request, $hazard_id)
     {
-        return (new HazardController)->assign($request, $hazard_id, "api");
+        $response = (new HazardController)->assign($request, $hazard_id, "api");
+        if ($response) {
+            if (is_array($response) && $response[0] === 'success') {
+                return ApiResponseController::successWithJustData(new HazardCollection($response[1]));
+            } else {
+                return $response;
+            }
+        } else {
+            return ApiResponseController::error('Problem while assiging hazard.', 400);
+        }
+
     }
 
     public function destroy($hazard_id)

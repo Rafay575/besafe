@@ -13,8 +13,13 @@ class HazardController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($channel = "web")
     {
+        $hazards = Hazard::orderby('id', 'desc');
+
+        if ($channel === 'api') {
+            return $hazards;
+        }
         return view('hazard.index');
     }
 
@@ -153,8 +158,7 @@ class HazardController extends Controller
     {
         $hazard = Hazard::where('id', $hazard_id)->first();
         if ($hazard) {
-            $assignHazard = (new IncidentAssignController)->store($request, $hazard, $channel);
-            return $assignHazard;
+            return $assignHazard = (new IncidentAssignController)->store($request, $hazard, $channel);
 
         } else {
             return ApiResponseController::error('Hazard not found.', 404);
