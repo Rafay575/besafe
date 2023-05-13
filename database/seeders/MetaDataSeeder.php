@@ -36,7 +36,24 @@ class MetaDataSeeder extends Seeder
 
         MetaIncidentStatus::create([
             "status_title" => "Pending",
+            "status_code" => 0,
+        ]);
+        MetaIncidentStatus::create([
+            "status_title" => "Assigned",
             "status_code" => 1,
         ]);
+        MetaIncidentStatus::create([
+            "status_title" => "In Progress",
+            "status_code" => 2,
+        ]);
+        MetaIncidentStatus::create([
+            "status_title" => "Completed",
+            "status_code" => 3,
+        ]);
+        MetaIncidentStatus::create([
+            "status_title" => "Rejected",
+            "status_code" => 4,
+        ]);
+
     }
 }
