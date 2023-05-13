@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\MetaIncidentStatus;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -32,5 +33,10 @@ class MetaDataSeeder extends Seeder
         \App\Models\MetaRootCause::factory()->count(10)->create();
         \App\Models\MetaUnit::factory()->count(10)->create();
         \App\Models\MetaUnsafeBehaviorType::factory()->count(10)->create();
+
+        MetaIncidentStatus::create([
+            "status_title" => "Pending",
+            "status_code" => 1,
+        ]);
     }
 }

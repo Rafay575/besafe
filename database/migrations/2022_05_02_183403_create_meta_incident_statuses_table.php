@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('meta_incident_statuses', function (Blueprint $table) {
             $table->id();
             $table->string('status_title');
+            $table->integer('status_code');
             $table->string('status_desc')->nullable();
             $table->string('group_name')->nullable();
             $table->timestamps();
