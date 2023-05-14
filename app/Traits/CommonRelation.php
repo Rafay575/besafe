@@ -3,6 +3,7 @@ namespace App\Traits;
 
 use App\Models\IncidentAssign;
 use App\Models\MetaDepartment;
+use App\Models\MetaIncidentStatus;
 use App\Models\MetaLine;
 use App\Models\MetaUnit;
 
@@ -21,6 +22,10 @@ trait CommonRelation
     public function line()
     {
         return $this->belongsTo(MetaLine::class, 'meta_line_id');
+    }
+    public function incident_status()
+    {
+        return $this->belongsTo(MetaIncidentStatus::class, 'meta_incident_status_id');
     }
 
     public function assign_by()

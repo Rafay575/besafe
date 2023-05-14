@@ -49,7 +49,7 @@ class HazardCollection extends JsonResource
             'updated_at' => $this->updated_at,
         ];
         if ($this->withAttachs) {
-            $data['attachements'] = CommonAttachsCollection::collection($this->common_attachements);
+            $data['attachements'] = CommonAttachsCollection::collection($this->attachements);
         }
         if ($this->withAssignUser) {
             $data['assigned_users'] = IncidentAssignCollection::collection($this->assignedUsers);

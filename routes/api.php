@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\HazardApiController;
+use App\Http\Controllers\Api\IncidentAsssignApiController;
 use App\Http\Controllers\Api\MetaDataApiController;
 use App\Http\Controllers\Api\UserApiController;
 use App\Http\Controllers\UserController;
@@ -32,5 +33,6 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::post('/hazards/{hazard_id}/update', [HazardApiController::class, 'update']);
     Route::post('/hazards/{hazard_id}/assign', [HazardApiController::class, 'assign']);
     Route::delete('/hazards/{hazard_id}/delete', [HazardApiController::class, 'destroy']);
+    Route::post('/incident_assign/{incident_assign_id}/update', [IncidentAsssignApiController::class, 'update']);
 
 });

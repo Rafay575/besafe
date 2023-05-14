@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Api\ApiResponseController;
-use App\Models\CommonAttachement;
 use App\Models\Hazard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -15,8 +14,8 @@ class HazardController extends Controller
      */
     public function index($channel = "web")
     {
-        $hazards = Hazard::orderby('id', 'desc');
-
+        RolesPermissionController::can(['hazard.index']);
+        $hazards = IncidentAssignController::getAssignedIncidents(Hazard::class, 'hazard');
         if ($channel === 'api') {
             return $hazards;
         }
@@ -28,6 +27,8 @@ class HazardController extends Controller
      */
     public function create()
     {
+        RolesPermissionController::can(['hazard.create']);
+
         return view('hazard.create');
     }
 
@@ -36,6 +37,8 @@ class HazardController extends Controller
      */
     public function store(Request $request, $channel = 'web')
     {
+        RolesPermissionController::can(['hazard.create']);
+
 
         $validator = $this->validateData($request);
 
@@ -59,7 +62,8 @@ class HazardController extends Controller
         $hazard->action_cost = $request->action_cost;
         $hazard->save();
         if ($request->has('attachements')) {
-            CommonAttachementController::uploadedArray($request->attachements, $hazard, 'attachements');
+            // (new CommonAttachementController)->uploadedArray($request->attachements, $hazard, 'attachements');
+            (new CommonAttachementController)->syncUploadedArray($request->attachements, $hazard, 'attachements');
         }
 
         if ($channel === 'api') {
@@ -74,6 +78,7 @@ class HazardController extends Controller
     public function show($hazard_id, $channel = "web")
     {
         $hazard = Hazard::where('id', $hazard_id)->first();
+        RolesPermissionController::canViewIncident($hazard, 'hazard');
         if ($channel === 'api') {
             return $hazard;
         }
@@ -92,6 +97,7 @@ class HazardController extends Controller
      */
     public function update(Request $request, $hazard_id, $channel)
     {
+
         $validator = $this->validateData($request);
 
         $formErrorsResponse = FormValidatitionDispatcherController::Response($validator, $channel);
@@ -100,23 +106,31 @@ class HazardController extends Controller
         }
 
         $hazard = Hazard::where('id', $hazard_id)->first();
+
+        // if allowed to update
+        RolesPermissionController::canEditIncident($hazard, 'hazard');
+
         if (!$hazard && $channel === 'api') {
             return ApiResponseController::error('Hazard not found', 404);
         }
+
+
+
+
         $hazard->meta_unit_id = $request->meta_unit_id ?? null;
         $hazard->meta_department_id = $request->meta_department_id ?? null;
         $hazard->meta_risk_level_id = $request->meta_risk_level_id ?? null;
         $hazard->meta_department_tag_id = $request->meta_department_tag_id ?? null;
         $hazard->meta_line_id = $request->meta_line_id ?? null;
         $hazard->meta_incident_status_id = $request->meta_incident_status_id ?? null;
-        // $hazard->initiated_by = auth()->user()->id;
         $hazard->location = $request->location;
         $hazard->description = $request->description;
         $hazard->date = $request->date;
         $hazard->action_cost = $request->action_cost;
         $hazard->save();
         if ($request->has('attachements')) {
-            CommonAttachementController::uploadedArray($request->attachements, $hazard, 'attachements');
+            // (new CommonAttachementController)->uploadedArray($request->attachements, $hazard, 'attachements');
+            (new CommonAttachementController)->syncUploadedArray($request->attachements, $hazard, 'attachements');
         }
 
         if ($channel === 'api') {
@@ -129,6 +143,8 @@ class HazardController extends Controller
      */
     public function destroy($hazard_id, $channel = 'web')
     {
+        RolesPermissionController::can(['hazard.delete']);
+
         $hazard = Hazard::find($hazard_id);
         if (!$hazard && $channel === "api") {
             return ApiResponseController::error('hazard not found', 404);
@@ -158,8 +174,7 @@ class HazardController extends Controller
     {
         $hazard = Hazard::where('id', $hazard_id)->first();
         if ($hazard) {
-            return $assignHazard = (new IncidentAssignController)->store($request, $hazard, $channel);
-
+            return (new IncidentAssignController)->store($request, $hazard, $channel);
         } else {
             return ApiResponseController::error('Hazard not found.', 404);
         }

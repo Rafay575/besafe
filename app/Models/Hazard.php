@@ -11,10 +11,7 @@ class Hazard extends Model
     use HasFactory;
     use CommonRelation;
     // meta
-    public function unsafe_behavior_types()
-    {
-        return $this->belongsToMany(MetaUnsafeBehaviorType::class);
-    }
+
 
     public function assignedUsers()
     {
@@ -32,17 +29,17 @@ class Hazard extends Model
         return $this->belongsTo(MetaDepartmentTag::class, 'meta_department_tag_id');
     }
 
-    public function incident_status()
-    {
-        return $this->belongsTo(MetaIncidentStatus::class, 'meta_incident_status_id');
-    }
+    // public function incident_status()
+    // {
+    //     return $this->belongsTo(MetaIncidentStatus::class, 'meta_incident_status_id');
+    // }
     // meta ends above
     public function initiator()
     {
         return $this->belongsTo(User::class, 'initiated_by');
     }
 
-    public function common_attachements()
+    public function attachements()
     {
         return $this->hasMany(CommonAttachement::class, 'incident_id')->where('form_name', $this->getTable());
     }

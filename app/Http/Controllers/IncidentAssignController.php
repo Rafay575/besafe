@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Api\ApiResponseController;
+use App\Http\Resources\IncidentAssignCollection;
 use App\Models\IncidentAssign;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -27,9 +29,13 @@ class IncidentAssignController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $incident, $channel, $assignCount = 4)
+    public function store(Request $request, $incident, $channel, $assignCount = 3)
     {
-        $validator = $this->validateData($request);
+        $validator = Validator::make($request->all(), [
+            'assign_by' => 'required|exists:users,id',
+            'assign_to' => 'required|exists:users,id',
+        ]);
+
 
         $formErrorsResponse = FormValidatitionDispatcherController::Response($validator, $channel);
         if ($formErrorsResponse) {
@@ -37,33 +43,40 @@ class IncidentAssignController extends Controller
         }
 
         $incidentAssignedCollection = IncidentAssign::where('incident_id', $incident->id)->get();
-        $allowedAssign = 1;
 
         // one user cannot be both assigner or assing to
-        if ($request->assign_to === $request->assign_by) {
-            return ['error', 'Cannot assign to yourself'];
+        if ($request->assign_to == $request->assign_by) {
+            if ($channel === 'api') {
+                return ApiResponseController::error('Assign to and Assign by cannot be same');
+            }
+            return ['error', 'Assign to and assign by cannot be same'];
         }
 
         if (!$incidentAssignedCollection->count() == 0) {
-
-
             // A can assign to B only once B can assign to C
             if ($incidentAssignedCollection->last()->assign_to != $request->assign_by or $incidentAssignedCollection->where('assign_by', $request->assign_by)->count() > 1) {
+                if ($channel === 'api') {
+                    return ApiResponseController::error('You are not allowed to assign');
+                }
                 return ['error', 'You are not allowed to assign'];
             }
 
             // if A assign to B then B cannot assign back to A
             if ($incidentAssignedCollection->where('assign_by', $request->assign_to)->count() > 0) {
+                if ($channel === 'api') {
+                    return ApiResponseController::error('Cannot assign to predecessors assigner');
+                }
                 return ['error', 'cannot assign to predecessor'];
             }
             // should not allow to assign more than allowed assignement hierarchy limit
             if ($incidentAssignedCollection->last()->assign_count >= $assignCount) {
+                if ($channel === 'api') {
+                    return ApiResponseController::error('Cannot assign further as limit breached');
+                }
                 return ['error', 'Cannot assign further as limit breaced'];
             }
 
-            if ($incidentAssignedCollection->last()->assign_count === $assignCount) {
-                $allowedAssign = 0;
-            }
+
         }
         $incidentAssigned = new IncidentAssign();
         // if everything goes will then we shoul dbe able to prcess the data
@@ -72,8 +85,8 @@ class IncidentAssignController extends Controller
         $incidentAssigned->form_name = $incident->getTable();
         $incidentAssigned->assign_by = $request->assign_by;
         $incidentAssigned->assign_to = $request->assign_to;
-        $incidentAssigned->allowed_assign = $allowedAssign;
         $incidentAssigned->assign_count = $incidentAssignedCollection->last() ? $incidentAssignedCollection->last()->assign_count + 1 : 1;
+        $incidentAssigned->allowed_assign = ($incidentAssigned->assign_count === $assignCount) ? 0 : 1;
         $incidentAssigned->save();
 
         return ['success', $incident];
@@ -99,9 +112,63 @@ class IncidentAssignController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, IncidentAssign $incidentAssign)
+    public function update(Request $request, $assign_id, $channel = 'web')
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'assign_to' => 'required|exists:users,id',
+        ]);
+
+        $formErrorsResponse = FormValidatitionDispatcherController::Response($validator, $channel);
+        if ($formErrorsResponse) {
+            return $formErrorsResponse;
+        }
+
+        $incidentAssigned = IncidentAssign::where('id', $assign_id)->first();
+        if (!$incidentAssigned) {
+            if ($channel === 'api') {
+                if ($channel === 'api') {
+                    return ApiResponseController::error('Assigned Users Data not found', 404);
+                }
+            }
+            return ['error', 'not found'];
+        }
+
+        $form_name = $incidentAssigned->form_name;
+        $incident_id = $incidentAssigned->incident_id;
+        $IncidentAllAssignedUsers = IncidentAssign::where('form_name', $form_name)->where('incident_id', $incident_id)->get();
+
+
+
+        if ($IncidentAllAssignedUsers->count() > 1 && $IncidentAllAssignedUsers->last()->id != $assign_id) {
+            if ($channel === "api") {
+                return ApiResponseController::error('Cannot update as it is further assigned by assignee');
+            }
+            return ['error', 'Cannot update as it is further assigned by assignee'];
+        }
+        if ($IncidentAllAssignedUsers->count() === 1 && $IncidentAllAssignedUsers->last()->id === $assign_id) {
+            $incidentAssigned = $IncidentAllAssignedUsers->last();
+        }
+
+        if ($incidentAssigned->assign_by == $request->assign_to) {
+            if ($channel === 'api') {
+                return ApiResponseController::error('Assign to and Assign by cannot be same');
+            }
+            return ['error', 'Assigner and Assignee cant be same person'];
+        }
+        if ($IncidentAllAssignedUsers->where('assign_by', $request->assign_to)->count() > 0) {
+            if ($channel === 'api') {
+                return ApiResponseController::error('Cannot assign to predecessor assigner');
+            }
+            return ['error', 'cannot assign to predecessor'];
+        }
+
+
+        $incidentAssigned->assign_to = $request->assign_to;
+        $incidentAssigned->save();
+        if ($channel === 'api') {
+            return ApiResponseController::successWithData('Assigned Users updated', new IncidentAssignCollection($incidentAssigned));
+        }
+
     }
 
     /**
@@ -119,5 +186,37 @@ class IncidentAssignController extends Controller
                 'assign_by' => 'required|exists:users,id',
                 'assign_to' => 'required|exists:users,id',
             ]);
+    }
+
+    public static function getAssignedIncidents($modelClass, $incident_name)
+    {
+        // admin can fetch all records
+        if (auth()->user()->can(["{$incident_name}.index", "{$incident_name}.delete", "{$incident_name}.view", "{$incident_name}.edit"])) {
+            if (is_object($modelClass)) {
+                $modelCollection = $modelClass->orderby('id', 'desc');
+            } else {
+                $modelCollection = $modelClass::orderby('id', 'desc');
+            }
+
+        } else {
+            if (is_object($modelClass)) {
+                // if not admin then we have to fetch only assigned or initiated records.
+                $modelCollection = $modelClass->WhereHas('assignedUsers', function ($query) {
+                    $query->where('assign_by', auth()->user()->id)
+                        ->orWhere('assign_to', auth()->user()->id);
+                })
+                    ->orWhere('initiated_by', auth()->user()->id)
+                    ->orderby('id', 'desc');
+            } else {
+                // if not admin then we have to fetch only assigned or initiated records.
+                $modelCollection = $modelClass::WhereHas('assignedUsers', function ($query) {
+                    $query->where('assign_by', auth()->user()->id)
+                        ->orWhere('assign_to', auth()->user()->id);
+                })
+                    ->orWhere('initiated_by', auth()->user()->id)
+                    ->orderby('id', 'desc');
+            }
+        }
+        return $modelCollection;
     }
 }
