@@ -36,4 +36,14 @@ trait CommonRelation
     {
         return $this->hasMany(IncidentAssign::class, 'assign_to');
     }
+
+    public function assignedUsers()
+    {
+        return $this->hasMany(IncidentAssign::class, 'incident_id')->where('form_name', $this->getTable());
+    }
+    public function initiator()
+    {
+        return $this->belongsTo(User::class, 'initiated_by');
+    }
+
 }

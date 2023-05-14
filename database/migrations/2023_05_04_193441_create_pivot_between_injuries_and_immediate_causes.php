@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('meta_immediate_cuase_injury', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('meta_immediate_cause_id')->constrained();
-            $table->foreignId('injury_id')->constrained();
+            $table->foreignId('meta_immediate_cause_id')->constrained()->onDelete('cascade');
+            $table->foreignId('injury_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

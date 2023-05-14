@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('meta_contact_type_injury', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('meta_contact_type_id')->constrained();
-            $table->foreignId('injury_id')->constrained();
+            $table->foreignId('meta_contact_type_id')->constrained()->onDelete('cascade');
+            $table->foreignId('injury_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

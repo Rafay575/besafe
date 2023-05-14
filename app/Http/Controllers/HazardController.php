@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Api\ApiResponseController;
+use App\Http\Resources\HazardCollection;
 use App\Models\Hazard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -67,7 +68,7 @@ class HazardController extends Controller
         }
 
         if ($channel === 'api') {
-            return ApiResponseController::successWithData('Hazard Incident created.', $hazard);
+            return ApiResponseController::successWithData('Hazard Incident created.', new HazardCollection($hazard));
         }
 
     }
@@ -134,7 +135,7 @@ class HazardController extends Controller
         }
 
         if ($channel === 'api') {
-            return ApiResponseController::successWithData('Hazard Incident updated.', $hazard);
+            return ApiResponseController::successWithData('Hazard Incident updated.', new HazardCollection($hazard));
         }
     }
 

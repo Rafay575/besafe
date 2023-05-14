@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('unsafe_behavior_and_type', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('unsafe_behavior_id')->constrained();
-            $table->foreignId('meta_unsafe_behavior_type_id')->constrained();
+            $table->foreignId('unsafe_behavior_id')->constrained()->onDelete('cascade');
+            $table->foreignId('meta_unsafe_behavior_type_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

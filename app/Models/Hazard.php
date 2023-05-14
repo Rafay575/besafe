@@ -10,14 +10,6 @@ class Hazard extends Model
 {
     use HasFactory;
     use CommonRelation;
-    // meta
-
-
-    public function assignedUsers()
-    {
-        return $this->hasMany(IncidentAssign::class, 'incident_id')->where('form_name', $this->getTable());
-    }
-
 
     public function risk_level()
     {
@@ -27,16 +19,6 @@ class Hazard extends Model
     public function department_tag()
     {
         return $this->belongsTo(MetaDepartmentTag::class, 'meta_department_tag_id');
-    }
-
-    // public function incident_status()
-    // {
-    //     return $this->belongsTo(MetaIncidentStatus::class, 'meta_incident_status_id');
-    // }
-    // meta ends above
-    public function initiator()
-    {
-        return $this->belongsTo(User::class, 'initiated_by');
     }
 
     public function attachements()

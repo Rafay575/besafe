@@ -19,9 +19,7 @@ class HazardApiController extends Controller
         if ($request->has('from_date') and $request->has('to_date')) {
             $hazards = $hazards->whereBetween('created_at', [$request->from_date, $request->to_date]);
         }
-        if ($request->has('meta_status_id')) {
-            $hazards = $hazards->where('meta_status_id', $request->meta_status_id);
-        }
+
         if ($request->has('meta_department_id')) {
             $hazards = $hazards->where('meta_department_id', $request->meta_department_id);
         }

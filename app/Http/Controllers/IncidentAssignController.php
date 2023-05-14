@@ -29,7 +29,7 @@ class IncidentAssignController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $incident, $channel, $assignCount = 3)
+    public function store(Request $request, $incident, $channel, $assignCount = 2)
     {
         $validator = Validator::make($request->all(), [
             'assign_by' => 'required|exists:users,id',
@@ -42,7 +42,7 @@ class IncidentAssignController extends Controller
             return $formErrorsResponse;
         }
 
-        $incidentAssignedCollection = IncidentAssign::where('incident_id', $incident->id)->get();
+        $incidentAssignedCollection = IncidentAssign::where('incident_id', $incident->id)->where('form_name', $incident->getTable())->get();
 
         // one user cannot be both assigner or assing to
         if ($request->assign_to == $request->assign_by) {
