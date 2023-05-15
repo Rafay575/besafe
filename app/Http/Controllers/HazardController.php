@@ -196,6 +196,8 @@ class HazardController extends Controller
                 'description' => 'nullable|string',
                 'date' => 'required|date',
                 'action_cost' => 'nullable|numeric|min:0|max:9999999.99',
+                'attachements' => ['array', 'nullable'],
+                'attachements.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
             ]);
     }
 }

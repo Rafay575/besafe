@@ -186,6 +186,8 @@ class UnsafeBehaviorController extends Controller
                 'meta_line_id' => ['required', 'exists:meta_lines,id'],
                 'meta_incident_status_id' => ['required', 'exists:meta_incident_statuses,id'],
                 'details' => ['nullable', 'string'],
+                'attachements' => ['array', 'nullable'],
+                'attachements.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
             ]);
     }
 }

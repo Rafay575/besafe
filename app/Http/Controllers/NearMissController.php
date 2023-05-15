@@ -45,7 +45,6 @@ class NearMissController extends Controller
         if ($formErrorsResponse) {
             return $formErrorsResponse;
         }
-
         // Create a new NearMiss instance
         $near_miss = new NearMiss();
 
@@ -197,12 +196,13 @@ class NearMissController extends Controller
                 'root_cause' => ['nullable', 'string'],
                 'meta_incident_status_id' => ['required', 'exists:meta_incident_statuses,id'],
                 'attachements' => ['array', 'nullable'],
-                'attachements.*' => ['required,file,mimes:jpeg,png,pdf,doc,docx'],
+                'attachements.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
                 'actions' => 'nullable|array',
                 'actions.*.action' => 'required|string',
                 'actions.*.responsible' => 'required|string',
                 'actions.*.target_date' => 'required|date_format:Y-m-d',
                 'actions.*.remarks' => 'required|string',
-            ]);
+            ], );
+
     }
 }
