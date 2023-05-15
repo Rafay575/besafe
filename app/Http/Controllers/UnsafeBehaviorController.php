@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Api\ApiResponseController;
 use App\Http\Resources\UnsafeBehaviorCollection;
+use App\Models\MetaIncidentStatus;
 use App\Models\UnsafeBehavior;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -53,7 +54,7 @@ class UnsafeBehaviorController extends Controller
         $unsafe_behavior->meta_unit_id = $request->meta_unit_id;
         $unsafe_behavior->meta_department_id = $request->meta_department_id;
         $unsafe_behavior->meta_line_id = $request->meta_line_id;
-        $unsafe_behavior->meta_incident_status_id = $request->meta_incident_status_id;
+        $unsafe_behavior->meta_incident_status_id = MetaIncidentStatus::where('status_code', 0)->first()->id;
         $unsafe_behavior->details = $request->details;
         $unsafe_behavior->save();
         $unsafe_behavior->unsafe_behavior_types()->sync($request->unsafe_behavior_types);

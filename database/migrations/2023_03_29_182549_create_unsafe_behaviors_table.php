@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->foreignId('meta_unit_id')->constrained();
             $table->foreignId('meta_department_id')->constrained();
             $table->foreignId('meta_line_id')->constrained();
-            $table->foreignId('meta_incident_status_id')->default(0)->constrained();
+            $table->foreignId('meta_incident_status_id')->default(1)->constrained();
             $table->text('details')->nullable();
             $table->timestamps();
             // has 1 type of  files common_files

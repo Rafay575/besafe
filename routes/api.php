@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\HazardApiController;
 use App\Http\Controllers\Api\IncidentAsssignApiController;
 use App\Http\Controllers\Api\MetaDataApiController;
+use App\Http\Controllers\Api\NearMissApiController;
 use App\Http\Controllers\Api\UserApiController;
 use App\Http\Controllers\UserController;
 use App\UnsafeBehaviorApiController;
@@ -47,7 +48,13 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::delete('/unsafe_behaviors/{unsafe_behavior_id}/delete', [UnsafeBehaviorApiController::class, 'destroy']);
 
 
-
+    // near miss apis
+    Route::get('/near_misses', [NearMissApiController::class, 'index']);
+    Route::post('/near_misses/create', [NearMissApiController::class, 'store']);
+    Route::get('/near_misses/{near_miss_id}/show', [NearMissApiController::class, 'show']);
+    Route::post('/near_misses/{near_miss_id}/update', [NearMissApiController::class, 'update']);
+    Route::post('/near_misses/{near_miss_id}/assign', [NearMissApiController::class, 'assign']);
+    Route::delete('/near_misses/{near_miss_id}/delete', [NearMissApiController::class, 'destroy']);
 
 
 

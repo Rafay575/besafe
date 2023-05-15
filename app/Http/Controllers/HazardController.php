@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Api\ApiResponseController;
 use App\Http\Resources\HazardCollection;
 use App\Models\Hazard;
+use App\Models\MetaIncidentStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -55,7 +56,7 @@ class HazardController extends Controller
         $hazard->meta_risk_level_id = $request->meta_risk_level_id ?? null;
         $hazard->meta_department_tag_id = $request->meta_department_tag_id ?? null;
         $hazard->meta_line_id = $request->meta_line_id ?? null;
-        $hazard->meta_incident_status_id = $request->meta_incident_status_id ?? null;
+        $hazard->meta_incident_status_id = MetaIncidentStatus::where('status_code', 0)->first()->id; //pending
         $hazard->initiated_by = auth()->user()->id;
         $hazard->location = $request->location;
         $hazard->description = $request->description;

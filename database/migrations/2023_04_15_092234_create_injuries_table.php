@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->foreignId('initiated_by')->constrained('users');
             $table->foreignId('meta_injury_category_id')->constrained();
             $table->foreignId('meta_incident_category_id')->constrained();
-            $table->foreignId('meta_incident_status_id')->default(0)->constrained();
+            $table->foreignId('meta_incident_status_id')->default(1)->constrained();
             $table->string('employee_involved')->nullable();
             $table->string('witness_name')->nullable();
             $table->string('sgfl_relation')->nullable(); //contractor or sgfl employee
