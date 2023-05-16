@@ -22,7 +22,7 @@ class UserRolesAndPermissionSeeder extends Seeder
             'unsafe_behavior',
             'hazard',
             'near_miss',
-            'fire_property_demage',
+            'fire_property_damage',
             'injury',
             'ptw',
             'ie_audit_cluase',
@@ -38,13 +38,13 @@ class UserRolesAndPermissionSeeder extends Seeder
             'injury_category',
             'ptw_type',
             'ptw_item',
-            'property_demage',
+            'property_damage',
             'audit_hall',
             'audit_type',
             'immediate_cause',
             'basic_cuase',
             'root_cause',
-            'fire_property_demage',
+            'fire_property_damage',
             'contact_type'
         ];
         $subModulesAssociative = array_combine($subModules, array_map(function ($value) {

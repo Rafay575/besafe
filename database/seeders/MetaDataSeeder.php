@@ -26,7 +26,7 @@ class MetaDataSeeder extends Seeder
         \App\Models\MetaInjuryCategory::factory()->count(10)->create();
         \App\Models\MetaLine::factory()->count(10)->create();
         \App\Models\MetaInternalExternalAuditQuestion::factory()->count(100)->create();
-        \App\Models\MetaPropertyDemage::factory()->count(10)->create();
+        \App\Models\MetaPropertyDamage::factory()->count(10)->create();
         \App\Models\MetaPtwItem::factory()->count(10)->create();
         \App\Models\MetaPtwType::factory()->count(10)->create();
         \App\Models\MetaRiskLevel::factory()->count(10)->create();

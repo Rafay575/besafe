@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->foreignId('meta_unit_id')->constrained();
             $table->string('location')->nullable();
             $table->foreignId('meta_fire_category_id')->constrained();
-            $table->foreignId('meta_property_demage_id')->constrained();
+            $table->foreignId('meta_property_damage_id')->constrained();
             $table->foreignId('meta_incident_status_id')->default(1)->constrained();
             $table->text('description')->nullable();
             $table->text('immediate_action')->nullable();

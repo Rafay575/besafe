@@ -24,7 +24,7 @@
               @csrf
               <!--single form panel-->
               <div class="card multisteps-form__panel p-3 border-radius-xl bg-white js-active" data-animation="FadeIn">
-                <h5 class="font-weight-bolder mb-0">Section 1 Fire / Property Demage</h5>
+                <h5 class="font-weight-bolder mb-0">Section 1 Fire / Property damage</h5>
                 {{-- <p class="mb-0 text-sm">Mandatory informations</p> --}}
                 <div class="multisteps-form__content">
                   <div class="row mt-3">
@@ -44,10 +44,10 @@
                         <x-forms.radio-box width="col-2" radio-box-class="" name="fire_category" checked="false" label="B" value="B"></x-forms.radio-box>
                         <x-forms.radio-box width="col-2" radio-box-class="" name="fire_category" checked="false" label="C" value="C"></x-forms.radio-box>
                     </x-forms.radio-and-check-box-div>
-                    <x-forms.radio-and-check-box-div name="property_demage" label="Property Demage" div-class="col-6">
-                        <x-forms.radio-box width="col-2" radio-box-class="" name="property_demage" checked="false" label="A" value="A"></x-forms.radio-box>
-                        <x-forms.radio-box width="col-2" radio-box-class="" name="property_demage" checked="false" label="B" value="B"></x-forms.radio-box>
-                        <x-forms.radio-box width="col-2" radio-box-class="" name="property_demage" checked="false" label="C" value="C"></x-forms.radio-box>
+                    <x-forms.radio-and-check-box-div name="property_damage" label="Property damage" div-class="col-6">
+                        <x-forms.radio-box width="col-2" radio-box-class="" name="property_damage" checked="false" label="A" value="A"></x-forms.radio-box>
+                        <x-forms.radio-box width="col-2" radio-box-class="" name="property_damage" checked="false" label="B" value="B"></x-forms.radio-box>
+                        <x-forms.radio-box width="col-2" radio-box-class="" name="property_damage" checked="false" label="C" value="C"></x-forms.radio-box>
                     </x-forms.radio-and-check-box-div>
                  </div>
                  <div class="row mt-3">
@@ -72,7 +72,7 @@
               
               <!--single form panel-->
               <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" data-animation="FadeIn">
-                <h5 class="font-weight-bolder">Section 2 Fire / Property Demage</h5>
+                <h5 class="font-weight-bolder">Section 2 Fire / Property damage</h5>
                 <div class="multisteps-form__content">
                   <div class="row mt-3">
                     <x-forms.text-area label="Immediate Cuase" name="immediate_cause"  width="col-6" text-area-class="multisteps-form__input" cols="2" rows="2"></x-forms.text-area>

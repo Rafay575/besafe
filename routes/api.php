@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\FirePropertyDamageApiController;
 use App\Http\Controllers\Api\HazardApiController;
 use App\Http\Controllers\Api\IncidentAsssignApiController;
 use App\Http\Controllers\Api\MetaDataApiController;
@@ -55,6 +56,14 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::post('/near_misses/{near_miss_id}/update', [NearMissApiController::class, 'update']);
     Route::post('/near_misses/{near_miss_id}/assign', [NearMissApiController::class, 'assign']);
     Route::delete('/near_misses/{near_miss_id}/delete', [NearMissApiController::class, 'destroy']);
+
+    // fire and proeprty damages apis
+    Route::get('/fpdamages', [FirePropertyDamageApiController::class, 'index']);
+    Route::post('/fpdamages/create', [FirePropertyDamageApiController::class, 'store']);
+    Route::get('/fpdamages/{fpdamage_id}/show', [FirePropertyDamageApiController::class, 'show']);
+    Route::post('/fpdamages/{fpdamage_id}/update', [FirePropertyDamageApiController::class, 'update']);
+    Route::post('/fpdamages/{fpdamage_id}/assign', [FirePropertyDamageApiController::class, 'assign']);
+    Route::delete('/fpdamages/{fpdamage_id}/delete', [FirePropertyDamageApiController::class, 'destroy']);
 
 
 

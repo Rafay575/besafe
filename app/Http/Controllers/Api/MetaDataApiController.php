@@ -16,7 +16,7 @@ use App\Models\MetaIncidentCategory;
 use App\Models\MetaInjuryCategory;
 use App\Models\MetaInternalExternalAuditQuestion;
 use App\Models\MetaLine;
-use App\Models\MetaPropertyDemage;
+use App\Models\MetaPropertydamage;
 use App\Models\MetaPtwItem;
 use App\Models\MetaPtwType;
 use App\Models\MetaRiskLevel;
@@ -59,7 +59,7 @@ class MetaDataApiController extends Controller
             'injury_categories' => MetaInjuryCategory::class,
             'lines' => MetaLine::class,
             'ie_audit_questions' => MetaInternalExternalAuditQuestion::class,
-            "property_demages" => MetaPropertyDemage::class,
+            "property_damages" => MetaPropertydamage::class,
             "ptw_items" => MetaPtwItem::class,
             "ptw_types" => MetaPtwType::class,
             "risk_levels" => MetaRiskLevel::class,

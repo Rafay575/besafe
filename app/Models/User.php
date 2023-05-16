@@ -62,7 +62,7 @@ class User extends Authenticatable
         return $this->hasMany(NearMiss::class, 'initiated_by');
     }
 
-    public function fire_property_demages()
+    public function fire_property_damages()
     {
         return $this->hasMany(FirePropertyDamage::class, 'initiated_by');
     }

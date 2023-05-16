@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\MetaPropertyDemage>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\MetaPropertydamage>
  */
-class MetaPropertyDemageFactory extends Factory
+class MetaPropertyDamageFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,8 +17,8 @@ class MetaPropertyDemageFactory extends Factory
     public function definition(): array
     {
         return [
-            'property_demage_title' => $this->faker->word,
-            'property_demage_desc' => $this->faker->sentence,
+            'property_damage_title' => $this->faker->word,
+            'property_damage_desc' => $this->faker->sentence,
             'group_name' => $this->faker->randomElement(['group1', 'group2']),
         ];
     }

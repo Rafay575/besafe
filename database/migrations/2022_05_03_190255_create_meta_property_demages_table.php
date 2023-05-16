@@ -10,10 +10,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('meta_property_demages', function (Blueprint $table) {
+        Schema::create('meta_property_damages', function (Blueprint $table) {
             $table->id();
-            $table->string('property_demage_title');
-            $table->string('property_demage_desc')->nullable();
+            $table->string('property_damage_title');
+            $table->string('property_damage_desc')->nullable();
             $table->string('group_name')->nullable();
             $table->timestamps();
         });
@@ -24,6 +24,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('meta_property_demages');
+        Schema::dropIfExists('meta_property_damages');
     }
 };

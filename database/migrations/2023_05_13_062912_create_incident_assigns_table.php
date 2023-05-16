@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('incident_assigns', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('incident_id'); //e.g hazard_id, unsafe_behavior_id,fire_and_property_demage_id
-            $table->string('form_name'); //such as hazard,unsafe_behavior,fire_and_property_demage
+            $table->unsignedBigInteger('incident_id'); //e.g hazard_id, unsafe_behavior_id,fire_and_property_damage_id
+            $table->string('form_name'); //such as hazard,unsafe_behavior,fire_and_property_damage
             $table->foreignId('assign_by')->references('id')->on('users')->constrained()->onDelete('cascade'); //assign by user
             $table->foreignId('assign_to')->references('id')->on('users')->constrained()->onDelete('cascade'); //assign to by user
             $table->boolean('allowed_assign')->default(0);

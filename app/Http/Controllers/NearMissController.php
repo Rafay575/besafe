@@ -116,7 +116,6 @@ class NearMissController extends Controller
 
         $near_miss->date = $request->date;
         $near_miss->time = $request->time;
-        $near_miss->initiated_by = auth()->user()->id;
         $near_miss->location = $request->location;
         $near_miss->description = $request->description;
         $near_miss->immediate_action = $request->immediate_action;

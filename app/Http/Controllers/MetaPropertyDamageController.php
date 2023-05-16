@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MetaPropertyDemage;
+use App\Models\MetaPropertydamage;
 use Illuminate\Http\Request;
 
-class MetaPropertyDemageController extends Controller
+class MetaPropertyDamageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class MetaPropertyDemageController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(MetaPropertyDemage $metaPropertyDemage)
+    public function show(MetaPropertydamage $metaPropertydamage)
     {
         //
     }
@@ -42,7 +42,7 @@ class MetaPropertyDemageController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(MetaPropertyDemage $metaPropertyDemage)
+    public function edit(MetaPropertydamage $metaPropertydamage)
     {
         //
     }
@@ -50,7 +50,7 @@ class MetaPropertyDemageController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, MetaPropertyDemage $metaPropertyDemage)
+    public function update(Request $request, MetaPropertydamage $metaPropertydamage)
     {
         //
     }
@@ -58,7 +58,7 @@ class MetaPropertyDemageController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(MetaPropertyDemage $metaPropertyDemage)
+    public function destroy(MetaPropertydamage $metaPropertydamage)
     {
         //
     }
