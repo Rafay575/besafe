@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\NearMissController;
-use App\Http\Resources\Api\NearMissCollection;
+use App\Http\Resources\NearMissCollection;
 use Illuminate\Http\Request;
 
 class NearMissApiController extends Controller

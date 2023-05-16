@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Api\ApiResponseController;
-use App\Http\Resources\Api\NearMissCollection;
+use App\Http\Resources\NearMissCollection;
 use App\Models\MetaIncidentStatus;
 use App\Models\NearMiss;
+use App\Rules\NearMissActionData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -196,11 +197,8 @@ class NearMissController extends Controller
                 'meta_incident_status_id' => ['required', 'exists:meta_incident_statuses,id'],
                 'attachements' => ['array', 'nullable'],
                 'attachements.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
-                'actions' => 'nullable|array',
-                'actions.*.action' => 'required|string',
-                'actions.*.responsible' => 'required|string',
-                'actions.*.target_date' => 'required|date_format:Y-m-d',
-                'actions.*.remarks' => 'required|string',
+                'actions' => ['array', new NearMissActionData],
+
             ], );
 
     }

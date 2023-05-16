@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\FirePropertyDamageApiController;
 use App\Http\Controllers\Api\HazardApiController;
 use App\Http\Controllers\Api\IncidentAsssignApiController;
+use App\Http\Controllers\Api\InjuryApiController;
 use App\Http\Controllers\Api\MetaDataApiController;
 use App\Http\Controllers\Api\NearMissApiController;
 use App\Http\Controllers\Api\UserApiController;
@@ -64,6 +65,15 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::post('/fpdamages/{fpdamage_id}/update', [FirePropertyDamageApiController::class, 'update']);
     Route::post('/fpdamages/{fpdamage_id}/assign', [FirePropertyDamageApiController::class, 'assign']);
     Route::delete('/fpdamages/{fpdamage_id}/delete', [FirePropertyDamageApiController::class, 'destroy']);
+
+
+    // injury apis
+    Route::get('/injuries', [InjuryApiController::class, 'index']);
+    Route::post('/injuries/create', [InjuryApiController::class, 'store']);
+    Route::get('/injuries/{injury_id}/show', [InjuryApiController::class, 'show']);
+    Route::post('/injuries/{injury_id}/update', [InjuryApiController::class, 'update']);
+    Route::post('/injuries/{injury_id}/assign', [InjuryApiController::class, 'assign']);
+    Route::delete('/injuries/{injury_id}/delete', [InjuryApiController::class, 'destroy']);
 
 
 

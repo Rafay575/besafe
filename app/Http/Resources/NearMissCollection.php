@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\Api;
+namespace App\Http\Resources;
 
 use App\Http\Resources\CommonAttachsCollection;
 use App\Http\Resources\IncidentAssignCollection;

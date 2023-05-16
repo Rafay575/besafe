@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->text('details')->nullable();
             $table->string('immediate_action')->nullable();
             $table->text('key_finding')->nullable();
+
             // pivot meta_immediate_causes
             // pivot meta_root_causes
             // pivot meta_basic_causes
