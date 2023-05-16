@@ -51,56 +51,57 @@ class FirePropertyDamageController extends Controller
         if ($formErrorsResponse) {
             return $formErrorsResponse;
         }
-
-        $fpdamage = new FirePropertyDamage();
-        $fpdamage->date = $request->date;
-        $fpdamage->initiated_by = auth()->user()->id;
-        $fpdamage->reference = $request->reference;
-        $fpdamage->meta_unit_id = $request->meta_unit_id ?? null;
-        $fpdamage->location = $request->location;
-        $fpdamage->meta_fire_category_id = $request->meta_fire_category_id ?? null;
-        $fpdamage->meta_property_damage_id = $request->meta_property_damage_id ?? null;
-        $fpdamage->meta_incident_status_id = MetaIncidentStatus::where('status_code', 0)->first()->id; //pending
-        $fpdamage->description = $request->description;
-        $fpdamage->immediate_action = $request->immediate_action;
-        $fpdamage->immediate_cause = $request->immediate_cause;
-        $fpdamage->root_cause = $request->root_cause;
-        $fpdamage->similar_incident_before = $request->similar_incident_before;
-        $fpdamage->loss_calculation = $request->loss_calculation; //json
-        $fpdamage->loss_recovery_method = $request->loss_recovery_method;
-        $fpdamage->preventative_measure = $request->preventative_measure;
-        $fpdamage->actions = $request->actions; //json
         try {
+
+            $fpdamage = new FirePropertyDamage();
+            $fpdamage->date = $request->date;
+            $fpdamage->initiated_by = auth()->user()->id;
+            $fpdamage->reference = $request->reference;
+            $fpdamage->meta_unit_id = $request->meta_unit_id ?? null;
+            $fpdamage->location = $request->location;
+            $fpdamage->meta_fire_category_id = $request->meta_fire_category_id ?? null;
+            $fpdamage->meta_property_damage_id = $request->meta_property_damage_id ?? null;
+            $fpdamage->meta_incident_status_id = MetaIncidentStatus::where('status_code', 0)->first()->id; //pending
+            $fpdamage->description = $request->description;
+            $fpdamage->immediate_action = $request->immediate_action;
+            $fpdamage->immediate_cause = $request->immediate_cause;
+            $fpdamage->root_cause = $request->root_cause;
+            $fpdamage->similar_incident_before = $request->similar_incident_before;
+            $fpdamage->loss_calculation = $request->loss_calculation; //json
+            $fpdamage->loss_recovery_method = $request->loss_recovery_method;
+            $fpdamage->preventative_measure = $request->preventative_measure;
+            $fpdamage->actions = $request->actions; //json
             $fpdamage->save();
 
+
+            if ($request->has('attachements')) {
+                (new CommonAttachementController)->syncUploadedArray($request->attachements, $fpdamage, 'attachements');
+            }
+
+            if ($request->has('initial_attachs')) {
+                (new CommonAttachementController)->syncUploadedArray($request->initial_attachs, $fpdamage, 'initial_attachs');
+            }
+
+            if ($request->has('interview_attachs')) {
+                (new CommonAttachementController)->syncUploadedArray($request->interview_attachs, $fpdamage, 'interview_attachs');
+            }
+            if ($request->has('record_attachs')) {
+                (new CommonAttachementController)->syncUploadedArray($request->record_attachs, $fpdamage, 'record_attachs');
+            }
+            if ($request->has('photograph_attachs')) {
+                (new CommonAttachementController)->syncUploadedArray($request->photograph_attachs, $fpdamage, 'photograph_attachs');
+            }
+
+            if ($request->has('other_attachs')) {
+                (new CommonAttachementController)->syncUploadedArray($request->other_attachs, $fpdamage, 'other_attachs');
+            }
+
+            if ($channel === 'api') {
+                return ApiResponseController::successWithData('Fire Property and damage created.', new FirePropertyDamageCollection($fpdamage));
+            }
         } catch (\Exception $e) {
             //throw $th;
             return $e->getMessage();
-        }
-        if ($request->has('attachements')) {
-            (new CommonAttachementController)->syncUploadedArray($request->attachements, $fpdamage, 'attachements');
-        }
-
-        if ($request->has('initial_attachs')) {
-            (new CommonAttachementController)->syncUploadedArray($request->initial_attachs, $fpdamage, 'initial_attachs');
-        }
-
-        if ($request->has('interview_attachs')) {
-            (new CommonAttachementController)->syncUploadedArray($request->interview_attachs, $fpdamage, 'interview_attachs');
-        }
-        if ($request->has('record_attachs')) {
-            (new CommonAttachementController)->syncUploadedArray($request->record_attachs, $fpdamage, 'record_attachs');
-        }
-        if ($request->has('photograph_attachs')) {
-            (new CommonAttachementController)->syncUploadedArray($request->photograph_attachs, $fpdamage, 'photograph_attachs');
-        }
-
-        if ($request->has('other_attachs')) {
-            (new CommonAttachementController)->syncUploadedArray($request->other_attachs, $fpdamage, 'other_attachs');
-        }
-
-        if ($channel === 'api') {
-            return ApiResponseController::successWithData('Fire Property and damage created.', new FirePropertyDamageCollection($fpdamage));
         }
 
     }
