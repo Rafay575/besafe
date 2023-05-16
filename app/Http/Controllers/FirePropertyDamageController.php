@@ -70,7 +70,13 @@ class FirePropertyDamageController extends Controller
         $fpdamage->loss_recovery_method = $request->loss_recovery_method;
         $fpdamage->preventative_measure = $request->preventative_measure;
         $fpdamage->actions = $request->actions; //json
-        $fpdamage->save();
+        try {
+            $fpdamage->save();
+
+        } catch (\Exception $e) {
+            //throw $th;
+            return $e->getMessage();
+        }
         if ($request->has('attachements')) {
             (new CommonAttachementController)->syncUploadedArray($request->attachements, $fpdamage, 'attachements');
         }
