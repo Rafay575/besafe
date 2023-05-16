@@ -52,7 +52,7 @@ class FirePropertyDamage extends Model
 
     public function property_damage()
     {
-        return $this->belongsTo(MetaPropertydamage::class, 'meta_property_damage_id');
+        return $this->belongsTo(MetaPropertyDamage::class, 'meta_property_damage_id');
     }
 
 
