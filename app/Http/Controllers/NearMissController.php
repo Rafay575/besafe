@@ -187,7 +187,7 @@ class NearMissController extends Controller
     {
         return
             Validator::make($request->all(), [
-                'date' => ['required', 'date'],
+                'date' => ['required', 'date', 'date_format:Y-m-d'],
                 'time' => ['required', 'date_format:H:i'],
                 'location' => ['nullable', 'string'],
                 'description' => ['nullable', 'string'],

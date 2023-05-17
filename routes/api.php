@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\IncidentAsssignApiController;
 use App\Http\Controllers\Api\InjuryApiController;
 use App\Http\Controllers\Api\MetaDataApiController;
 use App\Http\Controllers\Api\NearMissApiController;
+use App\Http\Controllers\Api\PermitToWorkApiController;
 use App\Http\Controllers\Api\UserApiController;
 use App\Http\Controllers\UserController;
 use App\UnsafeBehaviorApiController;
@@ -74,6 +75,14 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::post('/injuries/{injury_id}/update', [InjuryApiController::class, 'update']);
     Route::post('/injuries/{injury_id}/assign', [InjuryApiController::class, 'assign']);
     Route::delete('/injuries/{injury_id}/delete', [InjuryApiController::class, 'destroy']);
+
+
+    // permission to work apis
+    Route::get('/ptws', [PermitToWorkApiController::class, 'index']);
+    Route::post('/ptws/create', [PermitToWorkApiController::class, 'store']);
+    Route::get('/ptws/{ptw_id}/show', [PermitToWorkApiController::class, 'show']);
+    Route::post('/ptws/{ptw_id}/update', [PermitToWorkApiController::class, 'update']);
+    Route::delete('/ptws/{ptw_id}/delete', [PermitToWorkApiController::class, 'destroy']);
 
 
 

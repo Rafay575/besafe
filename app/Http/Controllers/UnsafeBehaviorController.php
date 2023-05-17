@@ -177,7 +177,7 @@ class UnsafeBehaviorController extends Controller
     {
         return
             Validator::make($request->all(), [
-                'date' => ['required', 'date'],
+                'date' => ['required', 'date', 'date_format:Y-m-d'],
                 'unsafe_behavior_types' => ['array', 'required'],
                 'unsafe_behavior_types.*' => ['exists:meta_unsafe_behavior_types,id'],
                 'initiated_by' => ['nullable', 'exists:users,id'],
