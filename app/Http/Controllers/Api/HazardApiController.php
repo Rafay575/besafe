@@ -37,7 +37,8 @@ class HazardApiController extends Controller
         }
 
         if ($hazards) {
-            return ApiResponseController::successWithJustData(HazardCollection::collection($hazards->paginate($limit)));
+            return HazardCollection::collection($hazards->paginate($limit));
+            // return ApiResponseController::successWithJustData(HazardCollection::collection($hazards->paginate($limit)));
         } else {
             return ApiResponseController::error('Problme while fetching hazards');
         }

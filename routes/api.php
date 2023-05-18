@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\FirePropertyDamageApiController;
 use App\Http\Controllers\Api\HazardApiController;
+use App\Http\Controllers\Api\IncidentApiController;
 use App\Http\Controllers\Api\IncidentAsssignApiController;
 use App\Http\Controllers\Api\InjuryApiController;
 use App\Http\Controllers\Api\MetaDataApiController;
@@ -90,7 +91,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
 
 
 
-
+    Route::get('/incidents', [IncidentApiController::class, 'index']);
     Route::post('/incident_assign/{incident_assign_id}/update', [IncidentAsssignApiController::class, 'update']);
 
 });

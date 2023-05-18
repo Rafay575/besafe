@@ -8,15 +8,11 @@ use App\Models\Hazard;
 use App\Models\Injury;
 use App\Models\NearMiss;
 use App\Models\UnsafeBehavior;
-use App\Models\User;
 use Illuminate\Http\Request;
 
-class DashboardController extends Controller
+class IncidentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request)
+    public function index(Request $request, $channel = "web")
     {
 
         $commonColumns = ['id', 'initiated_by', 'created_at', 'updated_at', 'meta_incident_status_id'];
@@ -42,7 +38,6 @@ class DashboardController extends Controller
             ->orderBy('created_at', 'desc');
 
 
-
         $limit = 20;
         if ($request->has('limit')) {
             $limit = $request->limit;
@@ -60,61 +55,8 @@ class DashboardController extends Controller
 
         $results = $results->paginate($limit);
 
-
-
-        return IncidentCollection::collection($results);
-
-        // return $resultsWithTable
-        return $resultsWithTable;
-        return view('dashboard');
-
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        if ($channel == "api") {
+            return $results;
+        }
     }
 }

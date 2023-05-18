@@ -6,6 +6,7 @@ use App\Models\MetaDepartment;
 use App\Models\MetaIncidentStatus;
 use App\Models\MetaLine;
 use App\Models\MetaUnit;
+use App\Models\User;
 
 trait CommonRelation
 {

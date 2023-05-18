@@ -38,7 +38,8 @@ class FirePropertyDamageApiController extends Controller
         }
 
         if ($fpdamages) {
-            return ApiResponseController::successWithJustData(FirePropertyDamageCollection::collection($fpdamages->paginate($limit)));
+            return FirePropertyDamageCollection::collection($fpdamages->paginate($limit));
+            // return ApiResponseController::successWithJustData(FirePropertyDamageCollection::collection($fpdamages->paginate($limit)));
         } else {
             return ApiResponseController::error('Problme while fetching fire property damages');
         }

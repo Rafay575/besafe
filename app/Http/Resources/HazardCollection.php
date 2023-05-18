@@ -26,6 +26,9 @@ class HazardCollection extends JsonResource
                 $this->withAssignUser = true;
             }
         }
+
+
+
         $data = [
             'id' => $this->id,
             "meta_department_id" => $this->meta_department_id ?? null,
@@ -55,7 +58,9 @@ class HazardCollection extends JsonResource
             $data['assigned_users'] = IncidentAssignCollection::collection($this->assignedUsers);
         }
 
+
         return $data;
 
     }
+
 }

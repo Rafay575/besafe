@@ -35,7 +35,8 @@ class InjuryApiController extends Controller
         }
 
         if ($injuries) {
-            return ApiResponseController::successWithJustData(InjuryCollection::collection($injuries->paginate($limit)));
+            return InjuryCollection::collection($injuries->paginate($limit));
+            // return ApiResponseController::successWithJustData(InjuryCollection::collection($injuries->paginate($limit)));
         } else {
             return ApiResponseController::error('Problme while fetching injuries');
         }

@@ -32,7 +32,8 @@ class PermitToWorkApiController extends Controller
         }
 
         if ($ptws) {
-            return ApiResponseController::successWithJustData(PermitToWorkCollection::collection($ptws->paginate($limit)));
+            return PermitToWorkCollection::collection($ptws->paginate($limit));
+            // return ApiResponseController::successWithJustData(PermitToWorkCollection::collection($ptws->paginate($limit)));
         } else {
             return ApiResponseController::error('Problme while fetching PTWs');
         }

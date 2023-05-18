@@ -19,5 +19,11 @@ class InternalExternalAuditClause extends Model
         return $this->belongsTo(MetaAuditType::class);
     }
 
+    public function audit_answers()
+    {
+        return $this->hasMany(InternalExternalAuditAnswer::class);
+    }
+
+
 
 }

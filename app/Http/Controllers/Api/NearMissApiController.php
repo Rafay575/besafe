@@ -28,7 +28,8 @@ class NearMissApiController extends Controller
         }
 
         if ($near_misss) {
-            return ApiResponseController::successWithJustData(NearMissCollection::collection($near_misss->paginate($limit)));
+            return NearMissCollection::collection($near_misss->paginate($limit));
+            // return ApiResponseController::successWithJustData(NearMissCollection::collection($near_misss->paginate($limit)));
         } else {
             return ApiResponseController::error('Problme while fetching near misses');
         }
