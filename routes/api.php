@@ -8,9 +8,9 @@ use App\Http\Controllers\Api\InjuryApiController;
 use App\Http\Controllers\Api\MetaDataApiController;
 use App\Http\Controllers\Api\NearMissApiController;
 use App\Http\Controllers\Api\PermitToWorkApiController;
+use App\Http\Controllers\Api\UnsafeBehaviorApiController;
 use App\Http\Controllers\Api\UserApiController;
 use App\Http\Controllers\UserController;
-use App\UnsafeBehaviorApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 

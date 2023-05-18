@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\ApiResponseController;
 use App\Http\Controllers\Controller;
@@ -38,7 +38,8 @@ class UnsafeBehaviorApiController extends Controller
         }
 
         if ($unsafe_behavior) {
-            return ApiResponseController::successWithJustData(UnsafeBehaviorCollection::collection($unsafe_behavior->paginate($limit)));
+            return UnsafeBehaviorCollection::collection($unsafe_behavior->paginate($limit));
+            // return ApiResponseController::successWithJustData(UnsafeBehaviorCollection::collection($unsafe_behavior->paginate($limit)));
         } else {
             return ApiResponseController::error('Problme while fetching unsafe behaviors');
         }
