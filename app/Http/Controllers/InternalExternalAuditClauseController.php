@@ -61,8 +61,7 @@ class InternalExternalAuditClauseController extends Controller
 
         // Save the new model instance
         $ie_audit->save();
-
-        if ($channel === 'api') {
+        if ($channel == "api") {
             return ApiResponseController::successWithData('IE Audit Clause Created.', new IEAuditClauseCollection($ie_audit));
         }
     }
@@ -84,6 +83,10 @@ class InternalExternalAuditClauseController extends Controller
 
         if (!$ie_audit) {
             return ['error', 'IE Audit not found'];
+        }
+
+        if ($channel == "api") {
+            return $ie_audit;
         }
     }
 

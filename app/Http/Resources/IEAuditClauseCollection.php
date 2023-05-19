@@ -40,14 +40,16 @@ class IEAuditClauseCollection extends JsonResource
         // if ($this->withQuestions) {
         if ($this->audit_type && $this->audit_type->audit_questions) {
             $data['questions'] = IEAuditQuestionsCollection::collection($this->audit_type->audit_questions);
+        } else {
+            $data['questions'] = null;
         }
-        $data['questions'] = null;
         // }
         // if ($this->withAnswers) {
-        if ($this->audit_answers) {
-            $data['answers'] = IEAuditAnswersCollection::collection($this->audit_type->answers);
+        if ($this->audit_answers->first()) {
+            $data['answers'] = IEAuditAnswersCollection::collection($this->audit_answers);
+        } else {
+            $data['answers'] = null;
         }
-        $data['answers'] = null;
         // }
 
         return $data;

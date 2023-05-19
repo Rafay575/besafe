@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\InternalExternalAuditAnswerController;
 use App\Http\Controllers\InternalExternalAuditClauseController;
+use App\Http\Controllers\InternalExternalAuditQuestionController;
+use App\Http\Resources\IEAuditAnswersCollection;
 use App\Http\Resources\IEAuditClauseCollection;
+use App\Http\Resources\IEAuditQuestionsCollection;
 use Illuminate\Http\Request;
 
 class IEAuditClauseApiController extends Controller
@@ -39,6 +43,28 @@ class IEAuditClauseApiController extends Controller
         }
     }
 
+    public function getAnswers(Request $request)
+    {
+        $response = (new InternalExternalAuditAnswerController)->index($request, 'api');
+        if ($response) {
+            return $response;
+        } else {
+            return ApiResponseController::error('Problem while fetching Audit Answers.', 400);
+        }
+    }
+
+    public function getQuestions(Request $request)
+    {
+        $response = (new InternalExternalAuditQuestionController)->index($request, 'api');
+        if ($response) {
+            return $response;
+        } else {
+            return ApiResponseController::error('Problem while fetching Audit Answers.', 400);
+        }
+    }
+
+
+
     public function store(Request $request)
     {
         $response = (new InternalExternalAuditClauseController)->store($request, 'api');
@@ -46,6 +72,27 @@ class IEAuditClauseApiController extends Controller
             return $response;
         } else {
             return ApiResponseController::error('Problem while storing Audit.', 400);
+        }
+
+    }
+
+    public function submitAnswer(Request $request)
+    {
+        $response = (new InternalExternalAuditAnswerController)->store($request, 'api');
+        if ($response) {
+            return $response;
+        } else {
+            return ApiResponseController::error('Problem while storing Audit Answer.', 400);
+        }
+
+    }
+    public function updateAnswer(Request $request, $answer_id)
+    {
+        $response = (new InternalExternalAuditAnswerController)->update($request, $answer_id, 'api');
+        if ($response) {
+            return $response;
+        } else {
+            return ApiResponseController::error('Problem while storing Audit Answer.', 400);
         }
 
     }

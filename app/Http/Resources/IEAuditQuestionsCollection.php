@@ -3,9 +3,9 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class IEAuditQuestionsCollection extends ResourceCollection
+class IEAuditQuestionsCollection extends JsonResource
 {
     /**
      * Transform the resource collection into an array.

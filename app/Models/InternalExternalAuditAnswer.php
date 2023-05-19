@@ -18,13 +18,13 @@ class InternalExternalAuditAnswer extends Model
 
     public function audit_question()
     {
-        return $this->belongsTo(MetaInternalExternalAuditQuestion::class);
+        return $this->belongsTo(MetaInternalExternalAuditQuestion::class, 'meta_ie_audit_question_id');
     }
 
 
-    public function answer_attachs()
+    public function attachements()
     {
-        return $this->hasMany(InternalExternalAuditAnswerAttachement::class);
+        return $this->hasMany(InternalExternalAuditAnswerAttachement::class, 'ie_audit_answer_id');
     }
 
 

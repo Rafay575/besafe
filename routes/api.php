@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\FirePropertyDamageApiController;
 use App\Http\Controllers\Api\HazardApiController;
+use App\Http\Controllers\Api\IEAuditClauseApiController;
 use App\Http\Controllers\Api\IncidentApiController;
 use App\Http\Controllers\Api\IncidentAsssignApiController;
 use App\Http\Controllers\Api\InjuryApiController;
@@ -84,6 +85,19 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::get('/ptws/{ptw_id}/show', [PermitToWorkApiController::class, 'show']);
     Route::post('/ptws/{ptw_id}/update', [PermitToWorkApiController::class, 'update']);
     Route::delete('/ptws/{ptw_id}/delete', [PermitToWorkApiController::class, 'destroy']);
+
+
+    // internal external audit clause  apis
+    Route::get('/ie_audits', [IEAuditClauseApiController::class, 'index']);
+    Route::post('/ie_audits/create', [IEAuditClauseApiController::class, 'store']);
+    Route::get('/ie_audits/{ie_audit_id}/show', [IEAuditClauseApiController::class, 'show']);
+    Route::post('/ie_audits/{ie_audit_id}/update', [IEAuditClauseApiController::class, 'update']);
+    Route::delete('/ie_audits/{ie_audit_id}/delete', [IEAuditClauseApiController::class, 'destroy']);
+    Route::get('/ie_audits/answers', [IEAuditClauseApiController::class, 'getAnswers']);
+    Route::get('/ie_audits/questions', [IEAuditClauseApiController::class, 'getQuestions']);
+
+    Route::post('/ie_audits/answers/submit', [IEAuditClauseApiController::class, 'submitAnswer']);
+    Route::post('/ie_audits/answers/{answer_id}/update', [IEAuditClauseApiController::class, 'updateAnswer']);
 
 
 

@@ -16,6 +16,6 @@ class MetaAuditType extends Model
 
     public function audit_questions()
     {
-        return $this->hasMany(MetaInternalExternalAuditQuestion::class);
+        return $this->hasMany(MetaInternalExternalAuditQuestion::class, 'meta_audit_type_id');
     }
 }
