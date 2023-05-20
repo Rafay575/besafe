@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\CardChartController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FirePropertyDamageController;
 use App\Http\Controllers\HazardController;
 use App\Http\Controllers\InjuryController;
+use App\Http\Controllers\LineChartController;
 use App\Http\Controllers\MetaDataController;
 use App\Http\Controllers\NearMissController;
 use App\Http\Controllers\ProfileController;
@@ -30,6 +32,8 @@ Route::get('/', function () {
 Route::redirect('/', '/dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/line_chart', [LineChartController::class, 'index']);
+    Route::get('/card_chart', [CardChartController::class, 'index']);
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::resource('users', UserController::class);
     Route::resource('meta-data', MetaDataController::class);

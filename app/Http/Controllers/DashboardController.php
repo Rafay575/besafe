@@ -22,8 +22,6 @@ class DashboardController extends Controller
      */
     public function index(Request $request)
     {
-        $answer = InternalExternalAuditAnswer::where('id', 36)->first();
-        return IEAuditAnswersAttachementsCollection::collection($answer->attachements);
         return view('dashboard');
 
     }

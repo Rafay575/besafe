@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ChartApiController;
 use App\Http\Controllers\Api\FirePropertyDamageApiController;
 use App\Http\Controllers\Api\HazardApiController;
 use App\Http\Controllers\Api\IEAuditClauseApiController;
@@ -95,6 +96,11 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::delete('/ie_audits/{ie_audit_id}/delete', [IEAuditClauseApiController::class, 'destroy']);
     Route::get('/ie_audits/answers', [IEAuditClauseApiController::class, 'getAnswers']);
     Route::get('/ie_audits/questions', [IEAuditClauseApiController::class, 'getQuestions']);
+
+
+    // charts and graphs
+    Route::get('/line_chart', [ChartApiController::class, 'line_chart']);
+    Route::get('/card_chart', [ChartApiController::class, 'card_chart']);
 
     Route::post('/ie_audits/answers/submit', [IEAuditClauseApiController::class, 'submitAnswer']);
     Route::post('/ie_audits/answers/{answer_id}/update', [IEAuditClauseApiController::class, 'updateAnswer']);
