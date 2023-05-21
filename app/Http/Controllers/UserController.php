@@ -8,18 +8,36 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\View;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
+use Yajra\DataTables\DataTables;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        User::get();
-        return view('users.index');
+
+        $users = User::select(['first_name', 'last_name', 'email', 'status', 'id'])->get();
+        if ($request->ajax()) {
+            $data = [];
+            foreach ($users as $user) {
+                $data[] = [
+                    'first_name' => $user->first_name,
+                    'last_name' => $user->last_name,
+                    'email' => $user->email,
+                    'status' => $user->status ? 'Active' : 'InActive',
+                    'role' => $user->roles->pluck('name'),
+                    'action' => view('users.partials.action-buttons', ['user' => $user])->render()
+                ];
+            }
+
+            return DataTables::of($data)->toJson();
+        }
+        return view('users.index', compact('users'));
     }
 
     /**
@@ -172,7 +190,7 @@ class UserController extends Controller
             if ($channel === 'api') {
                 return ApiResponseController::success('User has been delete');
             } else {
-                return ['success', 'User has been deleted'];
+                return ['deleted', 'User has been deleted'];
             }
         } else {
             if ($channel === 'api') {

@@ -1,0 +1,101 @@
+.dataTables_wrapper {
+    /* position: relative; */
+    padding: 10px;
+
+  }
+  
+  .table.dataTable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table.dataTable th,
+  .table.dataTable td {
+    padding: 8px 10px;
+    vertical-align: top;
+  }
+  
+  .table.dataTable thead th {
+    font-weight: bold;
+    letter-spacing: -0.025rem;
+    border-bottom: 1px solid #d9d9d9;
+    color: #39bdb0;
+    text-transform: uppercase;
+    font-size: 0.65rem;
+  }
+  
+  .table.dataTable tfoot th {
+    font-weight: bold;
+    letter-spacing: -0.025rem;
+    color: #39bdb0;
+    text-transform: uppercase;
+    font-size: 10.46px;
+  }
+  
+  .table.dataTable tbody td {
+    font-size:  13px;
+  }
+  
+  .dataTables_paginate {
+    margin-top: 10px;
+    text-align: center;
+  }
+  
+  .dataTables_paginate .pagination {
+    display: inline-block;
+    padding-left: 0;
+    margin: 0;
+    border-radius: 4px;
+  }
+  
+  .dataTables_paginate .pagination li {
+    display: inline;
+  }
+  
+  .dataTables_paginate .pagination li a,
+  
+  .dataTables_paginate .pagination li span {
+    position: relative;
+    float: left;
+    padding: 10px 10px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #39bdb0;
+    font-weight: bold;
+    text-decoration: none;
+    background-color: #fff;
+    /* border: 1px solid #ddd; */
+    font-size:  0.65rem;
+  }
+  
+  .dataTables_paginate .pagination li a:hover,
+  .dataTables_paginate .pagination li span:hover,
+  .dataTables_paginate .pagination li a:focus,
+  .dataTables_paginate .pagination li span:focus {
+    background-image: linear-gradient(310deg, #5e72e4 0%, #825ee4 100%);
+    /* background-color:linear-gradient(310deg, #5e72e4 0%, #825ee4 100%); */
+  }
+  
+  .dataTables_paginate .pagination .active a,
+  .dataTables_paginate .pagination .active span,
+  .dataTables_paginate .pagination .active a:hover,
+  .dataTables_paginate .pagination .active span:hover,
+  .dataTables_paginate .pagination .active a:focus,
+  .dataTables_paginate .pagination .active span:focus {
+    /* color: #333; */
+    color:white;
+    background-image: linear-gradient(310deg, #5e72e4 0%, #825ee4 100%);
+  }
+  
+  .dataTables_info {
+    margin-top: 10px;
+    text-align: left;
+    /* color: #888; */
+    font-size:  0.8rem;
+  }
+
+  .dt-buttons {
+    zoom: 0.9; /* Adjust the zoom level as per your preference */
+    /* You can also use other CSS properties to adjust the size, such as width and height */
+  }
+  

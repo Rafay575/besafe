@@ -19,37 +19,15 @@
 
       {{-- default slot starts here --}}
         <div class="table-responsive">
-            <table class="table table-flush" id="dataTable">
+            <table class="table table-flush" id="users-table" data-source ="{{route('users.index')}}">
               <thead class="thead-light">
-                <x-table.tblhead heads="Name,Username,Email,Role,Status,Action"></x-table.tblhead>
+                <x-table.tblhead heads="First Name,Last Name,Email,Role,Status,Action"></x-table.tblhead>
               </thead>
               <tbody>
-                <tr>
-                  <td class="text-sm">
-                    <div class="d-flex px-2 py-1">
-                        <div>
-                          <img src="{{asset('assets/img/team-2.jpg')}}" class="avatar avatar-sm me-3" alt="avatar image">
-                        </div>
-                        <div class="d-flex flex-column justify-content-center">
-                          <h6 class="mb-0 text-sm">Kashif Khan</h6>
-                        </div>
-                      </div>
-                    </td>
-                  <td class="text-sm">kashifbmk</td>
-                  <td class="text-sm">smevkpathan@gmail.com</td>
-                  <td class="text-sm">Admin</td>
-                  <td>
-                    <x-others.status status="1"></x-others.status>
-                  </td>
-                  <td class="text-sm">
-                   <x-forms.action-btn href="" action="edit" title="edit user"></x-forms.action-btn>
-                   <x-forms.action-btn href="" action="view" title="view user"></x-forms.action-btn>
-                   <x-forms.action-btn href="" id="table_data_delete" action="delete" title="delete user" data-action="{{route('users.destroy',1)}}"  data-parent="tr"></x-forms.action-btn>
-                  </td>
-                </tr>
+               
               </tbody>
               <tfoot>
-                <x-table.tblhead heads="Name,Username,Email,Role,Status,Action"></x-table.tblhead>
+                <x-table.tblhead heads="First Name,Last Name,Email,Role,Status,Action"></x-table.tblhead>
               </tfoot>
             </table>
         </div>
@@ -63,4 +41,31 @@
    </x-modals.basic-modal>
    <!-- Modal -->
 
+@endsection
+
+@section('script')
+<script>
+
+$(document).ready(function() {
+  const table  = $('#users-table');
+  const DataSource = table.attr('data-source');
+  table.DataTable({
+    ajax: {
+      url: DataSource,
+      type: 'GET',
+    },
+    columns: [
+      { data: 'first_name', name: 'first_name' },
+      { data: 'last_name', name: 'last_name' },
+      { data: 'email', name: 'email' },
+      { data: 'role', name: 'role' },
+      { data: 'status', name: 'status' },
+      { data: 'action', name: 'action', orderable: false, searchable: false },
+
+    ],
+    
+  });
+  
+});
+</script>
 @endsection
