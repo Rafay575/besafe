@@ -7,13 +7,14 @@ use App\Http\Resources\IEAuditClauseCollection;
 use App\Models\InternalExternalAuditClause;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\DataTables;
 
 class InternalExternalAuditClauseController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index($channel = "web")
+    public function index(Request $request, $channel = "web")
     {
         RolesPermissionController::can(['ie_audit_cluase.index']);
         $ie_audit = InternalExternalAuditClause::where('initiated_by', auth()->user()->id);
@@ -24,6 +25,25 @@ class InternalExternalAuditClauseController extends Controller
         if ($channel == "api") {
             return $ie_audit;
         }
+
+        if ($request->ajax()) {
+            $data = [];
+            $i = 0;
+            foreach ($ie_audit->get() as $ie_audit) {
+                $i++;
+                $data[] = [
+                    'sno' => $i,
+                    'audit_hall' => $ie_audit->audit_hall->hall_title,
+                    'audit_type' => $ie_audit->audit_type->type_title,
+                    'audit_date' => $ie_audit->audit_date,
+                    'action' => view('ie_audits.partials.action-buttons', ['ie_audit' => $ie_audit])->render()
+                ];
+            }
+
+            return DataTables::of($data)->toJson();
+        }
+
+        return view('ie_audits.index');
     }
 
     /**
@@ -164,7 +184,7 @@ class InternalExternalAuditClauseController extends Controller
                 return ApiResponseController::success('IE Audit has been deleted');
             }
 
-            return ['success', 'IE Audit has been deleted'];
+            return ['deleted', 'IE Audit has been deleted'];
         } else {
             if ($channel == "api") {
                 return ApiResponseController::error('Could not delete IE Audit');

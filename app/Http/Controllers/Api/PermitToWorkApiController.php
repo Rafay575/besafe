@@ -12,7 +12,7 @@ class PermitToWorkApiController extends Controller
     public function index(Request $request)
     {
         $limit = 20;
-        $ptws = (new PermitToWorkController)->index('api');
+        $ptws = (new PermitToWorkController)->index($request, 'api');
         if ($request->has('limit')) {
             $limit = $request->limit;
         }

@@ -12,7 +12,7 @@ class FirePropertyDamageApiController extends Controller
     public function index(Request $request)
     {
         $limit = 20;
-        $fpdamages = (new FirePropertyDamageController)->index('api');
+        $fpdamages = (new FirePropertyDamageController)->index($request, 'api');
         if ($request->has('limit')) {
             $limit = $request->limit;
         }

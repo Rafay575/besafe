@@ -19,14 +19,14 @@
 
       {{-- default slot starts here --}}
         <div class="table-responsive">
-            <table class="table table-flush" id="dataTable">
+            <table class="table table-flush" id="hazard-table" data-source="{{route('hazards.index')}}">
               <thead class="thead-light">
-                <x-table.tblhead heads="S.No,Unit,Date,Department,Line,Risk Level,Action"></x-table.tblhead>
+                <x-table.tblhead heads="S.No,Unit,Date,Department,Line,Risk Level,Status,Action"></x-table.tblhead>
               </thead>
               <tbody>
               </tbody>
               <tfoot>
-                <x-table.tblhead heads="S.No,Unit,Date,Department,Line,Risk Level,Action"></x-table.tblhead>
+                <x-table.tblhead heads="S.No,Unit,Date,Department,Line,Risk Level,Status,Action"></x-table.tblhead>
               </tfoot>
             </table>
         </div>
@@ -34,4 +34,30 @@
 
    </x-templates.basic-page-temp>
 
+@endsection
+@section('script')
+<script>    
+$(document).ready(function() {
+  const table = $('#hazard-table');
+  const DataSource = table.attr('data-source');
+  table.DataTable({
+    ajax: {
+      url: DataSource,
+      type: 'GET',
+    },
+    columns: [
+      { data: 'sno', name: 'sno' },
+      { data: 'unit', name: 'unit' },
+      { data: 'date', name: 'date' },
+      { data: 'department', name: 'department' },
+      { data: 'line', name: 'line' },
+      { data: 'risk_level', name: 'risk_level' },
+      { data: 'incident_status', name: 'incident_status' },
+      { data: 'action', name: 'action', orderable: false, searchable: false },
+    ],
+    
+  });
+  
+});
+</script>
 @endsection

@@ -11,7 +11,6 @@
         <div class="ms-auto my-auto mt-lg-0 mt-4">
           <div class="ms-auto my-auto">
             <a href="{{route('unsafe-behaviors.create')}}" class="btn bg-gradient-primary btn-sm mb-0" >+&nbsp; Add New</a>
-            <button class="btn btn-outline-primary btn-sm export mb-0 mt-sm-0 mt-1" data-type="csv" type="button" name="button">Export</button>
           </div>
         </div>
       </x-slot>
@@ -19,26 +18,15 @@
 
       {{-- default slot starts here --}}
         <div class="table-responsive">
-            <table class="table table-flush" id="dataTable">
+            <table class="table table-flush" id="unsafe-behavior-table" data-source="{{route('unsafe-behaviors.index')}}">
               <thead class="thead-light">
-                <x-table.tblhead heads="S.No,Unit,Department,Line,Location,Action"></x-table.tblhead>
+                <x-table.tblhead heads="S.No,Unit,Department,Line,Date,Status,Action"></x-table.tblhead>
               </thead>
               <tbody>
-                <tr>
-                  <td class="text-sm">1</td>
-                  <td class="text-sm">Unit</td>
-                  <td class="text-sm">Department</td>
-                  <td class="text-sm">Line</td>
-                  <td class="text-sm">Location</td>
-                  <td class="text-sm">
-                   <x-forms.action-btn href="" action="edit" title="edit unsafe-behavior"></x-forms.action-btn>
-                   <x-forms.action-btn href="" action="view" title="view unsafe-behavior"></x-forms.action-btn>
-                   <x-forms.action-btn href="" id="table_data_delete" action="delete" title="delete unsafe-behavior" data-action="{{route('unsafe-behaviors.destroy',1)}}"  data-parent="tr"></x-forms.action-btn>
-                  </td>
-                </tr>
+                
               </tbody>
               <tfoot>
-                <x-table.tblhead heads="Name,Username,Email,Role,Status,Action"></x-table.tblhead>
+                <x-table.tblhead heads="S.No,Unit,Department,Line,Date,Status,Action"></x-table.tblhead>
               </tfoot>
             </table>
         </div>
@@ -52,4 +40,30 @@
    </x-modals.basic-modal>
    <!-- Modal -->
 
+@endsection
+@section('script')
+<script>
+
+$(document).ready(function() {
+  const table  = $('#unsafe-behavior-table');
+  const DataSource = table.attr('data-source');
+  table.DataTable({
+    ajax: {
+      url: DataSource,
+      type: 'GET',
+    },
+    columns: [
+      { data: 'sno', name: 'sno' },
+      { data: 'unit', name: 'unit' },
+      { data: 'department', name: 'department' },
+      { data: 'line', name: 'line' },
+      { data: 'date', name: 'date' },
+      { data: 'incident_status', name: 'incident_status' },
+      { data: 'action', name: 'action', orderable: false, searchable: false },
+    ],
+    
+  });
+  
+});
+</script>
 @endsection

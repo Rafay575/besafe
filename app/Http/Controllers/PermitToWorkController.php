@@ -9,13 +9,14 @@ use App\Rules\PtwActionData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Yajra\DataTables\DataTables;
 
 class PermitToWorkController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index($channel = "web")
+    public function index(Request $request, $channel = "web")
     {
         RolesPermissionController::can(['ptw.index']);
         $ptws = PermitToWork::where('initiated_by', auth()->user()->id);
@@ -26,6 +27,26 @@ class PermitToWorkController extends Controller
         if ($channel == "api") {
             return $ptws;
         }
+
+        if ($request->ajax()) {
+            $data = [];
+            $i = 0;
+            foreach ($ptws->get() as $ptw) {
+                $i++;
+                $data[] = [
+                    'sno' => $i,
+                    'start_time' => $ptw->start_time,
+                    'end_time' => $ptw->end_time,
+                    'work_area' => $ptw->work_area,
+                    'moc_title' => $ptw->moc_title,
+                    'worker_name' => $ptw->worker_name,
+                    'action' => view('ptws.partials.action-buttons', ['ptw' => $ptw])->render()
+                ];
+            }
+
+            return DataTables::of($data)->toJson();
+        }
+        return view('ptws.index');
     }
 
     /**
@@ -181,7 +202,7 @@ class PermitToWorkController extends Controller
             if ($channel === 'api') {
                 return ApiResponseController::success('PTW has been delete');
             } else {
-                return ['success', 'PTW has been deleted'];
+                return ['deleted', 'PTW has been deleted'];
             }
         } else {
             if ($channel === 'api') {

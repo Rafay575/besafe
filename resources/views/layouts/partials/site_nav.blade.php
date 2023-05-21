@@ -91,7 +91,7 @@
 
 
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="{{route('ptws.index')}}">
             <div class="icon icon-shape icon-sm text-center  me-2 d-flex align-items-center justify-content-center">
               <img src="{{asset('website/nav_icons/Permission-to-Work-System.ico')}}" alt="" width="18">
             </div>
@@ -117,7 +117,7 @@
           </a>
         </li> --}}
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="{{route('ie_audits.index')}}">
             <div class="icon icon-shape icon-sm text-center  me-2 d-flex align-items-center justify-content-center">
               <img src="{{asset('website/nav_icons/Internal External Audit Closures.ico')}}" alt="" width="18">
             </div>

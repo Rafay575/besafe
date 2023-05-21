@@ -10,18 +10,39 @@ use App\Rules\FirePropertyActionData;
 use App\Rules\TotalLossCalculation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\DataTables;
 
 class FirePropertyDamageController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index($channel = "web")
+    public function index(Request $request, $channel = "web")
     {
         RolesPermissionController::can(['fire_property_damage.index']);
         $fpdamages = IncidentAssignController::getAssignedIncidents(FirePropertyDamage::class, 'fire_property_damage');
         if ($channel === 'api') {
             return $fpdamages;
+        }
+
+
+        if ($request->ajax()) {
+            $data = [];
+            $i = 0;
+            foreach ($fpdamages->get() as $fpdamage) {
+                $i++;
+                $data[] = [
+                    'sno' => $i,
+                    'date' => $fpdamage->date,
+                    'reference' => $fpdamage->reference,
+                    'unit' => $fpdamage->unit->unit_title,
+                    'location' => $fpdamage->location,
+                    'incident_status' => $fpdamage->incident_status->status_title,
+                    'action' => view('fire-property.partials.action-buttons', ['fpdamage' => $fpdamage])->render()
+                ];
+            }
+
+            return DataTables::of($data)->toJson();
         }
         return view('fire-property.index');
     }
@@ -209,7 +230,7 @@ class FirePropertyDamageController extends Controller
             if ($channel === 'api') {
                 return ApiResponseController::success('Fire Property damage has been delete');
             } else {
-                return ['success', 'Fire Property damage has been deleted'];
+                return ['deleted', 'Fire Property damage has been deleted'];
             }
         } else {
             if ($channel === 'api') {

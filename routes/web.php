@@ -5,9 +5,11 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FirePropertyDamageController;
 use App\Http\Controllers\HazardController;
 use App\Http\Controllers\InjuryController;
+use App\Http\Controllers\InternalExternalAuditClauseController;
 use App\Http\Controllers\LineChartController;
 use App\Http\Controllers\MetaDataController;
 use App\Http\Controllers\NearMissController;
+use App\Http\Controllers\PermitToWorkController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UnsafeBehaviorController;
 use App\Http\Controllers\UserController;
@@ -43,6 +45,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('hazards', HazardController::class);
     Route::resource('fire-property', FirePropertyDamageController::class);
     Route::resource('injuries', InjuryController::class);
+    Route::resource('ptws', PermitToWorkController::class);
+    Route::resource('ie_audits', InternalExternalAuditClauseController::class);
 });
 
 require __DIR__ . '/auth.php';

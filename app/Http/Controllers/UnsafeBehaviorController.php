@@ -8,19 +8,40 @@ use App\Models\MetaIncidentStatus;
 use App\Models\UnsafeBehavior;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\DataTables;
 
 class UnsafeBehaviorController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index($channel = 'web')
+    public function index(Request $request, $channel = 'web')
     {
         RolesPermissionController::can(['unsafe_behavior.index']);
         $unsafe_behavior = IncidentAssignController::getAssignedIncidents(UnsafeBehavior::class, 'unsafe_behavior');
 
         if ($channel === 'api') {
             return $unsafe_behavior;
+        }
+
+        if ($request->ajax()) {
+            $data = [];
+            $i = 0;
+            foreach ($unsafe_behavior->get() as $unsafe_behavior) {
+                $i++;
+                $data[] = [
+                    'sno' => $i,
+                    'unit' => $unsafe_behavior->unit->unit_title,
+                    'department' => $unsafe_behavior->department->department_title,
+                    'line' => $unsafe_behavior->line->line_title,
+                    'location' => $unsafe_behavior->location,
+                    'date' => $unsafe_behavior->date,
+                    'incident_status' => $unsafe_behavior->incident_status->status_title,
+                    'action' => view('unsafe-behavior.partials.action-buttons', ['unsafe_behavior' => $unsafe_behavior])->render()
+                ];
+            }
+
+            return DataTables::of($data)->toJson();
         }
         return view('unsafe-behavior.index');
 
@@ -151,7 +172,7 @@ class UnsafeBehaviorController extends Controller
             if ($channel === 'api') {
                 return ApiResponseController::success('Unsafe Behavior has been delete');
             } else {
-                return ['success', 'Unsafe Behavior has been deleted'];
+                return ['deleted', 'Unsafe Behavior has been deleted'];
             }
         } else {
             if ($channel === 'api') {

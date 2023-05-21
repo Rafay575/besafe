@@ -83,10 +83,10 @@ class RolesPermissionController extends Controller
         // if user is allowed to edit and the status of that incdient is not completed
         // below status_code < 3 is in progress, pending, etc statuses
         // after 3 is completed,closed etc
-        if ($incidentAssigned->last()->assign_to == auth()->user()->id && $incident->incident_status->status_code < 3) {
+        if (@$incidentAssigned->last()->assign_to == auth()->user()->id && $incident->incident_status->status_code < 3) {
             return true;
         } else {
-            return abort(401, 'You are not authorized to perform this action');
+            return abort(401, 'You are not authorized to perform this actionss');
         }
 
     }

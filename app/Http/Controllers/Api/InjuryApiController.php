@@ -12,7 +12,7 @@ class InjuryApiController extends Controller
     public function index(Request $request)
     {
         $limit = 20;
-        $injuries = (new InjuryController)->index('api');
+        $injuries = (new InjuryController)->index($request, 'api');
         if ($request->has('limit')) {
             $limit = $request->limit;
         }

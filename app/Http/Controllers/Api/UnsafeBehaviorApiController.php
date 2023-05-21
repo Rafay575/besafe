@@ -13,7 +13,7 @@ class UnsafeBehaviorApiController extends Controller
     public function index(Request $request)
     {
         $limit = 20;
-        $unsafe_behavior = (new UnsafeBehaviorController)->index('api');
+        $unsafe_behavior = (new UnsafeBehaviorController)->index($request, 'api');
         if ($request->has('limit')) {
             $limit = $request->limit;
         }

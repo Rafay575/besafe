@@ -16,7 +16,7 @@ class IEAuditClauseApiController extends Controller
     public function index(Request $request)
     {
         $limit = 20;
-        $id_audit = (new InternalExternalAuditClauseController)->index('api');
+        $id_audit = (new InternalExternalAuditClauseController)->index($request, 'api');
         if ($request->has('limit')) {
             $limit = $request->limit;
         }

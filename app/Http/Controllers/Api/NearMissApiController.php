@@ -12,7 +12,7 @@ class NearMissApiController extends Controller
     public function index(Request $request)
     {
         $limit = 20;
-        $near_misss = (new NearMissController)->index('api');
+        $near_misss = (new NearMissController)->index($request, 'api');
         if ($request->has('limit')) {
             $limit = $request->limit;
         }

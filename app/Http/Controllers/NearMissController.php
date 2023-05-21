@@ -9,18 +9,38 @@ use App\Models\NearMiss;
 use App\Rules\NearMissActionData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\DataTables;
 
 class NearMissController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index($channel = "web")
+    public function index(Request $request, $channel = "web")
     {
         RolesPermissionController::can(['near_miss.index']);
         $near_misses = IncidentAssignController::getAssignedIncidents(NearMiss::class, 'near_miss');
         if ($channel === 'api') {
             return $near_misses;
+        }
+
+        if ($request->ajax()) {
+            $data = [];
+            $i = 0;
+            foreach ($near_misses->get() as $near_miss) {
+                $i++;
+                $data[] = [
+                    'sno' => $i,
+                    'date' => $near_miss->date,
+                    'time' => $near_miss->time,
+                    'immediate_action' => $near_miss->immediate_action,
+                    'location' => $near_miss->location,
+                    'incident_status' => $near_miss->incident_status->status_title,
+                    'action' => view('near-miss.partials.action-buttons', ['near_miss' => $near_miss])->render()
+                ];
+            }
+
+            return DataTables::of($data)->toJson();
         }
         return view('near-miss.index');
     }
@@ -154,7 +174,7 @@ class NearMissController extends Controller
         }
 
         if (!$near_miss) {
-            return ['error', 'near_miss not found'];
+            return ['error', 'Near Miss not found'];
         }
 
         // deleting the near_miss
@@ -162,7 +182,7 @@ class NearMissController extends Controller
             if ($channel === 'api') {
                 return ApiResponseController::success('Near miss has been delete');
             } else {
-                return ['success', 'Near miss has been deleted'];
+                return ['deleted', 'Near miss has been deleted'];
             }
         } else {
             if ($channel === 'api') {

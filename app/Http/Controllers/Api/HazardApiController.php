@@ -12,7 +12,7 @@ class HazardApiController extends Controller
     public function index(Request $request)
     {
         $limit = 20;
-        $hazards = (new HazardController)->index('api');
+        $hazards = (new HazardController)->index($request, 'api');
         if ($request->has('limit')) {
             $limit = $request->limit;
         }

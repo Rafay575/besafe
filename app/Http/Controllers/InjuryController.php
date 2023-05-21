@@ -9,20 +9,41 @@ use App\Models\MetaIncidentStatus;
 use App\Rules\InjuryActionData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\DataTables;
 
 class InjuryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index($channel = "web")
+    public function index(Request $request, $channel = "web")
     {
         RolesPermissionController::can(['injury.index']);
         $injuries = IncidentAssignController::getAssignedIncidents(Injury::class, 'injury');
         if ($channel === 'api') {
             return $injuries;
         }
-        return view('injury.index');
+
+        if ($request->ajax()) {
+            $data = [];
+            $i = 0;
+            foreach ($injuries->get() as $injury) {
+                $i++;
+                $data[] = [
+                    'sno' => $i,
+                    'date' => $injury->date,
+                    'employee_involved' => $injury->employee_involved,
+                    'sgfl_relation' => $injury->sgfl_relation,
+                    'incident_category' => $injury->incident_category->incident_category_title,
+                    'injury_category' => $injury->injury_category->injury_category_title,
+                    'incident_status' => $injury->incident_status->status_title,
+                    'action' => view('injuries.partials.action-buttons', ['injury' => $injury])->render()
+                ];
+            }
+
+            return DataTables::of($data)->toJson();
+        }
+        return view('injuries.index');
     }
 
     /**
@@ -202,7 +223,7 @@ class InjuryController extends Controller
             if ($channel === 'api') {
                 return ApiResponseController::success('Injury has been delete');
             } else {
-                return ['success', 'Injury has been deleted'];
+                return ['deleted', 'Injury has been deleted'];
             }
         } else {
             if ($channel === 'api') {

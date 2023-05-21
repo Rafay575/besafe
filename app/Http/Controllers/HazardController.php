@@ -8,18 +8,41 @@ use App\Models\Hazard;
 use App\Models\MetaIncidentStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\DataTables;
 
 class HazardController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index($channel = "web")
+    public function index(Request $request, $channel = "web")
     {
         RolesPermissionController::can(['hazard.index']);
         $hazards = IncidentAssignController::getAssignedIncidents(Hazard::class, 'hazard');
         if ($channel === 'api') {
             return $hazards;
+        }
+
+        if ($request->ajax()) {
+            $data = [];
+            $i = 0;
+            foreach ($hazards->get() as $hazard) {
+                $i++;
+                $data[] = [
+                    'sno' => $i,
+                    'unit' => $hazard->unit->unit_title,
+                    'date' => $hazard->date,
+                    'department' => $hazard->department->department_title,
+                    'line' => $hazard->line->line_title,
+                    'risk_level' => $hazard->risk_level->risk_level_title,
+                    'incident_status' => $hazard->incident_status->status_title,
+
+                    // 'department_tag' => $hazard->department_tag->department_tag_title,
+                    'action' => view('hazard.partials.action-buttons', ['hazard' => $hazard])->render()
+                ];
+            }
+
+            return DataTables::of($data)->toJson();
         }
         return view('hazard.index');
     }

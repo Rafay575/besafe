@@ -24,8 +24,11 @@ class UserController extends Controller
         $users = User::select(['first_name', 'last_name', 'email', 'status', 'id'])->get();
         if ($request->ajax()) {
             $data = [];
+            $i = 0;
             foreach ($users as $user) {
+                $i++;
                 $data[] = [
+                    'sno' => $i,
                     'first_name' => $user->first_name,
                     'last_name' => $user->last_name,
                     'email' => $user->email,

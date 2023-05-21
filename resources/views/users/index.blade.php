@@ -21,13 +21,13 @@
         <div class="table-responsive">
             <table class="table table-flush" id="users-table" data-source ="{{route('users.index')}}">
               <thead class="thead-light">
-                <x-table.tblhead heads="First Name,Last Name,Email,Role,Status,Action"></x-table.tblhead>
+                <x-table.tblhead heads="S.No,First Name,Last Name,Email,Role,Status,Action"></x-table.tblhead>
               </thead>
               <tbody>
                
               </tbody>
               <tfoot>
-                <x-table.tblhead heads="First Name,Last Name,Email,Role,Status,Action"></x-table.tblhead>
+                <x-table.tblhead heads="S.No,First Name,Last Name,Email,Role,Status,Action"></x-table.tblhead>
               </tfoot>
             </table>
         </div>
@@ -55,6 +55,7 @@ $(document).ready(function() {
       type: 'GET',
     },
     columns: [
+      { data: 'sno', name: 'sno' },
       { data: 'first_name', name: 'first_name' },
       { data: 'last_name', name: 'last_name' },
       { data: 'email', name: 'email' },

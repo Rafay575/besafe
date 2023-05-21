@@ -11,7 +11,6 @@
         <div class="ms-auto my-auto mt-lg-0 mt-4">
           <div class="ms-auto my-auto">
             <a href="{{route('fire-property.create')}}" class="btn bg-gradient-primary btn-sm mb-0" >+&nbsp; New damage</a>
-            <button class="btn btn-outline-primary btn-sm export mb-0 mt-sm-0 mt-1" data-type="csv" type="button" name="button">Export</button>
           </div>
         </div>
       </x-slot>
@@ -19,14 +18,14 @@
 
       {{-- default slot starts here --}}
         <div class="table-responsive">
-            <table class="table table-flush" id="dataTable">
+            <table class="table table-flush" id="fire-property-damage-table" data-source ="{{route('fire-property.index')}}">
               <thead class="thead-light">
-                <x-table.tblhead heads="S.No,Date,Reference,Unit,Location,Action"></x-table.tblhead>
+                <x-table.tblhead heads="S.No,Date,Reference,Unit,Location,Status,Action"></x-table.tblhead>
               </thead>
               <tbody>
               </tbody>
               <tfoot>
-                <x-table.tblhead heads="S.No,Date,Reference,Unit,Location,Action"></x-table.tblhead>
+                <x-table.tblhead heads="S.No,Date,Reference,Unit,Location,Status,Action"></x-table.tblhead>
               </tfoot>
             </table>
         </div>
@@ -34,4 +33,30 @@
 
    </x-templates.basic-page-temp>
 
+@endsection
+
+@section('script')
+<script>    
+$(document).ready(function() {
+  const table = $('#fire-property-damage-table');
+  const DataSource = table.attr('data-source');
+  table.DataTable({
+    ajax: {
+      url: DataSource,
+      type: 'GET',
+    },
+    columns: [
+      { data: 'sno', name: 'sno' },
+      { data: 'date', name: 'date' },
+      { data: 'reference', name: 'reference' },
+      { data: 'unit', name: 'unit' },
+      { data: 'location', name: 'location' },
+      { data: 'incident_status', name: 'incident_status' },
+      { data: 'action', name: 'action', orderable: false, searchable: false },
+    ],
+    
+  });
+  
+});
+</script>
 @endsection
