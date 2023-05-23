@@ -11,6 +11,7 @@ use App\Http\Controllers\MetaDataController;
 use App\Http\Controllers\NearMissController;
 use App\Http\Controllers\PermitToWorkController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RolesPermissionController;
 use App\Http\Controllers\UnsafeBehaviorController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -34,9 +35,9 @@ Route::get('/', function () {
 Route::redirect('/', '/dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/line_chart', [LineChartController::class, 'index']);
-    Route::get('/card_chart', [CardChartController::class, 'index']);
-    Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('line_chart', [LineChartController::class, 'index']);
+    Route::get('card_chart', [CardChartController::class, 'index']);
+    Route::get('dashboard', [DashboardController::class, 'index']);
     Route::resource('users', UserController::class);
     Route::resource('meta-data', MetaDataController::class);
     Route::resource('unsafe-behaviors', UnsafeBehaviorController::class);
@@ -47,6 +48,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('injuries', InjuryController::class);
     Route::resource('ptws', PermitToWorkController::class);
     Route::resource('ie_audits', InternalExternalAuditClauseController::class);
+    Route::resource('roles', RolesPermissionController::class);
 });
 
 require __DIR__ . '/auth.php';

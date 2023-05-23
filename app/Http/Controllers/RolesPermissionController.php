@@ -6,14 +6,30 @@ use App\Models\IncidentAssign;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
+use Yajra\DataTables\DataTables;
 
 class RolesPermissionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         self::can(['role.index']);
         $roles = Role::all();
-        // return view('admin.roles.index', compact('roles'));
+
+        if ($request->ajax()) {
+            $data = [];
+            $i = 0;
+            foreach ($roles as $role) {
+                $i++;
+                $data[] = [
+                    'sno' => $i,
+                    'name' => $role->name,
+                    'action' => view('roles.partials.action-buttons', ['role' => $role])->render()
+                ];
+            }
+
+            return DataTables::of($data)->toJson();
+        }
+        return view('roles.index');
     }
 
     public function show($role_id)
@@ -24,9 +40,14 @@ class RolesPermissionController extends Controller
         $permissions = $role->permissions->pluck('name');
         $modules = $this->getSubModules();
 
-        // return view('admin.roles.show', compact('role', 'permissions', 'modules'));
+        return view('roles.show', compact('role', 'permissions', 'modules'));
     }
-
+    public function create()
+    {
+        self::can(['role.create', 'role.delete']);
+        $modules = $this->getSubModules();
+        return view('roles.create', compact('modules'));
+    }
     public function store(Request $request)
     {
         self::can(['role.create']);
@@ -41,14 +62,16 @@ class RolesPermissionController extends Controller
             return ['error', $error];
         }
         if ($request->has('role_id')) {
+            $message = "Role has been updated";
             $role = Role::where('id', $request->role_id)->first();
             $role->name = $request->role_name;
             $role->save();
         } else {
+            $message = "Role has been created";
             $role = Role::create(['name' => $request->role_name]);
         }
         $role->syncPermissions($request->permissions);
-        return ['success', 'Role has been updated', $request->redirect];
+        return ['success', $message, $request->redirect];
         // return $role->with('permissions');
     }
 
@@ -131,5 +154,40 @@ class RolesPermissionController extends Controller
     public function fetchPermissions()
     {
         return auth()->user()->getAllPermissions()->pluck('name');
+    }
+
+    public function getSubModules()
+    {
+        return collect([
+            ['name' => 'User', 'slug' => 'user'],
+            ['name' => 'Role', 'slug' => 'role'],
+            ['name' => 'Permission', 'slug' => 'permission'],
+            ['name' => 'Unsafe Behavior', 'slug' => 'unsafe_behavior'],
+            ['name' => 'Hazard', 'slug' => 'hazard'],
+            ['name' => 'Near Miss', 'slug' => 'near_miss'],
+            ['name' => 'Fire and Property Damage', 'slug' => 'fire_property_damage'],
+            ['name' => 'Injury', 'slug' => 'injury'],
+            ['name' => 'Permit To Work', 'slug' => 'ptw'],
+            ['name' => 'IE Audit Clause', 'slug' => 'ie_audit_cluase'],
+            ['name' => 'IE Audit Questions', 'slug' => 'ie_audit_question'],
+            ['name' => 'IE Audit Type', 'slug' => 'ie_audit_type'],
+            ['name' => 'Designations', 'slug' => 'designation'],
+            ['name' => 'Lines', 'slug' => 'line'],
+            ['name' => 'Departments', 'slug' => 'department'],
+            ['name' => 'Risk Levels', 'slug' => 'risk_level'],
+            ['name' => 'Incident Status', 'slug' => 'incident_status'],
+            ['name' => 'Unsafe Behavior Type', 'slug' => 'unsafe_behavior_type'],
+            ['name' => 'Incident Categories', 'slug' => 'icdient_category'],
+            ['name' => 'Injury Categories', 'slug' => 'injury_category'],
+            ['name' => 'Permit To Work Types', 'slug' => 'ptw_type'],
+            ['name' => 'Permit To Work Items', 'slug' => 'ptw_item'],
+            ['name' => 'Property Damaged', 'slug' => 'property_damage'],
+            ['name' => 'Audit Halls', 'slug' => 'audit_hall'],
+            ['name' => 'Audit Types', 'slug' => 'audit_type'],
+            ['name' => 'Immediate Causes', 'slug' => 'immediate_cause'],
+            ['name' => 'Basic Causes', 'slug' => 'basic_cuase'],
+            ['name' => 'Root Causes', 'slug' => 'root_cause'],
+            ['name' => 'Contact Types', 'slug' => 'contact_type']
+        ]);
     }
 }

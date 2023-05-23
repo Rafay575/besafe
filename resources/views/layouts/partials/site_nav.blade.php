@@ -35,7 +35,7 @@
               </li>
 
               <li class="nav-item ">
-                <a class="nav-link " href="">
+                <a class="nav-link " href="{{route('roles.index')}}">
                   <span class="sidenav-mini-icon"> RP</span>
                   <span class="sidenav-normal"> Roles and Permission </span>
                 </a>

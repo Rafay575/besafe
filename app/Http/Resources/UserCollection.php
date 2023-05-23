@@ -25,7 +25,7 @@ class UserCollection extends JsonResource
             "perm_address" => $this->perm_address,
             "id_type" => $this->id_type,
             "id_no" => $this->id_no,
-            "image" => asset('images/user/' . $this->image),
+            "image" => asset('images/profile/' . $this->image),
             "status" => $this->status,
             "meta_department_id" => $this->department ? $this->department->id : null,
             "department_title" => $this->department ? $this->department->department_title : null,

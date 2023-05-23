@@ -10,7 +10,6 @@ var token = $("meta[name='csrf-token']").attr("content");
 Ladda.bind('button[type=submit]');
 // console.log(l);
 var button = $('.btn-ladda');
-    button.attr('disabled','true');
 
   // Ladda.bind('.btn-ladda');
   // basciAlert({
@@ -62,9 +61,11 @@ $('form.ajax-form').on('submit',function(e){
               }
             }else{
               // in case any error
+              button.attr('disabled','true');
               basciAlert({
                 type: 'error',
                 message: res[1],
+                
               })
             }
         
