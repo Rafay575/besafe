@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
 
 class UserApiController extends Controller
 {
@@ -39,6 +40,15 @@ class UserApiController extends Controller
         }
     }
 
+    public function showRoles(Request $request)
+    {
+        $roles = Role::select('id', 'name')->get();
+        if ($roles) {
+            return ApiResponseController::successWithJustData($roles);
+        } else {
+            return ApiResponseController::error('Problem while fetching roles.', 400);
+        }
+    }
 
     /**
      * Summary of authUserLogin

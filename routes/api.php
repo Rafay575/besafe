@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ChartApiController;
+use App\Http\Controllers\Api\DataStatsApiController;
 use App\Http\Controllers\Api\FirePropertyDamageApiController;
 use App\Http\Controllers\Api\HazardApiController;
 use App\Http\Controllers\Api\IEAuditClauseApiController;
@@ -34,6 +35,7 @@ Route::post('register', [UserApiController::class, 'registerUser']);
 Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::post('/user/{user_id}/update', [UserApiController::class, 'update']);
     Route::get('/user', [UserApiController::class, 'show']);
+    Route::get('/user/roles', [UserApiController::class, 'showRoles']);
     Route::get('/meta-data', [MetaDataApiController::class, 'index']);
 
 
@@ -101,6 +103,10 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     // charts and graphs
     Route::get('/line_chart', [ChartApiController::class, 'line_chart']);
     Route::get('/card_chart', [ChartApiController::class, 'card_chart']);
+
+    // stats
+    Route::get('/statistics', [DataStatsApiController::class, 'index']);
+
 
     Route::post('/ie_audits/answers/submit', [IEAuditClauseApiController::class, 'submitAnswer']);
     Route::post('/ie_audits/answers/{answer_id}/update', [IEAuditClauseApiController::class, 'updateAnswer']);

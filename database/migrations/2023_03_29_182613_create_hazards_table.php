@@ -26,6 +26,7 @@ return new class extends Migration {
             // $table->files it has attachements hasMany relation with common_attachements table.
             $table->timestamps();
 
+
         });
     }
 
