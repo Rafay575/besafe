@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CardChartController;
+use App\Http\Controllers\CommonAttachementController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FirePropertyDamageController;
 use App\Http\Controllers\HazardController;
@@ -49,6 +50,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('ptws', PermitToWorkController::class);
     Route::resource('ie_audits', InternalExternalAuditClauseController::class);
     Route::resource('roles', RolesPermissionController::class);
+    Route::delete('common_files/{file_id}/delete', [CommonAttachementController::class, 'destroy'])->name('common_files.destroy');
 });
 
 require __DIR__ . '/auth.php';

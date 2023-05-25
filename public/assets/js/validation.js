@@ -59,6 +59,10 @@ $('form.ajax-form').on('submit',function(e){
                   message: res[1],
                 })
               }
+
+               // Clear Dropzone files
+              var dropzoneInstance = Dropzone.forElement("#dropzone");
+              dropzoneInstance.removeAllFiles();
             }else{
               // in case any error
               button.attr('disabled','true');
@@ -142,7 +146,7 @@ $('form.ajax-form').on('submit',function(e){
 
 // deleting data 
 
-$('body').on('click','i#table_data_delete',function(e){
+$('body').on('click','#table_data_delete',function(e){
   e.preventDefault();
     var $this = $(this);
     var action = $this.attr('data-action');

@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Api\ApiResponseController;
 use App\Http\Resources\UnsafeBehaviorCollection;
+use App\Models\MetaDepartment;
 use App\Models\MetaIncidentStatus;
+use App\Models\MetaLine;
+use App\Models\MetaUnit;
+use App\Models\MetaUnsafeBehaviorType;
 use App\Models\UnsafeBehavior;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -53,8 +57,12 @@ class UnsafeBehaviorController extends Controller
     public function create()
     {
         RolesPermissionController::can(['unsafe_behavior.create']);
-
-        return view('unsafe-behavior.create');
+        $units = MetaUnit::select('id', 'unit_title')->get();
+        $departments = MetaDepartment::select('id', 'department_title')->get();
+        $lines = MetaLine::select('id', 'line_title')->get();
+        $ub_types = MetaUnsafeBehaviorType::select('id', 'unsafe_behavior_type_title')->get();
+        $incident_statuses = MetaIncidentStatus::select('status_code', 'status_title', 'id')->get();
+        return view('unsafe-behavior.create', compact('units', 'departments', 'lines', 'ub_types', 'incident_statuses'));
     }
 
     /**
@@ -62,6 +70,7 @@ class UnsafeBehaviorController extends Controller
      */
     public function store(Request $request, $channel = 'web')
     {
+
         $validator = $this->validateData($request);
 
         $formErrorsResponse = FormValidatitionDispatcherController::Response($validator, $channel);
@@ -78,14 +87,16 @@ class UnsafeBehaviorController extends Controller
         $unsafe_behavior->meta_incident_status_id = MetaIncidentStatus::where('status_code', 0)->first()->id;
         $unsafe_behavior->details = $request->details;
         $unsafe_behavior->save();
+
         $unsafe_behavior->unsafe_behavior_types()->sync($request->unsafe_behavior_types);
-        if ($request->hasFile('attachments')) {
+        if ($request->has('attachements')) {
             (new CommonAttachementController)->syncUploadedArray($request->attachements, $unsafe_behavior, 'attachements');
         }
-
         if ($channel === 'api') {
             return ApiResponseController::successWithData('Unsafe Behavior Created.', new UnsafeBehaviorCollection($unsafe_behavior));
         }
+
+        return ['success', 'Unsafe Behavior Created', $request->redirect];
     }
 
     /**
@@ -103,9 +114,14 @@ class UnsafeBehaviorController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(UnsafeBehavior $unsafeBehavior)
+    public function edit(UnsafeBehavior $unsafe_behavior)
     {
-        //
+        $units = MetaUnit::select('id', 'unit_title')->get();
+        $departments = MetaDepartment::select('id', 'department_title')->get();
+        $lines = MetaLine::select('id', 'line_title')->get();
+        $ub_types = MetaUnsafeBehaviorType::select('id', 'unsafe_behavior_type_title')->get();
+        $incident_statuses = MetaIncidentStatus::select('status_code', 'status_title', 'id')->get();
+        return view('unsafe-behavior.edit', compact('units', 'departments', 'lines', 'ub_types', 'incident_statuses', 'unsafe_behavior'));
     }
 
     /**
@@ -113,6 +129,8 @@ class UnsafeBehaviorController extends Controller
      */
     public function update(Request $request, $unsafe_behavior_id, $channel = "web")
     {
+
+
         $validator = $this->validateData($request);
 
         $formErrorsResponse = FormValidatitionDispatcherController::Response($validator, $channel);
@@ -138,13 +156,16 @@ class UnsafeBehaviorController extends Controller
         $unsafe_behavior->save();
         $unsafe_behavior->unsafe_behavior_types()->sync($request->unsafe_behavior_types);
 
-        if ($request->hasFile('attachments')) {
+        if ($request->has('attachements')) {
             (new CommonAttachementController)->syncUploadedArray($request->attachements, $unsafe_behavior, 'attachements');
         }
 
         if ($channel === 'api') {
             return ApiResponseController::successWithData('Unsafe Behavior Updated.', new UnsafeBehaviorCollection($unsafe_behavior));
         }
+
+        return ['success', 'Unsafe Behavior has been updated', $request->redirect];
+
 
 
 

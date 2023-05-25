@@ -88,7 +88,7 @@ class HazardController extends Controller
         $hazard->save();
         if ($request->has('attachements')) {
             // (new CommonAttachementController)->uploadedArray($request->attachements, $hazard, 'attachements');
-            (new CommonAttachementController)->syncUploadedArray($request->attachements, $hazard, 'attachements');
+            return (new CommonAttachementController)->syncUploadedArray($request->attachements, $hazard, 'attachements');
         }
 
         if ($channel === 'api') {

@@ -10,61 +10,50 @@
             <div class="col-12 col-lg-8 mx-auto my-4">
               <div class="card">
                 <div class="card-body">
-                    <form action="" class="col-12 row dropzone ajax-form" id="dropzone">
-                        <x-forms.select-option name="unit" selectClass="form-control-sm" label="Unit" divClass="col-12 col-sm-6">
-                            <option value="Value">Value 1</option>
-                        </x-forms.select-option>
-                        <x-forms.select-option name="department" selectClass="form-control-sm" label="Department" divClass="col-12 col-sm-6">
-                            <option value="Value">Value 1</option>
-                        </x-forms.select-option>
-                        <x-forms.select-option name="line" selectClass="form-control-sm" label="Line" divClass="col-12 col-sm-6">
-                            <option value="Value">Value 1</option>
-                        </x-forms.select-option>
-                        <x-forms.basic-input label="Location" name="location" type="text" value="" width="col-6" input-class="form-control-lg"></x-forms.basic-input>
-                        <x-forms.text-area label="Details of Unsafe Behavior" name="details"  width="col-6" text-area-class="" cols="" rows="3"></x-forms.text-area>
-
-                        <x-forms.select-option name="type" multiple selectClass="form-control-sm" label="Type of Unsafe Behavior" divClass="col-12 col-sm-6">
-                            <option value="Value">Value 1</option>
-                            <option value="Value">Value 2</option>
-                        </x-forms.select-option>
-                        <x-forms.select-option name="type" multiple selectClass="form-control-sm" label="Type of Unsafe Behavior" divClass="col-12 col-sm-6">
-                            <option value="Value">Value 1</option>
-                            <option value="Value">Value 2</option>
-                        </x-forms.select-option>
-                        <div class="fallback col-6 form-group mb-6">
-                            <input name="file" type="file" multiple />
-                          </div>
-                          <div class="form-group col-6">
-                            <button class="btn btn-sm btn-primary btn-ladda">Submit</button>
-                          </div>
-                    </form>
-                    
+                    @include('unsafe-behavior.partials.unsafe_behavior_form')
                 </div>
               </div>
             </div>
         </div>
 @endsection
 @section('script')
-<script src="{{asset('assets/js/plugins/dropzone.min.js')}}"></script>
 
 <script>
-          Dropzone.autoDiscover = false;
-            var drop = document.getElementById('dropzone')
-            // callback and crossOrigin are optional
+  // Dropzone initialization
+  Dropzone.options.dropzone = {
+      url: "{{ route('unsafe-behaviors.store') }}",
+      autoProcessQueue: false,
+      uploadMultiple: true,
+      parallelUploads: 5,
+      maxFiles: 10,
+      maxFilesize: 5, // in megabytes
+      acceptedFiles: ".jpeg,.jpg,.png,.pdf", // allowed file types
+      addRemoveLinks: true,
+      dictRemoveFile: "Remove",
+      dictInvalidFileType: "Invalid file type. Only JPEG, JPG, PNG, and PDF are allowed.",
+      paramName: "attachements",
+      // Additional configuration options...
 
-            var myDropzone = new Dropzone(drop, {
-            url: "/file/post",
-            addRemoveLinks: true
+      init: function() {
+          var submitButton = document.querySelector("#submit-button");
+          var myDropzone = this; // Store Dropzone instance for later use
 
-      });
-      let files = [
-        { name: "another file", size: 1405, path:" {{asset('assets/img/automotive.jpg')}}" },
-        { name: "another file", size: 145, path:" {{asset('assets/img/automotive.jpg')}}" },
-    ];
-    files.forEach(file => {
-        const existingFile = {name:file.name,size:file.size}
-        console.log(file);
-        myDropzone.displayExistingFile(existingFile, file.path);
-    });
+          submitButton.addEventListener("click", function(e) {
+              // e.preventDefault();
+              // e.stopPropagation();
+              myDropzone.processQueue(); // Process the file queue
+          });
+
+          this.on("success", function(file, response) {
+              // Handle successful file uploads
+              console.log(response);
+          });
+
+          this.on("error", function(file, errorMessage) {
+              // Handle file upload errors
+              console.log(errorMessage);
+          });
+      }
+  };
 </script>
 @endsection

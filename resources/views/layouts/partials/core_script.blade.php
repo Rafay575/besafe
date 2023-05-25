@@ -9,7 +9,8 @@
 <script src="{{asset('assets/js/core/spin.min.js')}}"></script>
 <script src="{{asset('assets/js/core/ladda.min.js')}}"></script>
 <script src="{{asset('assets/js/sweet_alerts.js')}}"></script>
-<script src="{{asset('assets/js/validation.js?v1')}}"></script>
+<script src="{{asset('assets/js/validation.js?v3')}}"></script>
+<script src="{{asset('assets/js/plugins/dropzone.min.js')}}"></script>
 
 <!-- Kanban scripts -->
 <script src="{{asset('assets/js/plugins/dragula/dragula.min.js')}}"></script>
