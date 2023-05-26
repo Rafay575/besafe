@@ -29,7 +29,7 @@
     // Dropzone initialization
     Dropzone.options.dropzone = {
         url: "{{ route('unsafe-behaviors.update',$unsafe_behavior->id) }}",
-        autoProcessQueue: false,
+        autoProcessQueue: true,
         uploadMultiple: true,
         parallelUploads: 5,
         maxFiles: 10,
@@ -53,7 +53,7 @@
             submitButton.addEventListener("click", function(e) {
                 // e.preventDefault();
                 // e.stopPropagation();
-                myDropzone.processQueue(); // Process the file queue
+                // myDropzone.processQueue(); // Process the file queue
             });
   
             this.on("success", function(file, response) {

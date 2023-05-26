@@ -15,6 +15,55 @@ use Spatie\Permission\Models\Role;
 class UserApiController extends Controller
 {
 
+    public function index(Request $request)
+    {
+        $limit = 20;
+        $users = (new UserController)->index($request, 'api');
+        if ($request->has('limit')) {
+            $limit = $request->limit;
+        }
+        if ($request->has('from_date') and $request->has('to_date')) {
+            $users = $users->whereBetween('created_at', [$request->from_date, $request->to_date]);
+        }
+
+        if ($request->has('meta_department_id')) {
+            $users = $users->where('meta_department_id', $request->meta_department_id);
+        }
+        if ($request->has('meta_line_id')) {
+            $users = $users->where('meta_line_id', $request->meta_line_id);
+        }
+        if ($request->has('meta_designation_id')) {
+            $users = $users->where('meta_designation_id', $request->meta_designation_id);
+        }
+        if ($request->has('meta_unit_id')) {
+            $users = $users->where('meta_unit_id', $request->meta_unit_id);
+        }
+        if ($request->has('status')) {
+            $users = $users->where('status', $request->status);
+        }
+
+        $acceptableGrouping = ['designation', 'department', 'unit', 'line'];
+        if ($request->has('groupBy') && in_array($request->groupBy, $acceptableGrouping)) {
+            $groupByName = $request->groupBy . "." . $request->groupBy . "_title";
+            $users = $users->with($request->groupBy)->paginate($limit);
+            $groupedUsers = $users->groupBy($groupByName);
+            $paginatedUsers = new \Illuminate\Pagination\LengthAwarePaginator(
+                $groupedUsers->all(),
+                $users->total(),
+                $users->perPage(),
+                $users->currentPage(),
+                ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
+            );
+
+            return $paginatedUsers;
+        }
+
+        if ($users) {
+            return UserCollection::collection($users->paginate($limit));
+        } else {
+            return ApiResponseController::error('Problme while fetching users');
+        }
+    }
     /**
      * Summary of show
      * @param Request $request

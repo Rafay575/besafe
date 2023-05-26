@@ -23,14 +23,17 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request, $channel = "web")
     {
 
-        $users = User::select(['first_name', 'last_name', 'email', 'status', 'id'])->get();
+        $users = User::query();
+        if ($channel == "api") {
+            return $users;
+        }
         if ($request->ajax()) {
             $data = [];
             $i = 0;
-            foreach ($users as $user) {
+            foreach ($users->get() as $user) {
                 $i++;
                 $data[] = [
                     'sno' => $i,
@@ -109,6 +112,7 @@ class UserController extends Controller
         }
         return ['success', 'User has been stored', $request->redirect];
     }
+
 
     /**
      * Display the specified resource.

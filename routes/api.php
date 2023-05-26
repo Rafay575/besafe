@@ -35,6 +35,7 @@ Route::post('register', [UserApiController::class, 'registerUser']);
 Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::post('/user/{user_id}/update', [UserApiController::class, 'update']);
     Route::get('/user', [UserApiController::class, 'show']);
+    Route::get('/users', [UserApiController::class, 'index']);
     Route::get('/user/roles', [UserApiController::class, 'showRoles']);
     Route::get('/meta-data', [MetaDataApiController::class, 'index']);
 
