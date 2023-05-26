@@ -10,6 +10,11 @@
             <div class="col-12 col-lg-8  my-4">
               <div class="card">
                 <div class="card-body">
+                  
+
+                 
+
+
                     @include('unsafe-behavior.partials.unsafe_behavior_form')
                 </div>
               </div>
@@ -28,45 +33,11 @@
 <script>
     // Dropzone initialization
     Dropzone.options.dropzone = {
+      ...DropzoneConfig,
         url: "{{ route('unsafe-behaviors.update',$unsafe_behavior->id) }}",
-        autoProcessQueue: true,
-        uploadMultiple: true,
-        parallelUploads: 5,
-        maxFiles: 10,
-        maxFilesize: 5, // in megabytes
-        acceptedFiles: ".jpeg,.jpg,.png,.pdf", // allowed file types
-        addRemoveLinks: true,
-        dictRemoveFile: "Remove",
-        dictInvalidFileType: "Invalid file type. Only JPEG, JPG, PNG, and PDF are allowed.",
         paramName: "attachements",
-  
-        init: function() {
-            var submitButton = document.querySelector("#submit-button");
-            var myDropzone = this; // Store Dropzone instance for later use
-  
-            // Set the CSRF token header for each file upload request
-            myDropzone.on("sending", function(file, xhr, formData) {
-            var csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
-            xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken);
-            });
-
-            submitButton.addEventListener("click", function(e) {
-                // e.preventDefault();
-                // e.stopPropagation();
-                // myDropzone.processQueue(); // Process the file queue
-            });
-  
-            this.on("success", function(file, response) {
-                // Handle successful file uploads
-                console.log(response);
-            });
-  
-            this.on("error", function(file, errorMessage) {
-                // Handle file upload errors
-                console.log(errorMessage);
-            });
-        }
-    };
+        shouldFormReset: false
+      };
   </script>
   
 @endsection

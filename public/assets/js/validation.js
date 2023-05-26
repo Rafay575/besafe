@@ -16,70 +16,126 @@ var button = $('.btn-ladda');
   //   type: 'success',
   //   message: 'hi there',
   // })
+
+  // dropzone 
+  DropzoneConfig = {
+    autoProcessQueue: false,
+    uploadMultiple: true,
+    parallelUploads: 5,
+    maxFiles: 10,
+    maxFilesize: 5, // in megabytes
+    acceptedFiles: ".jpeg,.jpg,.png,.pdf", // allowed file types
+    addRemoveLinks: true,
+    dictRemoveFile: "Remove",
+    dictInvalidFileType: "Invalid file type. Only JPEG, JPG, PNG, and PDF are allowed.",
+    shouldFormReset : true,
+
+    // Additional configuration options...
+
+    init: function() {
+        var submitButton = document.querySelector("#submit-button");
+        var myDropzone = this; // Store Dropzone instance for later use
+
+        submitButton.addEventListener("click", function(e) {
+            if (myDropzone.getQueuedFiles().length === 0) {
+                // No files in the queue, allow form submission
+                return;
+            }
+            e.preventDefault();
+            e.stopPropagation();
+            myDropzone.processQueue(); // Process the file queue
+        });
+      
+        
+
+      this.on("success", function (file, response) {
+        console.log(myDropzone.options.shouldFormReset);
+            ajaxFormResponseAlertExecution(response,myDropzone.options.shouldFormReset)
+            console.log(response);
+        });
+
+        this.on("error", function(file, errorMessage) {
+            // Handle file upload errors
+            console.log(errorMessage);
+        });
+    }
+  };
+
+
+function ajaxFormSubmit(url, data) {
+  
+  $.ajax({
+    url: url,
+    type: 'POST',
+    data: data,
+    contentType: false,
+    cache: false,
+    processData:false,
+    beforeSend : function(){
+      
+     // l.start();
+   },
+    success: function (res){
+      let resetForm = false;
+      if (data.get('_method') == null) {
+        resetForm = true;
+      }
+      ajaxFormResponseAlertExecution(res,resetForm)
+    }
+ });
+}
+
+function ajaxFormResponseAlertExecution(res, formReset = false) {
+  $(".is-valid").removeClass("is-valid");
+         Ladda.stopAll();
+           if (formReset) {
+              if (res[0] === 'success') {
+                 $('form#ajax-form').trigger('reset');
+              }
+           }
+
+           if (res[0] === 'success') {
+             // in case of successfull request
+             // if there is redirect
+             if (res[2] != null) {
+               basciAlert({
+                 type: 'success',
+                 message: res[1],
+                 redirect: res[2]
+               })
+             }else{
+               basciAlert({
+                 type: 'success',
+                 message: res[1],
+               })
+             }
+
+              // Clear Dropzone files
+             var dropzoneInstance = Dropzone.forElement("#dropzone");
+             dropzoneInstance.removeAllFiles();
+           }else{
+             // in case any error
+             button.attr('disabled','true');
+             basciAlert({
+               type: 'error',
+               message: res[1],
+               
+             })
+           }
+       
+
+         // button.attr('disabled','true');
+}
+  // end dropzone
 $('form.ajax-form').on('submit',function(e){
     
   e.preventDefault();
   var $this = $(this);  
   var data = new FormData(this);
-
   var url = $this.attr('action');
   //submitting form
-  $.ajax({
-     url: url,
-     type: 'POST',
-     data: new FormData(this),
-     contentType: false,
-     cache: false,
-     processData:false,
-     beforeSend : function(){
-     
-      // l.start();
-    },
-     success: function(res){
-          $(".is-valid").removeClass("is-valid");
-          Ladda.stopAll();
-            if (data.get('_method') == null) {
-               if (res[0] === 'success') {
-                  $this.trigger('reset');
-               }
-            }
-
-            if (res[0] === 'success') {
-              // in case of successfull request
-              // if there is redirect
-              if (res[2] != null) {
-                basciAlert({
-                  type: 'success',
-                  message: res[1],
-                  redirect: res[2]
-                })
-              }else{
-                basciAlert({
-                  type: 'success',
-                  message: res[1],
-                })
-              }
-
-               // Clear Dropzone files
-              var dropzoneInstance = Dropzone.forElement("#dropzone");
-              dropzoneInstance.removeAllFiles();
-            }else{
-              // in case any error
-              button.attr('disabled','true');
-              basciAlert({
-                type: 'error',
-                message: res[1],
-                
-              })
-            }
-        
-
-          // button.attr('disabled','true');
-
-
-
-     }
-  });
+  ajaxFormSubmit(url, data);
+  
 
 }).validate({
   rules: {
@@ -143,6 +199,8 @@ $('form.ajax-form').on('submit',function(e){
   }
 });
 //# sourceMappingURL=validation.js.map
+
+// dropzone basic configuration
 
 // deleting data 
 

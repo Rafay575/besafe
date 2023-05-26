@@ -21,38 +21,9 @@
 <script>
   // Dropzone initialization
   Dropzone.options.dropzone = {
-      url: "{{ route('unsafe-behaviors.store') }}",
-      autoProcessQueue: true,
-      uploadMultiple: true,
-      parallelUploads: 5,
-      maxFiles: 10,
-      maxFilesize: 5, // in megabytes
-      acceptedFiles: ".jpeg,.jpg,.png,.pdf", // allowed file types
-      addRemoveLinks: true,
-      dictRemoveFile: "Remove",
-      dictInvalidFileType: "Invalid file type. Only JPEG, JPG, PNG, and PDF are allowed.",
-      paramName: "attachements",
-      // Additional configuration options...
-
-      init: function() {
-          var submitButton = document.querySelector("#submit-button");
-          var myDropzone = this; // Store Dropzone instance for later use
-
-          submitButton.addEventListener("click", function(e) {
-              // e.preventDefault();
-              // e.stopPropagation();
-          });
-
-          this.on("success", function(file, response) {
-              // Handle successful file uploads
-              console.log(response);
-          });
-
-          this.on("error", function(file, errorMessage) {
-              // Handle file upload errors
-              console.log(errorMessage);
-          });
-      }
+    ...DropzoneConfig,
+    paramName: "attachements",
+    url: "{{ route('unsafe-behaviors.store') }}",
   };
 </script>
 @endsection

@@ -70,7 +70,6 @@ class UnsafeBehaviorController extends Controller
      */
     public function store(Request $request, $channel = 'web')
     {
-
         $validator = $this->validateData($request);
 
         $formErrorsResponse = FormValidatitionDispatcherController::Response($validator, $channel);
@@ -87,7 +86,6 @@ class UnsafeBehaviorController extends Controller
         $unsafe_behavior->meta_incident_status_id = MetaIncidentStatus::where('status_code', 0)->first()->id;
         $unsafe_behavior->details = $request->details;
         $unsafe_behavior->save();
-
         $unsafe_behavior->unsafe_behavior_types()->sync($request->unsafe_behavior_types);
         if ($request->has('attachements')) {
             (new CommonAttachementController)->syncUploadedArray($request->attachements, $unsafe_behavior, 'attachements');
