@@ -5,6 +5,8 @@ use App\Http\Controllers\CommonAttachementController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FirePropertyDamageController;
 use App\Http\Controllers\HazardController;
+use App\Http\Controllers\IncidentAssignController;
+use App\Http\Controllers\IncidentController;
 use App\Http\Controllers\InjuryController;
 use App\Http\Controllers\InternalExternalAuditClauseController;
 use App\Http\Controllers\LineChartController;
@@ -51,6 +53,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('ie_audits', InternalExternalAuditClauseController::class);
     Route::resource('roles', RolesPermissionController::class);
     Route::delete('common_files/{file_id}/delete', [CommonAttachementController::class, 'destroy'])->name('common_files.destroy');
+    Route::get('incidents', [IncidentController::class, 'index'])->name('incidents.index');
+    Route::get('department_users', [UserController::class, 'departmentUsers'])->name('users.department_users');
+    Route::post('storeByIncidentName', [IncidentAssignController::class, 'storeByIncidentName'])->name('incidents.storeByIncidentName');
 });
 
 require __DIR__ . '/auth.php';

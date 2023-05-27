@@ -108,6 +108,7 @@ function ajaxFormResponseAlertExecution(res, formReset = false) {
                  type: 'success',
                  message: res[1],
                })
+
              }
 
               // Clear Dropzone files
@@ -115,7 +116,7 @@ function ajaxFormResponseAlertExecution(res, formReset = false) {
              dropzoneInstance.removeAllFiles();
            }else{
              // in case any error
-             button.attr('disabled','true');
+            //  button.attr('disabled','true');
              basciAlert({
                type: 'error',
                message: res[1],

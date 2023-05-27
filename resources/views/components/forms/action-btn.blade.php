@@ -7,6 +7,9 @@
         @case("view")
         <i class="fas fa-eye text-success" {{$attributes}}></i>
             @break
+        @case("assign")
+        <i class="fas fa-check-double text-success" {{$attributes}}></i>
+            @break
         @case("edit")
       <i class="fas fa-user-edit text-primary" {{$attributes}}></i>
             @break

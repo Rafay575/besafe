@@ -184,7 +184,7 @@ class HazardController extends Controller
             if ($channel === 'api') {
                 return ApiResponseController::success('hazard has been delete');
             } else {
-                return ['success', 'hazard has been deleted'];
+                return ['deleted', 'Hazard has been deleted'];
             }
         } else {
             if ($channel === 'api') {

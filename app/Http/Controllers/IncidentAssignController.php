@@ -4,7 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Api\ApiResponseController;
 use App\Http\Resources\IncidentAssignCollection;
+use App\Models\FirePropertyDamage;
+use App\Models\Hazard;
 use App\Models\IncidentAssign;
+use App\Models\Injury;
+use App\Models\MetaIncidentStatus;
+use App\Models\NearMiss;
+use App\Models\UnsafeBehavior;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -29,6 +35,18 @@ class IncidentAssignController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    public function storeByIncidentName(Request $request, $channel = "web")
+    {
+        $incidentsModelsArray = [
+            'hazards' => Hazard::class,
+            'near_misses' => NearMiss::class,
+            'unsafe_behaviors' => UnsafeBehavior::class,
+            'injuries' => Injury::class,
+            'fpdamages' => FirePropertyDamage::class,
+        ];
+        return $this->store($request, $incidentsModelsArray[$request->incident_name]::where('id', $request->incident_id)->first(), $channel);
+
+    }
     public function store(Request $request, $incident, $channel, $assignCount = 2)
     {
         $validator = Validator::make($request->all(), [
@@ -88,8 +106,10 @@ class IncidentAssignController extends Controller
         $incidentAssigned->assign_count = $incidentAssignedCollection->last() ? $incidentAssignedCollection->last()->assign_count + 1 : 1;
         $incidentAssigned->allowed_assign = ($incidentAssigned->assign_count === $assignCount) ? 0 : 1;
         $incidentAssigned->save();
+        $incident->meta_incident_status_id = MetaIncidentStatus::where('status_code', 1)->first()->id; //assigned
+        $incident->save();
 
-        return ['success', $incident];
+        return ['success', "Incident has been assigned", $request->redirect];
     }
 
 
@@ -191,8 +211,9 @@ class IncidentAssignController extends Controller
     public static function getAssignedIncidents($modelClass, $incident_name)
     {
         // admin can fetch all records
-        if (auth()->user()->can(["{$incident_name}.index", "{$incident_name}.delete", "{$incident_name}.view", "{$incident_name}.edit"])) {
+        if (auth()->user()->can(["{$incident_name}.index", "{$incident_name}.delete", "{$incident_name}.view", "{$incident_name}.edit", "{$incident_name}.create"])) {
             if (is_object($modelClass)) {
+                // var_dump('its here');
                 $modelCollection = $modelClass->orderby('id', 'desc');
             } else {
                 $modelCollection = $modelClass::orderby('id', 'desc');

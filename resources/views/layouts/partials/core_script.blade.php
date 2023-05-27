@@ -10,11 +10,11 @@
 <script src="{{asset('assets/js/core/ladda.min.js')}}"></script>
 <script src="{{asset('assets/js/sweet_alerts.js')}}"></script>
 <script src="{{asset('assets/js/plugins/dropzone.min.js')}}"></script>
-<script src="{{asset('assets/js/validation.js?v7')}}"></script>
+<script src="{{asset('assets/js/validation.js?v8')}}"></script>
 
 <!-- Kanban scripts -->
-<script src="{{asset('assets/js/plugins/dragula/dragula.min.js')}}"></script>
-<script src="{{asset('assets/js/plugins/jkanban/jkanban.js')}}"></script>
+{{-- <script src="{{asset('assets/js/plugins/dragula/dragula.min.js')}}"></script> --}}
+{{-- <script src="{{asset('assets/js/plugins/jkanban/jkanban.js')}}"></script> --}}
 <script src="{{asset('assets/js/plugins/chartjs.min.js')}}"></script>
 <script>
     var win = navigator.platform.indexOf('Win') > -1;

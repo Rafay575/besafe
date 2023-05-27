@@ -51,6 +51,11 @@ class UserController extends Controller
         return view('users.index', compact('users'));
     }
 
+    public function departmentUsers(Request $request)
+    {
+        $users = User::where('meta_department_id', $request->department_id)->get();
+        return $users;
+    }
     /**
      * Show the form for creating a new resource.
      */

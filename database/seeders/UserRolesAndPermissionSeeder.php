@@ -34,7 +34,7 @@ class UserRolesAndPermissionSeeder extends Seeder
             'risk_level',
             'incident_status',
             'unsafe_behavior_type',
-            'icdient_category',
+            'incident_category',
             'injury_category',
             'ptw_type',
             'ptw_item',

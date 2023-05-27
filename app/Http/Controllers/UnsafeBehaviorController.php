@@ -107,6 +107,7 @@ class UnsafeBehaviorController extends Controller
         if ($channel === 'api') {
             return $unsafe_behavior;
         }
+        return view('unsafe-behavior.show', compact('unsafe_behavior'));
     }
 
     /**
@@ -114,6 +115,7 @@ class UnsafeBehaviorController extends Controller
      */
     public function edit(UnsafeBehavior $unsafe_behavior)
     {
+        RolesPermissionController::canEditIncident($unsafe_behavior, 'unsafe_behavior');
         $units = MetaUnit::select('id', 'unit_title')->get();
         $departments = MetaDepartment::select('id', 'department_title')->get();
         $lines = MetaLine::select('id', 'line_title')->get();

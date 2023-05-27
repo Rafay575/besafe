@@ -22,7 +22,7 @@
             <div class="col-12 col-sm-4 mx-auto my-4">
                 <div class="card p-0">
                     <div class="card-body row">
-                      <x-others.common-attach-view label="Attachments" :attachements="$unsafe_behavior->attachements"></x-others.common-attach-view>
+                      <x-others.common-attach-view label="Attachments" :attachements="$unsafe_behavior->attachements" shouldDelete="true"></x-others.common-attach-view>
                     </div>
                   </div>
             </div>

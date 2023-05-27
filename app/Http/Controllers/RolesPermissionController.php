@@ -177,7 +177,7 @@ class RolesPermissionController extends Controller
             ['name' => 'Risk Levels', 'slug' => 'risk_level'],
             ['name' => 'Incident Status', 'slug' => 'incident_status'],
             ['name' => 'Unsafe Behavior Type', 'slug' => 'unsafe_behavior_type'],
-            ['name' => 'Incident Categories', 'slug' => 'icdient_category'],
+            ['name' => 'Incident Categories', 'slug' => 'incident_category'],
             ['name' => 'Injury Categories', 'slug' => 'injury_category'],
             ['name' => 'Permit To Work Types', 'slug' => 'ptw_type'],
             ['name' => 'Permit To Work Items', 'slug' => 'ptw_item'],
