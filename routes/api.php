@@ -37,6 +37,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::get('/user', [UserApiController::class, 'show']);
     Route::get('/users', [UserApiController::class, 'index']);
     Route::get('/user/roles', [UserApiController::class, 'showRoles']);
+    Route::post('/user/change_password', [UserApiController::class, 'changePassword']);
     Route::get('/meta-data', [MetaDataApiController::class, 'index']);
 
 

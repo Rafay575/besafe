@@ -9,6 +9,7 @@ use App\Http\Resources\UserCollection;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
 
@@ -134,6 +135,29 @@ class UserApiController extends Controller
             'permissions' => $user->getAllPermissions()->pluck('name'),
         ];
         return ApiResponseController::successWithData('Logged In Successfully', $data);
+
+    }
+
+    public function changePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|string',
+            'password' => 'required|string|min:8|max:255|confirmed',
+        ]);
+        $formErrorsResponse = FormValidatitionDispatcherController::Response($validator, 'api');
+        if ($formErrorsResponse) {
+            return $formErrorsResponse;
+        }
+
+        $user = User::where('id', $request->user_id)->first();
+        if (!$user) {
+            return ApiResponseController::error('User not found');
+        }
+
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return ApiResponseController::successWithData('User password changed', new UserCollection($user));
 
     }
 
