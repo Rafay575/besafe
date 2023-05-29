@@ -11,6 +11,10 @@ class UnsafeBehavior extends Model
     use HasFactory;
     use CommonRelation;
 
+    public static function getRouteName()
+    {
+        return 'unsafe-behaviors.show'; // Replace 'unsafe-behaviors' with your actual route name
+    }
 
     public function unsafe_behavior_types()
     {

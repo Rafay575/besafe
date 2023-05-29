@@ -15,33 +15,38 @@ class FirePropertyDamage extends Model
         'loss_calculation' => 'json'
     ];
 
+    public static function getRouteName()
+    {
+        return 'fire-property.show'; //show route name
+    }
 
-    public function attachements()
+
+    public function common_Attachements()
     {
 
         return $this->hasMany(CommonAttachement::class, 'incident_id')->where('form_name', $this->getTable());
     }
 
-    public function initial_attachs()
+    public function attachements()
     {
-        return $this->attachements()->where('form_input_name', 'initial_attachs');
+        return $this->common_Attachements()->where('form_input_name', 'attachements');
     }
     public function interview_attachs()
     {
-        return $this->attachements()->where('form_input_name', 'interview_attachs');
+        return $this->common_Attachements()->where('form_input_name', 'interview_attachs');
     }
     public function record_attachs()
     {
-        return $this->attachements()->where('form_input_name', 'record_attachs');
+        return $this->common_Attachements()->where('form_input_name', 'record_attachs');
     }
     public function photograph_attachs()
     {
-        return $this->attachements()->where('form_input_name', 'photograph_attachs');
+        return $this->common_Attachements()->where('form_input_name', 'photograph_attachs');
     }
 
     public function other_attachs()
     {
-        return $this->attachements()->where('form_input_name', 'other_attachs');
+        return $this->common_Attachements()->where('form_input_name', 'other_attachs');
     }
 
 

@@ -7,9 +7,24 @@ use App\Models\MetaIncidentStatus;
 use App\Models\MetaLine;
 use App\Models\MetaUnit;
 use App\Models\User;
+use Carbon\Carbon;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 trait CommonRelation
 {
+    use LogsActivity;
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        $loggerName = ucfirst(str_replace('_', ' ', $this->getTable()));
+        $causerName = auth()->user()->first_name;
+        $dateAndTime = Carbon::now();
+        return LogOptions::defaults()->logAll()->logOnlyDirty()
+            ->useLogName($loggerName)
+            ->setDescriptionForEvent(fn(string $eventName) => "{$loggerName} has been {$eventName} by {$causerName} on {$dateAndTime}");
+    }
+
     public function unit()
     {
         return $this->belongsTo(MetaUnit::class, 'meta_unit_id');

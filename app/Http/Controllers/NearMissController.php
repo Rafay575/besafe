@@ -51,8 +51,8 @@ class NearMissController extends Controller
     public function create()
     {
         RolesPermissionController::can(['near_miss.create']);
-
-        return view('near-miss.create');
+        $incident_statuses = MetaIncidentStatus::select('id', 'status_title')->get();
+        return view('near-miss.create', compact('incident_statuses'));
     }
 
     /**
@@ -91,6 +91,7 @@ class NearMissController extends Controller
             return ApiResponseController::successWithData('Near Miss created.', new NearMissCollection($near_miss));
         }
 
+        return ['success', 'Near miss has been creaetd', $request->redirect];
 
 
     }
@@ -100,19 +101,24 @@ class NearMissController extends Controller
      */
     public function show($near_miss_id, $channel = "web")
     {
-        $near_miss = NearMiss::where('id', $near_miss_id)->first();
-        RolesPermissionController::canViewIncident($near_miss, 'near_miss');
+        $near_miss = NearMiss::where('id', $near_miss_id);
+        RolesPermissionController::canViewIncident($near_miss->first(), 'near_miss');
         if ($channel === 'api') {
-            return $near_miss;
+            return $near_miss->first();
         }
+        $near_miss = $near_miss->firstOrFail();
+        return view('near-miss.show', compact('near_miss'));
+
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(NearMiss $nearMiss)
+    public function edit(NearMiss $near_miss)
     {
-        //
+        RolesPermissionController::can(['near_miss.edit']);
+        $incident_statuses = MetaIncidentStatus::select('id', 'status_title')->get();
+        return view('near-miss.edit', compact('incident_statuses', 'near_miss'));
     }
 
     /**
@@ -156,7 +162,7 @@ class NearMissController extends Controller
             return ApiResponseController::successWithData('Near Miss updated.', new NearMissCollection($near_miss));
         }
 
-
+        return ['success', 'Near miss updated', $request->redirect];
 
 
     }

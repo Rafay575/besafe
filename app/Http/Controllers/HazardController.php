@@ -5,7 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Api\ApiResponseController;
 use App\Http\Resources\HazardCollection;
 use App\Models\Hazard;
+use App\Models\MetaDepartment;
+use App\Models\MetaDepartmentTag;
 use App\Models\MetaIncidentStatus;
+use App\Models\MetaLine;
+use App\Models\MetaRiskLevel;
+use App\Models\MetaUnit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
@@ -53,8 +58,13 @@ class HazardController extends Controller
     public function create()
     {
         RolesPermissionController::can(['hazard.create']);
-
-        return view('hazard.create');
+        $units = MetaUnit::select('id', 'unit_title')->get();
+        $departments = MetaDepartment::select('id', 'department_title')->get();
+        $lines = MetaLine::select('id', 'line_title')->get();
+        $incident_statuses = MetaIncidentStatus::select('status_code', 'status_title', 'id')->get();
+        $risk_levels = MetaRiskLevel::select('id', 'risk_level_title')->get();
+        $department_tags = MetaDepartmentTag::select('id', 'department_tag_title')->get();
+        return view('hazard.create', compact('lines', 'departments', 'units', 'incident_statuses', 'risk_levels', 'department_tags'));
     }
 
     /**
@@ -87,13 +97,14 @@ class HazardController extends Controller
         $hazard->action_cost = $request->action_cost;
         $hazard->save();
         if ($request->has('attachements')) {
-            // (new CommonAttachementController)->uploadedArray($request->attachements, $hazard, 'attachements');
-            return (new CommonAttachementController)->syncUploadedArray($request->attachements, $hazard, 'attachements');
+            (new CommonAttachementController)->syncUploadedArray($request->attachements, $hazard, 'attachements');
         }
 
         if ($channel === 'api') {
             return ApiResponseController::successWithData('Hazard Incident created.', new HazardCollection($hazard));
         }
+
+        return ['success', 'Hazard has been created', $request->redirect];
 
     }
 
@@ -102,11 +113,13 @@ class HazardController extends Controller
      */
     public function show($hazard_id, $channel = "web")
     {
-        $hazard = Hazard::where('id', $hazard_id)->first();
-        RolesPermissionController::canViewIncident($hazard, 'hazard');
+        $hazard = Hazard::where('id', $hazard_id);
+        RolesPermissionController::canViewIncident($hazard->first(), 'hazard');
         if ($channel === 'api') {
             return $hazard;
         }
+        $hazard = $hazard->firstOrFail();
+        return view('hazard.show', compact('hazard'));
     }
 
     /**
@@ -114,13 +127,20 @@ class HazardController extends Controller
      */
     public function edit(Hazard $hazard)
     {
-        //
+        RolesPermissionController::can(['hazard.create']);
+        $units = MetaUnit::select('id', 'unit_title')->get();
+        $departments = MetaDepartment::select('id', 'department_title')->get();
+        $lines = MetaLine::select('id', 'line_title')->get();
+        $incident_statuses = MetaIncidentStatus::select('status_code', 'status_title', 'id')->get();
+        $risk_levels = MetaRiskLevel::select('id', 'risk_level_title')->get();
+        $department_tags = MetaDepartmentTag::select('id', 'department_tag_title')->get();
+        return view('hazard.edit', compact('lines', 'departments', 'units', 'incident_statuses', 'risk_levels', 'department_tags', 'hazard'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $hazard_id, $channel)
+    public function update(Request $request, $hazard_id, $channel = "web")
     {
 
         $validator = $this->validateData($request);
@@ -161,6 +181,9 @@ class HazardController extends Controller
         if ($channel === 'api') {
             return ApiResponseController::successWithData('Hazard Incident updated.', new HazardCollection($hazard));
         }
+
+        return ['success', 'Hazard has been updated', $request->redirect];
+
     }
 
     /**

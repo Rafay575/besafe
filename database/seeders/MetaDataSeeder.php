@@ -29,7 +29,7 @@ class MetaDataSeeder extends Seeder
         \App\Models\MetaPropertyDamage::factory()->count(10)->create();
         \App\Models\MetaPtwItem::factory()->count(10)->create();
         \App\Models\MetaPtwType::factory()->count(10)->create();
-        \App\Models\MetaRiskLevel::factory()->count(10)->create();
+        \App\Models\MetaRiskLevel::factory()->count(3)->create();
         \App\Models\MetaRootCause::factory()->count(10)->create();
         \App\Models\MetaUnit::factory()->count(10)->create();
         \App\Models\MetaUnsafeBehaviorType::factory()->count(10)->create();

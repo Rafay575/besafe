@@ -14,7 +14,10 @@ class NearMiss extends Model
         'actions' => 'json'
     ];
 
-
+    public static function getRouteName()
+    {
+        return 'near-miss.show'; //show route name
+    }
     public function attachements()
     {
         return $this->hasMany(CommonAttachement::class, 'incident_id')->where('form_name', $this->getTable());

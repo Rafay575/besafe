@@ -63,7 +63,7 @@ var button = $('.btn-ladda');
 
 
 function ajaxFormSubmit(url, data) {
-  
+  console.log(data);
   $.ajax({
     url: url,
     type: 'POST',

@@ -11,6 +11,12 @@ class Hazard extends Model
     use HasFactory;
     use CommonRelation;
 
+    public static function getRouteName()
+    {
+        return 'hazards.show'; //show route name
+    }
+
+
     public function risk_level()
     {
         return $this->belongsTo(MetaRiskLevel::class, 'meta_risk_level_id');

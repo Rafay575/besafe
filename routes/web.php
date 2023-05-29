@@ -12,6 +12,7 @@ use App\Http\Controllers\InternalExternalAuditClauseController;
 use App\Http\Controllers\LineChartController;
 use App\Http\Controllers\MetaDataController;
 use App\Http\Controllers\NearMissController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PermitToWorkController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RolesPermissionController;
@@ -56,6 +57,8 @@ Route::middleware('auth')->group(function () {
     Route::get('incidents', [IncidentController::class, 'index'])->name('incidents.index');
     Route::get('department_users', [UserController::class, 'departmentUsers'])->name('users.department_users');
     Route::post('storeByIncidentName', [IncidentAssignController::class, 'storeByIncidentName'])->name('incidents.storeByIncidentName');
+    Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('notifications', [NotificationController::class, 'activitySeen'])->name('notifications.activitySeen');
 });
 
 require __DIR__ . '/auth.php';

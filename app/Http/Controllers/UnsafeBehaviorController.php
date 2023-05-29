@@ -71,12 +71,10 @@ class UnsafeBehaviorController extends Controller
     public function store(Request $request, $channel = 'web')
     {
         $validator = $this->validateData($request);
-
         $formErrorsResponse = FormValidatitionDispatcherController::Response($validator, $channel);
         if ($formErrorsResponse) {
             return $formErrorsResponse;
         }
-
         $unsafe_behavior = new UnsafeBehavior();
         $unsafe_behavior->date = $request->date;
         $unsafe_behavior->initiated_by = auth()->user()->id;
@@ -102,11 +100,12 @@ class UnsafeBehaviorController extends Controller
      */
     public function show($unsafe_behavior_id, $channel = "web")
     {
-        $unsafe_behavior = UnsafeBehavior::where('id', $unsafe_behavior_id)->first();
-        RolesPermissionController::canViewIncident($unsafe_behavior, 'unsafe_behavior');
+        $unsafe_behavior = UnsafeBehavior::where('id', $unsafe_behavior_id);
+        RolesPermissionController::canViewIncident($unsafe_behavior->first(), 'unsafe_behavior');
         if ($channel === 'api') {
-            return $unsafe_behavior;
+            return $unsafe_behavior->first();
         }
+        $unsafe_behavior = $unsafe_behavior->firstOrFail();
         return view('unsafe-behavior.show', compact('unsafe_behavior'));
     }
 

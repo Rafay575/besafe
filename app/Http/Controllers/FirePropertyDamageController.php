@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Api\ApiResponseController;
 use App\Http\Resources\FirePropertyDamageCollection;
 use App\Models\FirePropertyDamage;
+use App\Models\MetaDepartment;
+use App\Models\MetaFireCategory;
 use App\Models\MetaIncidentStatus;
+use App\Models\MetaPropertyDamage;
+use App\Models\MetaUnit;
 use App\Rules\FirePropertyActionData;
 use App\Rules\TotalLossCalculation;
 use Illuminate\Http\Request;
@@ -53,8 +57,12 @@ class FirePropertyDamageController extends Controller
     public function create()
     {
         RolesPermissionController::can(['fire_property_damage.create']);
-
-        return view('fire-property.create');
+        $incident_statuses = MetaIncidentStatus::select('id', 'status_title')->get();
+        $units = MetaUnit::select('id', 'unit_title')->get();
+        $property_damages = MetaPropertyDamage::select('id', 'property_damage_title')->get();
+        $fire_categories = MetaFireCategory::select('id', 'fire_category_title')->get();
+        $departments = MetaDepartment::select('id', 'department_title')->get();
+        return view('fire-property.create', compact('incident_statuses', 'units', 'property_damages', 'departments', 'fire_categories'));
     }
 
     /**
@@ -63,8 +71,6 @@ class FirePropertyDamageController extends Controller
     public function store(Request $request, $channel = 'web')
     {
         RolesPermissionController::can(['fire_property_damage.create']);
-
-
 
         $validator = $this->validateData($request);
 
@@ -97,10 +103,6 @@ class FirePropertyDamageController extends Controller
             (new CommonAttachementController)->syncUploadedArray($request->attachements, $fpdamage, 'attachements');
         }
 
-        if ($request->has('initial_attachs')) {
-            (new CommonAttachementController)->syncUploadedArray($request->initial_attachs, $fpdamage, 'initial_attachs');
-        }
-
         if ($request->has('interview_attachs')) {
             (new CommonAttachementController)->syncUploadedArray($request->interview_attachs, $fpdamage, 'interview_attachs');
         }
@@ -119,6 +121,8 @@ class FirePropertyDamageController extends Controller
             return ApiResponseController::successWithData('Fire Property and damage created.', new FirePropertyDamageCollection($fpdamage));
         }
 
+        return ['success', 'Fire property damage created', $request->redirect];
+
     }
 
     /**
@@ -126,25 +130,35 @@ class FirePropertyDamageController extends Controller
      */
     public function show($fpdamage_id, $channel = "web")
     {
-        $fpdamage = FirePropertyDamage::where('id', $fpdamage_id)->first();
-        RolesPermissionController::canViewIncident($fpdamage, 'fire_property_damage');
+        $fpdamage = FirePropertyDamage::where('id', $fpdamage_id);
+        RolesPermissionController::canViewIncident($fpdamage->first(), 'fire_property_damage');
         if ($channel === 'api') {
-            return $fpdamage;
+            return $fpdamage->first();
         }
+        $fire_property = $fpdamage->firstOrfail();
+        return view('fire-property.show', compact('fire_property'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit()
+    public function edit(Request $request, FirePropertyDamage $fire_property)
     {
-        //
+        RolesPermissionController::canEditIncident($fire_property, 'fire_property_damage');
+        $incident_statuses = MetaIncidentStatus::select('id', 'status_title')->get();
+        $units = MetaUnit::select('id', 'unit_title')->get();
+        $fire_categories = MetaFireCategory::select('id', 'fire_category_title')->get();
+        $property_damages = MetaPropertyDamage::select('id', 'property_damage_title')->get();
+        $departments = MetaDepartment::select('id', 'department_title')->get();
+
+        return view('fire-property.edit', compact('fire_property', 'incident_statuses', 'units', 'property_damages', 'departments', 'fire_categories'));
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $fpdamage_id, $channel)
+    public function update(Request $request, $fpdamage_id, $channel = "web")
     {
 
         $validator = $this->validateData($request);
@@ -186,9 +200,7 @@ class FirePropertyDamageController extends Controller
             (new CommonAttachementController)->syncUploadedArray($request->attachements, $fpdamage, 'attachements');
         }
 
-        if ($request->has('initial_attachs')) {
-            (new CommonAttachementController)->syncUploadedArray($request->initial_attachs, $fpdamage, 'initial_attachs');
-        }
+
 
         if ($request->has('interview_attachs')) {
             (new CommonAttachementController)->syncUploadedArray($request->interview_attachs, $fpdamage, 'interview_attachs');
@@ -207,6 +219,8 @@ class FirePropertyDamageController extends Controller
         if ($channel === 'api') {
             return ApiResponseController::successWithData('Fire Property and damage updated.', new FirePropertyDamageCollection($fpdamage));
         }
+
+        return ['success', 'Fire property damage has been updated', $request->redirect];
     }
 
     /**
@@ -272,7 +286,6 @@ class FirePropertyDamageController extends Controller
                 'similar_incident_before' => ['nullable', 'string'],
                 'loss_recovery_method' => ['nullable', 'string'],
                 'preventative_measure' => ['nullable', 'string'],
-
                 'loss_calculation' => ['array', 'required', 'size:3'],
                 'loss_calculation.direct_loss' => ['required', 'array'],
                 'loss_calculation.direct_loss.description' => ['required', 'string'],

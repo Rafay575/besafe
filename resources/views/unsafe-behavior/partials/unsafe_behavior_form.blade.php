@@ -36,6 +36,8 @@
          <option value="{{$status->id}}" {{ isset($unsafe_behavior) && $unsafe_behavior->meta_incident_status_id == $status->id ? 'selected' : '' }}>{{$status->status_title}}</option>
        @endforeach
     </x-forms.select-option>
+
+    
     <x-forms.text-area label="Details of Unsafe Behavior" name="details"  width="col-12" text-area-class="" cols="" rows="3">
     {{isset($unsafe_behavior) ? $unsafe_behavior->details : ''}}
     </x-forms.text-area>

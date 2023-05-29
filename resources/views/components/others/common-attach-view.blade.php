@@ -1,5 +1,6 @@
+@if ($attachements->count() > 0)
 @if ($attributes->has('shouldNotCollapse') && @$attributes['shouldNotCollapse'] === 'true')
- 
+      
   {{-- pictures --}}
   <div class="row">
     <h5 class="mt-2">
@@ -60,4 +61,5 @@
         </div>
       </div>
   </div>
+@endif
 @endif
