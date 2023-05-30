@@ -120,6 +120,8 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
 
 
     Route::get('/incidents', [IncidentApiController::class, 'index']);
+    Route::post('/incident_assign', [IncidentAsssignApiController::class, 'storeByIncidentName']);
+    Route::post('/incident_assign/reject', [IncidentAsssignApiController::class, 'rejectIncidentByName']);
     Route::post('/incident_assign/{incident_assign_id}/update', [IncidentAsssignApiController::class, 'update']);
 
 });

@@ -37,17 +37,32 @@ class IncidentAssignController extends Controller
      */
     public function storeByIncidentName(Request $request, $channel = "web")
     {
-        $incidentsModelsArray = [
+        $validator = Validator::make($request->all(), [
+            'incident_id' => 'required',
+            'incident_name' => 'required',
+        ]);
+
+
+        $formErrorsResponse = FormValidatitionDispatcherController::Response($validator, $channel);
+        if ($formErrorsResponse) {
+            return $formErrorsResponse;
+        }
+
+        $incidentsModelsArray = $this->getIncidentModelViaKeys();
+        return $this->store($request, $incidentsModelsArray[$request->incident_name]::where('id', $request->incident_id)->first(), $channel);
+
+    }
+    public function getIncidentModelViaKeys()
+    {
+        return [
             'hazards' => Hazard::class,
             'near_misses' => NearMiss::class,
             'unsafe_behaviors' => UnsafeBehavior::class,
             'injuries' => Injury::class,
             'fpdamages' => FirePropertyDamage::class,
         ];
-        return $this->store($request, $incidentsModelsArray[$request->incident_name]::where('id', $request->incident_id)->first(), $channel);
-
     }
-    public function store(Request $request, $incident, $channel, $assignCount = 2)
+    public function store(Request $request, $incident, $channel = "web", $assignCount = 2)
     {
         $validator = Validator::make($request->all(), [
             'assign_by' => 'required|exists:users,id',
@@ -109,7 +124,38 @@ class IncidentAssignController extends Controller
         $incident->meta_incident_status_id = MetaIncidentStatus::where('status_code', 1)->first()->id; //assigned
         $incident->save();
 
+
+        if ($channel == 'api') {
+            return ApiResponseController::success('Incident has been assigned');
+        }
+
         return ['success', "Incident has been assigned", $request->redirect];
+    }
+
+    public function rejectIncidentByName($request, $channel = "web")
+    {
+        $validator = Validator::make($request->all(), [
+            'incident_id' => 'required',
+            'incident_name' => 'required',
+        ]);
+
+
+        $formErrorsResponse = FormValidatitionDispatcherController::Response($validator, $channel);
+        if ($formErrorsResponse) {
+            return $formErrorsResponse;
+        }
+
+        $incidentsModelsArray = $this->getIncidentModelViaKeys();
+        $incident = $incidentsModelsArray[$request->incident_name]::where('id', $request->incident_id)->first();
+        $incident->meta_incident_status_id = MetaIncidentStatus::where('status_code', 4)->first()->id; //rejected
+        $incident->save();
+
+        if ($channel == 'api') {
+            return ApiResponseController::success('Incident has been rejected');
+        }
+
+        // return ['success', "Incident has been rejected", $request->redirect];
+
     }
 
 

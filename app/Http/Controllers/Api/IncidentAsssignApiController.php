@@ -17,4 +17,24 @@ class IncidentAsssignApiController extends Controller
             return ApiResponseController::error('Could not update assigned users');
         }
     }
+
+    public function storeByIncidentName(Request $request)
+    {
+        $response = (new IncidentAssignController)->storeByIncidentName($request, 'api');
+        if ($response) {
+            return $response;
+        } else {
+            return ApiResponseController::error('Could not update assigned users');
+        }
+    }
+
+    public function rejectIncidentByName(Request $request)
+    {
+        $response = (new IncidentAssignController)->rejectIncidentByName($request, 'api');
+        if ($response) {
+            return $response;
+        } else {
+            return ApiResponseController::error('Could not Reject the incident');
+        }
+    }
 }
