@@ -10,7 +10,7 @@ use App\Http\Controllers\IncidentController;
 use App\Http\Controllers\InjuryController;
 use App\Http\Controllers\InternalExternalAuditClauseController;
 use App\Http\Controllers\LineChartController;
-// use App\Http\Controllers\MetaDataController;
+use App\Http\Controllers\MetaDataController;
 use App\Http\Controllers\NearMissController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PermitToWorkController;
@@ -43,7 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::get('card_chart', [CardChartController::class, 'index']);
     Route::get('dashboard', [DashboardController::class, 'index']);
     Route::resource('users', UserController::class);
-    // Route::resource('meta-data', MetaDataController::class);
+    Route::resource('meta-data', MetaDataController::class);
     Route::resource('unsafe-behaviors', UnsafeBehaviorController::class);
     Route::resource('near-miss', NearMissController::class);
     Route::resource('profile', ProfileController::class);
