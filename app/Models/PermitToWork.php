@@ -18,9 +18,9 @@ class PermitToWork extends Model
         return $this->belongsTo(MetaPtwType::class, 'meta_ptw_type_id');
     }
 
-    public function ptw_item()
+    public function ptw_items()
     {
-        return $this->belongsTo(MetaPtwItem::class, 'meta_ptw_item_id');
+        return $this->belongsToMany(MetaPtwItem::class, 'meta_ptw_item_permit_to_work');
     }
 
 

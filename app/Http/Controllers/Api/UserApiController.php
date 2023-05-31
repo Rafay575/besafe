@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FormValidatitionDispatcherController;
 use App\Http\Controllers\UserController;
@@ -214,5 +216,26 @@ class UserApiController extends Controller
         } else {
             return ApiResponseController::error('Problem while deleting User.', 400);
         }
+    }
+
+    public function sendResetLink(Request $request)
+    {
+        $response = (new PasswordResetLinkController)->store($request, 'api');
+        if ($response) {
+            return $response;
+        } else {
+            return ApiResponseController::error('Problem while sending password reset link', 400);
+        }
+
+    }
+    public function resetPasword(Request $request)
+    {
+        $response = (new NewPasswordController)->store($request, 'api');
+        if ($response) {
+            return $response;
+        } else {
+            return ApiResponseController::error('Problem while sending password reset link', 400);
+        }
+
     }
 }

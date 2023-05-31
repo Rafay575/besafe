@@ -31,8 +31,6 @@ class PermitToWorkCollection extends JsonResource
             'moc_desc' => $this->moc_desc,
             "meta_ptw_type_id" => $this->meta_ptw_type_id,
             "ptw_type_title" => $this->ptw_type->ptw_type_title ?? null,
-            "meta_ptw_item_id" => $this->meta_ptw_item_id,
-            "ptw_item_title" => $this->ptw_item->ptw_item_title ?? null,
             'working_group' => $this->working_group,
             'worker_name' => $this->worker_name,
             'immediate_cause' => $this->immediate_cause,
@@ -40,6 +38,7 @@ class PermitToWorkCollection extends JsonResource
             'actions' => $this->actions,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'ptw_items' => MetaPtwItemCollection::collection($this->ptw_items),
         ];
 
     }

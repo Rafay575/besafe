@@ -123,5 +123,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::post('/incident_assign', [IncidentAsssignApiController::class, 'storeByIncidentName']);
     Route::post('/incident_assign/reject', [IncidentAsssignApiController::class, 'rejectIncidentByName']);
     Route::post('/incident_assign/{incident_assign_id}/update', [IncidentAsssignApiController::class, 'update']);
+    Route::post('/reset-password/sendlink', [UserApiController::class, 'sendResetLink']);
+    Route::post('/reset-password', [UserApiController::class, 'resetPasword']);
 
 });

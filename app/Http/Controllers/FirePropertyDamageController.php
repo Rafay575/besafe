@@ -271,8 +271,10 @@ class FirePropertyDamageController extends Controller
             Validator::make($request->all(), [
                 'date' => ['required', 'date', 'date_format:Y-m-d'],
                 'meta_unit_id' => ['required', 'exists:meta_units,id'],
-                'meta_fire_category_id' => ['required', 'exists:meta_fire_categories,id'],
-                'meta_property_damage_id' => ['required', 'exists:meta_property_damages,id'],
+                'meta_fire_category_id' => ['required_without:meta_property_damage_id', 'exists:meta_fire_categories,id'],
+                'meta_property_damage_id' => ['required_without:meta_fire_category_id', 'exists:meta_property_damages,id'],
+                // 'meta_fire_category_id' => ['required', 'exists:meta_fire_categories,id'],
+                // 'meta_property_damage_id' => ['required', 'exists:meta_property_damages,id'],
                 'meta_incident_status_id' => ['required', 'exists:meta_incident_statuses,id'],
 
                 'actions' => ['array', new FirePropertyActionData],

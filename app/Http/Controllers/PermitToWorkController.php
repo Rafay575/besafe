@@ -90,10 +90,10 @@ class PermitToWorkController extends Controller
         $ptw->root_cause = $request->root_cause;
         $ptw->actions = $request->actions;
         $ptw->meta_ptw_type_id = $request->meta_ptw_type_id;
-        $ptw->meta_ptw_item_id = $request->meta_ptw_item_id;
 
         $ptw->save();
-
+        // Synchronize the meta PTW items
+        $ptw->ptw_items()->sync($request->meta_ptw_item_id);
 
 
         if ($channel === 'api') {
@@ -170,8 +170,9 @@ class PermitToWorkController extends Controller
         $ptw->root_cause = $request->root_cause;
         $ptw->actions = $request->actions;
         $ptw->meta_ptw_type_id = $request->meta_ptw_type_id;
-        $ptw->meta_ptw_item_id = $request->meta_ptw_item_id;
         $ptw->save();
+        // Synchronize the meta PTW items
+        $ptw->ptw_items()->sync($request->meta_ptw_item_id);
 
 
         if ($channel === 'api') {
@@ -230,7 +231,8 @@ class PermitToWorkController extends Controller
             'meta_ptw_type_id' => ['required', 'exists:meta_ptw_types,id'],
             'working_group' => ['nullable', 'string'],
             'worker_name' => ['nullable', 'string'],
-            'meta_ptw_item_id' => ['required', 'exists:meta_ptw_items,id'],
+            'meta_ptw_item_id' => 'array',
+            'meta_ptw_item_id.*' => 'exists:meta_ptw_items,id',
             'immediate_cause' => ['nullable', 'string'],
             'root_cause' => ['nullable', 'string'],
             'actions' => ['array', new PtwActionData],

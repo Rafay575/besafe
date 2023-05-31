@@ -116,7 +116,7 @@ class HazardController extends Controller
         $hazard = Hazard::where('id', $hazard_id);
         RolesPermissionController::canViewIncident($hazard->first(), 'hazard');
         if ($channel === 'api') {
-            return $hazard;
+            return $hazard->first();
         }
         $hazard = $hazard->firstOrFail();
         return view('hazard.show', compact('hazard'));

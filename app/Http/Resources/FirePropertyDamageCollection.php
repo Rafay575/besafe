@@ -54,7 +54,7 @@ class FirePropertyDamageCollection extends JsonResource
         ];
         if ($this->withAttachs) {
             $data['attachements'] = CommonAttachsCollection::collection($this->attachements);
-            $data['initial_attachs'] = CommonAttachsCollection::collection($this->initial_attachs);
+            // $data['initial_attachs'] = CommonAttachsCollection::collection($this->initial_attachs);
             $data['interview_attachs'] = CommonAttachsCollection::collection($this->interview_attachs);
             $data['record_attachs'] = CommonAttachsCollection::collection($this->record_attachs);
             $data['photograph_attachs'] = CommonAttachsCollection::collection($this->photograph_attachs);
