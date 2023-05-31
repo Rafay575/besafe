@@ -146,8 +146,9 @@ class RolesPermissionController extends Controller
         if (count($role->users) > 0) {
             return ['Cannot delete role as users are attached to it'];
         } else {
-            $role->delete();
-            return ['deleted', 'Role has been deleted'];
+            // $role->delete();
+            // return ['deleted', 'Role is not deleted'];
+            return ['deleted', 'Role is not allwoed to be deleted'];
         }
     }
 
