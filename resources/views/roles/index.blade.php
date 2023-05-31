@@ -10,7 +10,7 @@
       <x-slot:pageHeader>
         <div class="ms-auto my-auto mt-lg-0 mt-4">
           <div class="ms-auto my-auto">
-            <a href="{{route('roles.create')}}" class="btn bg-gradient-primary btn-sm mb-0" >+&nbsp; New Role</a>
+            {{-- <a href="{{route('roles.create')}}" class="btn bg-gradient-primary btn-sm mb-0" >+&nbsp; New Role</a> --}}
           </div>
         </div>
       </x-slot>
