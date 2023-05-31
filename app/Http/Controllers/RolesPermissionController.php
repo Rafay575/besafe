@@ -64,11 +64,11 @@ class RolesPermissionController extends Controller
         if ($request->has('role_id')) {
             $message = "Role has been updated";
             $role = Role::where('id', $request->role_id)->first();
-            $role->name = $request->role_name;
+            // $role->name = $request->role_name;
             $role->save();
         } else {
             $message = "Role has been created";
-            $role = Role::create(['name' => $request->role_name]);
+            // $role = Role::create(['name' => $request->role_name]);
         }
         $role->syncPermissions($request->permissions);
         return ['success', $message, $request->redirect];

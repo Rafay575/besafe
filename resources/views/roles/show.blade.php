@@ -22,7 +22,7 @@
         <form action="{{route('roles.store')}}" method="post" class="ajax-form">
         <div class="d-flex mb-3  bg-secondary text-light p-2 rounded">
             <span class="mt-2 ml-2 text-sm" style="width:100px"><strong>Role Name</strong></span>
-            <input required type="text" name="role_name" id="role_name" class="form-control form-control-sm" value="{{$role->name}}">
+            <input required type="text" name="role_name" id="role_name" readonly class="form-control form-control-sm" value="{{$role->name}}">
         </div>
     <h5>Permission</h5>
         @csrf

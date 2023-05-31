@@ -55,7 +55,7 @@ class UserRolesAndPermissionSeeder extends Seeder
             return implode(' ', $capitalizedWords);
         }, $subModules));
 
-        $roles = ['level_1', 'level_2', 'level_3', 'admin'];
+        $roles = ['worker', 'sp', 'hod', 'admin'];
         $permissions = ['index', 'create', 'view', 'edit', 'delete'];
 
         // craeting roles
