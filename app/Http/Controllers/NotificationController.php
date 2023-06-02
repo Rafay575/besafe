@@ -11,7 +11,8 @@ class NotificationController extends Controller
 {
     public function index(Request $request, $channel = "web")
     {
-        $data = $this->activityMapper(Activity::where('seen', 0)->latest()->take(40)->get());
+        // $data = $this->activityMapper(Activity::where('seen', 0)->latest()->take(40)->get());
+        $data = $this->activityMapper(Activity::where('seen', 0)->latest()->get());
         if ($channel === 'api') {
             return ApiResponseController::successWithJustData($data);
         }
