@@ -24,6 +24,10 @@ class User extends Authenticatable
         'email',
         'password',
     ];
+    public static function getRouteName()
+    {
+        return 'users.show'; //show route name
+    }
 
 
     /**

@@ -14,6 +14,10 @@ class Injury extends Model
     protected $casts = [
         'actions' => 'json',
     ];
+    public static function getRouteName()
+    {
+        return 'injuries.show'; //show route name
+    }
 
     public function attachements()
     {
