@@ -39,7 +39,7 @@ class IncidentAssignController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'incident_id' => 'required',
-            'incident_name' => 'required',
+            'incident_name' => 'required|in:hazards,near_misses,unsafe_behaviors,injuries,fpdamages',
         ]);
 
 
@@ -49,6 +49,7 @@ class IncidentAssignController extends Controller
         }
 
         $incidentsModelsArray = $this->getIncidentModelViaKeys();
+
         return $this->store($request, $incidentsModelsArray[$request->incident_name]::where('id', $request->incident_id)->first(), $channel);
 
     }

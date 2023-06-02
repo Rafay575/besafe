@@ -2,21 +2,43 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Api\ApiResponseController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Spatie\Activitylog\Models\Activity;
 
 class NotificationController extends Controller
 {
-    public function index()
+    public function index(Request $request, $channel = "web")
     {
-        return $this->activityMapper(Activity::where('seen', 0)->latest()->get());
+        $data = $this->activityMapper(Activity::where('seen', 0)->latest()->take(40)->get());
+        if ($channel === 'api') {
+            return ApiResponseController::successWithJustData($data);
+        }
+
+        return $data;
     }
 
-    public function activitySeen(Request $request)
+
+    public function activitySeen(Request $request, $channel = "web")
     {
+        $validator = Validator::make($request->all(), [
+            'notification_id' => 'required',
+        ]);
+
+
+        $formErrorsResponse = FormValidatitionDispatcherController::Response($validator, $channel);
+        if ($formErrorsResponse) {
+            return $formErrorsResponse;
+        }
+
+
         $activity = Activity::findOrFail($request->notification_id);
         $activity->seen = 1;
         $activity->save();
+        if ($channel == "api") {
+            return ApiResponseController::success("Notification seen");
+        }
         return true;
     }
 
