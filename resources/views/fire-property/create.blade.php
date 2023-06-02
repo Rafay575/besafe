@@ -49,6 +49,36 @@
       });
   
      
+      // total loss calculation
+       // Calculate and update total loss on input change
+       $('.direct_loss, .indirect_loss').on('input', function() {
+          // Get the values of direct_loss and indirect_loss inputs
+          var directLoss = parseFloat($('.direct_loss').val()) || 0;
+          var indirectLoss = parseFloat($('.indirect_loss').val()) || 0;
+
+          // Calculate the sum of direct_loss and indirect_loss
+          var totalLoss = directLoss + indirectLoss;
+
+          // Update the value of total_loss input
+          $('.total_loss').val(totalLoss);
+        });
+        
+      // toggle fire_categories
+        $('body').on('change', 'select.fire_categories', function() {
+          let propertyDamages =  $('select.property_damages');
+          $(this).parent().parent().removeClass('is-disabled');
+          propertyDamages.parent().parent().addClass('is-disabled');
+          propertyDamages.val(null);
+        });
+      // toggle property demages
+        $('body').on('change', 'select.property_damages', function() {
+          let fireCategories = $('select.fire_categories');
+          $(this).parent().parent().removeClass('is-disabled');
+          fireCategories.parent().parent().addClass('is-disabled');
+          fireCategories.val(null);
+        });
+
+     
     });
   </script>  
 @endsection

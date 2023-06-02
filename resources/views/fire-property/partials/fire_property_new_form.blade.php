@@ -50,19 +50,20 @@
                
                
                   </div>
-                  <div class="row mt-3" style="overflow: auto">
-                    <x-forms.radio-and-check-box-div name="fire_category" label="Fire Category" div-class="col-6">
+                  <div class="row mt-3" >
+                 
+                  <x-forms.select-option name="meta_fire_category_id" selectClass="form-control-sm fire_categories" divClass="col-6" label="Fire Category" >
                       @foreach ($fire_categories as $fire_category)
-                          <x-forms.radio-box width="col-2" radio-box-class="" name="meta_fire_category_id" checked="{{ isset($fire_property) && $fire_property->meta_fire_category_id == $fire_category->id ? 'true' : 'false' }}" label="{{$fire_category->fire_category_title}}" value="{{$fire_category->id}}"></x-forms.radio-box>
+                        <option value="{{$fire_category->id}}" {{ isset($fire_property) && $fire_property->meta_fire_category_id == $fire_category->id ? 'selected' : '' }}>{{$fire_category->fire_category_title}}</option>
                       @endforeach
-                  </x-forms.radio-and-check-box-div>
+                  </x-forms.select-option>
 
 
-                    <x-forms.radio-and-check-box-div name="property_damage" label="Property Damages" div-class="col-6">
+                  <x-forms.select-option name="meta_property_damage_id" selectClass="form-control-sm property_damages"  divClass="col-6" label="Property Damages" >
                       @foreach ($property_damages as $property_damage)
-                          <x-forms.radio-box width="col-2" radio-box-class="" name="meta_property_damage_id" checked="{{ isset($fire_property) && $fire_property->meta_property_damage_id == $property_damage->id ? 'true' : 'false' }}" label="{{$property_damage->property_damage_title}}" value="{{$property_damage->id}}"></x-forms.radio-box>
+                        <option value="{{$property_damage->id}}" {{ isset($fire_property) && $fire_property->meta_property_damage_id == $property_damage->id ? 'selected' : '' }}>{{$property_damage->property_damage_title}}</option>
                       @endforeach
-                  </x-forms.radio-and-check-box-div>
+                  </x-forms.select-option>
                  
                  </div>
 
@@ -130,7 +131,7 @@
                            <x-forms.basic-input label="" name="loss_calculation[direct_loss][description]" type="text" placeholder="description"  value="{{(isset($fire_property)) ? $fire_property->loss_calculation['direct_loss']['description'] : ''}}" width="col-12" input-class="multisteps-form__input" ></x-forms.basic-input>
                           </td>
                           <td>
-                           <x-forms.basic-input label="" name="loss_calculation[direct_loss][value]" type="number" placeholder="00"  value="{{(isset($fire_property)) ? $fire_property->loss_calculation['direct_loss']['value'] : ''}}" width="col-12 " input-class="multisteps-form__input" ></x-forms.basic-input>
+                           <x-forms.basic-input label="" name="loss_calculation[direct_loss][value]" type="number" placeholder="00"  value="{{(isset($fire_property)) ? $fire_property->loss_calculation['direct_loss']['value'] : ''}}" width="col-12 " input-class="multisteps-form__input direct_loss" ></x-forms.basic-input>
                           </td>
                         </tr>
                         <tr>
@@ -139,14 +140,14 @@
                            <x-forms.basic-input label="" name="loss_calculation[indirect_loss][description]" type="text" placeholder="description"  value="{{(isset($fire_property)) ? $fire_property->loss_calculation['indirect_loss']['description'] : ''}}" width="col-12" input-class="multisteps-form__input" ></x-forms.basic-input>
                           </td>
                           <td>
-                           <x-forms.basic-input label="" name="loss_calculation[indirect_loss][value]" value="{{(isset($fire_property)) ? $fire_property->loss_calculation['indirect_loss']['value'] : ''}}" type="number" placeholder="00"   width="col-12 " input-class="multisteps-form__input" ></x-forms.basic-input>
+                           <x-forms.basic-input label="" name="loss_calculation[indirect_loss][value]" value="{{(isset($fire_property)) ? $fire_property->loss_calculation['indirect_loss']['value'] : ''}}" type="number" placeholder="00"   width="col-12 " input-class="multisteps-form__input indirect_loss" ></x-forms.basic-input>
                           </td>
                         </tr>
 
                         <tr>
                           <td><i class="badge badge-dark">Total Loss</i></td>
                           <td>
-                           <x-forms.basic-input label="" name="loss_calculation[total_loss]" value="{{(isset($fire_property)) ? $fire_property->loss_calculation['total_loss'] : ''}}" type="number" placeholder="00"   width="col-12 " input-class="multisteps-form__input" ></x-forms.basic-input>
+                           <x-forms.basic-input label="" readonly name="loss_calculation[total_loss]" value="{{(isset($fire_property)) ? $fire_property->loss_calculation['total_loss'] : ''}}" type="number" placeholder="00"   width="col-12 " input-class="multisteps-form__input total_loss" ></x-forms.basic-input>
                           </td>
                         </tr>
                       </tbody>
