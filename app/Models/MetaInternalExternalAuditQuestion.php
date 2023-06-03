@@ -14,4 +14,9 @@ class MetaInternalExternalAuditQuestion extends Model
     {
         return $this->belongsTo(MetaAuditType::class);
     }
+
+    public function audit_answer()
+    {
+        return $this->hasMany(InternalExternalAuditAnswer::class, 'meta_ie_audit_question_id');
+    }
 }

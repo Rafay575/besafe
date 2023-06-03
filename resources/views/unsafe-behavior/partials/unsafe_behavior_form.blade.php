@@ -23,9 +23,9 @@
     <x-forms.basic-input label="Date" name="date" type="date" value="{{(isset($unsafe_behavior) ? Carbon\Carbon::parse($unsafe_behavior->date)->format('Y-m-d') : '')}}" width="col-6" input-class="form-control-sm"></x-forms.basic-input>
    
     <x-forms.select-option name="unsafe_behavior_types[]" multiple selectClass="form-control-sm" label="Type of Unsafe Behavior" divClass="col-12 col-sm-6">
-        @foreach ($ub_types as $ub_type)
+        {{-- @foreach ($ub_types as $ub_type)
         <option value="{{$ub_type->id}}">{{$ub_type->unsafe_behavior_type_title}}</option>
-       @endforeach
+       @endforeach --}}
        @foreach ($ub_types as $ub_type)
        <option value="{{ $ub_type->id }}" {{ isset($unsafe_behavior) && in_array($ub_type->id,$unsafe_behavior->unsafe_behavior_types->pluck('id')->toArray()) ? 'selected' : '' }}>{{ $ub_type->unsafe_behavior_type_title }}</option>
      @endforeach

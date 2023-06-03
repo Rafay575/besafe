@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Api\ApiResponseController;
 use App\Http\Resources\IEAuditClauseCollection;
 use App\Models\InternalExternalAuditClause;
+use App\Models\MetaAuditHall;
+use App\Models\MetaAuditType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
@@ -52,6 +54,9 @@ class InternalExternalAuditClauseController extends Controller
     public function create()
     {
         RolesPermissionController::can(['ie_audit_cluase.create']);
+        $audit_types = MetaAuditType::select('id', 'audit_title')->get();
+        $audit_halls = MetaAuditHall::select('id', 'hall_title')->get();
+        return view('ie_audits.create', compact('audit_types', 'audit_halls'));
 
     }
 
@@ -81,9 +86,15 @@ class InternalExternalAuditClauseController extends Controller
 
         // Save the new model instance
         $ie_audit->save();
+
+        // score calcuation 
+        $this::auditScoreCalculator($ie_audit->id);
+
         if ($channel == "api") {
             return ApiResponseController::successWithData('IE Audit Clause Created.', new IEAuditClauseCollection($ie_audit));
         }
+
+        return ['success', 'Initiating Audit. Please wait...', route('audit_init.edit', $ie_audit->id)];
     }
 
     /**
@@ -155,13 +166,26 @@ class InternalExternalAuditClauseController extends Controller
 
         // Save the new model instance
         $ie_audit->save();
+        $this::auditScoreCalculator($ie_audit->id);
 
         if ($channel === 'api') {
             return ApiResponseController::successWithData('IE Audit Clause Updated.', new IEAuditClauseCollection($ie_audit));
         }
     }
 
-    /**
+    public static function auditScoreCalculator($ie_audit_id)
+    {
+        $ie_audit = InternalExternalAuditClause::findOrFail($ie_audit_id);
+        $true_answers = $ie_audit->audit_answers->where('yes_or_no', 1)->count();
+        $false_answers = $ie_audit->audit_answers->where('yes_or_no', 0)->count();
+        $total_answers = $true_answers + $false_answers;
+        $ie_audit->audit_score = ($true_answers / $total_answers) * 100; //in percentage
+        $ie_audit->save();
+        // return true;
+
+    }
+
+    /**zzz
      * Remove the specified resource from storage.
      */
     public function destroy($ie_audit_id, $channel = "web")

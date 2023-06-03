@@ -33,6 +33,7 @@ class PermitToWorkCollection extends JsonResource
             "ptw_type_title" => $this->ptw_type->ptw_type_title ?? null,
             'working_group' => $this->working_group,
             'worker_name' => $this->worker_name,
+            'work_desc' => $this->work_desc,
             'immediate_cause' => $this->immediate_cause,
             'root_cause' => $this->root_cause,
             'actions' => $this->actions,

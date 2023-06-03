@@ -50,7 +50,12 @@ class NotificationController extends Controller
         return $activities->map(function ($activity) {
             $causer = $activity->causer;
             $changes = $activity->changes;
-            $url = route($activity->subject_type::getRouteName(), $activity->subject_id);
+
+            if (method_exists($activity->subject_type, "getRouteName")) {
+                $url = route($activity->subject_type::getRouteName(), $activity->subject_id);
+            } else {
+                $url = "";
+            }
             if ($changes->count() > 0) {
                 if ($changes->has('attributes')) {
                     $changes = collect($changes['attributes'])->map(function ($newValue, $attribute) use ($changes) {

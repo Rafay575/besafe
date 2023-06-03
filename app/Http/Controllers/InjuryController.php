@@ -5,7 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Api\ApiResponseController;
 use App\Http\Resources\InjuryCollection;
 use App\Models\Injury;
+use App\Models\MetaBasicCause;
+use App\Models\MetaContactType;
+use App\Models\MetaImmediateCause;
+use App\Models\MetaIncidentCategory;
 use App\Models\MetaIncidentStatus;
+use App\Models\MetaInjuryCategory;
+use App\Models\MetaRootCause;
+use App\Models\MetaSgflRelation;
 use App\Rules\InjuryActionData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -33,7 +40,7 @@ class InjuryController extends Controller
                     'sno' => $i,
                     'date' => $injury->date,
                     'employee_involved' => $injury->employee_involved,
-                    'sgfl_relation' => $injury->sgfl_relation,
+                    'sgfl_relation' => $injury->meta_sgfl_relation_id ? $injury->msgfl_relation->sgfl_relation_title : '',
                     'incident_category' => $injury->incident_category->incident_category_title,
                     'injury_category' => $injury->injury_category->injury_category_title,
                     'incident_status' => $injury->incident_status->status_title,
@@ -52,8 +59,16 @@ class InjuryController extends Controller
     public function create()
     {
         RolesPermissionController::can(['injury.create']);
+        $incident_categories = MetaIncidentCategory::select('id', 'incident_category_title')->get();
+        $injury_categories = MetaInjuryCategory::select('id', 'injury_category_title')->get();
+        $incident_statuses = MetaIncidentStatus::select('status_code', 'status_title', 'id')->get();
+        $sgfl_relations = MetaSgflRelation::select('id', 'sgfl_relation_title')->get();
+        $immediate_causes = MetaImmediateCause::select('id', 'cause_title')->get();
+        $basic_causes = MetaBasicCause::select('id', 'cause_title')->get();
+        $root_causes = MetaRootCause::select('id', 'cause_title')->get();
+        $contacts = MetaContactType::select('id', 'type_title')->get();
+        return view('injuries.create', compact('incident_categories', 'injury_categories', 'incident_statuses', 'sgfl_relations', 'immediate_causes', 'basic_causes', 'root_causes', 'contacts'));
 
-        return view('injury.create');
     }
 
     /**
@@ -77,7 +92,8 @@ class InjuryController extends Controller
         $injury->meta_injury_category_id = $request->meta_injury_category_id;
         $injury->meta_incident_category_id = $request->meta_incident_category_id;
         $injury->meta_incident_status_id = MetaIncidentStatus::where('status_code', 0)->first()->id; //pending
-        $injury->employee_involved = $request->employee_involved;
+        // $injury->employee_involved = $request->employee_involved;
+        $injury->meta_sgfl_relation_id = $request->meta_sgfl_relation_id;
         $injury->witness_name = $request->witness_name;
         $injury->sgfl_relation = $request->sgfl_relation;
         $injury->details = $request->details;
@@ -121,6 +137,8 @@ class InjuryController extends Controller
             return ApiResponseController::successWithData('Injury created.', new InjuryCollection($injury));
         }
 
+        return ['success', 'Injury has been created', $request->redirect];
+
     }
 
     /**
@@ -133,20 +151,30 @@ class InjuryController extends Controller
         if ($channel === 'api') {
             return $injury;
         }
+        return view('injuries.show', compact('injury'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit()
+    public function edit(Injury $injury)
     {
-        //
+        $incident_categories = MetaIncidentCategory::select('id', 'incident_category_title')->get();
+        $injury_categories = MetaInjuryCategory::select('id', 'injury_category_title')->get();
+        $incident_statuses = MetaIncidentStatus::select('status_code', 'status_title', 'id')->get();
+        $sgfl_relations = MetaSgflRelation::select('id', 'sgfl_relation_title')->get();
+        $immediate_causes = MetaImmediateCause::select('id', 'cause_title')->get();
+        $basic_causes = MetaBasicCause::select('id', 'cause_title')->get();
+        $root_causes = MetaRootCause::select('id', 'cause_title')->get();
+        $contacts = MetaContactType::select('id', 'type_title')->get();
+        return view('injuries.edit', compact('injury', 'incident_categories', 'injury_categories', 'incident_statuses', 'sgfl_relations', 'immediate_causes', 'basic_causes', 'root_causes', 'contacts'));
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $injury_id, $channel)
+    public function update(Request $request, $injury_id, $channel = "web")
     {
 
         $validator = $this->validateData($request);
@@ -170,7 +198,8 @@ class InjuryController extends Controller
         $injury->meta_incident_status_id = $request->meta_incident_status_id; //pending
         $injury->employee_involved = $request->employee_involved;
         $injury->witness_name = $request->witness_name;
-        $injury->sgfl_relation = $request->sgfl_relation;
+        $injury->meta_sgfl_relation_id = $request->meta_sgfl_relation_id;
+        // $injury->sgfl_relation = $request->sgfl_relation;
         $injury->details = $request->details;
         $injury->date = $request->date;
         $injury->immediate_action = $request->immediate_action;
@@ -200,6 +229,9 @@ class InjuryController extends Controller
         if ($channel === 'api') {
             return ApiResponseController::successWithData('Injury updated.', new InjuryCollection($injury));
         }
+
+        return ['success', 'Injury has been updated', $request->redirect];
+
     }
 
     /**
@@ -252,9 +284,9 @@ class InjuryController extends Controller
                 'meta_incident_category_id' => ['required', 'exists:meta_incident_categories,id'],
                 'meta_incident_status_id' => ['required', 'exists:meta_incident_statuses,id'],
                 'employee_involved' => ['string', 'in:yes,no,Yes,No'],
+                'meta_sgfl_relation_id' => ['required', 'exists:meta_sgfl_relations,id'],
                 'witness_name' => ['nullable', 'string'],
                 'date' => ['date'],
-                'sgfl_relation' => ['nullable', 'string'],
                 'details' => ['nullable', 'string'],
                 'immediate_action' => ['nullable', 'string'],
                 'key_finding' => ['nullable', 'string'],

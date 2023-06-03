@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Api\ApiResponseController;
 use App\Http\Resources\PermitToWorkCollection;
+use App\Models\MetaPtwItem;
+use App\Models\MetaPtwType;
 use App\Models\PermitToWork;
 use App\Rules\PtwActionData;
 use Illuminate\Http\Request;
@@ -55,6 +57,10 @@ class PermitToWorkController extends Controller
     public function create()
     {
         RolesPermissionController::can(['ptw.create']);
+        $ptw_types = MetaPtwType::select('id', 'ptw_type_title')->get();
+        $ptw_items = MetaPtwItem::select('id', 'ptw_item_title')->get();
+        return view('ptws.create', compact('ptw_types', 'ptw_items'));
+
 
     }
 
@@ -86,9 +92,7 @@ class PermitToWorkController extends Controller
         $ptw->moc_desc = $request->moc_desc;
         $ptw->working_group = $request->working_group;
         $ptw->worker_name = $request->worker_name;
-        $ptw->immediate_cause = $request->immediate_cause;
-        $ptw->root_cause = $request->root_cause;
-        $ptw->actions = $request->actions;
+        $ptw->work_desc = $request->work_desc;
         $ptw->meta_ptw_type_id = $request->meta_ptw_type_id;
 
         $ptw->save();
@@ -99,6 +103,9 @@ class PermitToWorkController extends Controller
         if ($channel === 'api') {
             return ApiResponseController::successWithData('PTW created.', new PermitToWorkCollection($ptw));
         }
+
+        return ['success', 'PTW Created', $request->redirect];
+
     }
 
     /**
@@ -120,14 +127,19 @@ class PermitToWorkController extends Controller
         if ($channel === "api") {
             return $ptw;
         }
+        return view('ptws.show', compact('ptw'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(PermitToWork $permitToWork)
+    public function edit(PermitToWork $ptw)
     {
         RolesPermissionController::can(['ptw.edit']);
+        $ptw_types = MetaPtwType::select('id', 'ptw_type_title')->get();
+        $ptw_items = MetaPtwItem::select('id', 'ptw_item_title')->get();
+        return view('ptws.edit', compact('ptw', 'ptw_types', 'ptw_items'));
+
 
     }
 
@@ -166,9 +178,7 @@ class PermitToWorkController extends Controller
         $ptw->moc_desc = $request->moc_desc;
         $ptw->working_group = $request->working_group;
         $ptw->worker_name = $request->worker_name;
-        $ptw->immediate_cause = $request->immediate_cause;
-        $ptw->root_cause = $request->root_cause;
-        $ptw->actions = $request->actions;
+        $ptw->work_desc = $request->work_desc;
         $ptw->meta_ptw_type_id = $request->meta_ptw_type_id;
         $ptw->save();
         // Synchronize the meta PTW items
@@ -178,6 +188,8 @@ class PermitToWorkController extends Controller
         if ($channel === 'api') {
             return ApiResponseController::successWithData('PTW updated.', new PermitToWorkCollection($ptw));
         }
+
+        return ['success', 'PTW Updated', $request->redirect];
     }
 
     /**
@@ -227,15 +239,13 @@ class PermitToWorkController extends Controller
             'cross_reference' => ['nullable', 'string'],
             'moc_required' => ['required', 'boolean'],
             'moc_title' => ['nullable', 'string'],
+            'work_desc' => ['nullable', 'string'],
             'moc_desc' => ['nullable', 'string'],
             'meta_ptw_type_id' => ['required', 'exists:meta_ptw_types,id'],
             'working_group' => ['nullable', 'string'],
             'worker_name' => ['nullable', 'string'],
             'meta_ptw_item_id' => 'array',
             'meta_ptw_item_id.*' => 'exists:meta_ptw_items,id',
-            'immediate_cause' => ['nullable', 'string'],
-            'root_cause' => ['nullable', 'string'],
-            'actions' => ['array', new PtwActionData],
         ]);
     }
 }

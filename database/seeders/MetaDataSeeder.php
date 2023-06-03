@@ -3,8 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\MetaIncidentStatus;
+use App\Models\MetaSgflRelation;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class MetaDataSeeder extends Seeder
 {
@@ -13,6 +15,36 @@ class MetaDataSeeder extends Seeder
      */
     public function run(): void
     {
+        // Disable foreign key checks
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        // Truncate existing records from each table
+        \App\Models\MetaAuditHall::truncate();
+        \App\Models\MetaAuditType::truncate();
+        \App\Models\MetaBasicCause::truncate();
+        \App\Models\MetaContactType::truncate();
+        \App\Models\MetaDepartment::truncate();
+        \App\Models\MetaDepartmentTag::truncate();
+        \App\Models\MetaFireCategory::truncate();
+        \App\Models\MetaDesignation::truncate();
+        \App\Models\MetaImmediateCause::truncate();
+        \App\Models\MetaIncidentCategory::truncate();
+        \App\Models\MetaInjuryCategory::truncate();
+        \App\Models\MetaLine::truncate();
+        \App\Models\MetaInternalExternalAuditQuestion::truncate();
+        \App\Models\MetaPropertyDamage::truncate();
+        \App\Models\MetaPtwItem::truncate();
+        \App\Models\MetaPtwType::truncate();
+        \App\Models\MetaRiskLevel::truncate();
+        \App\Models\MetaRootCause::truncate();
+        \App\Models\MetaUnit::truncate();
+        \App\Models\MetaUnsafeBehaviorType::truncate();
+        \App\Models\MetaIncidentStatus::truncate();
+        \App\Models\MetaSgflRelation::truncate();
+
+        // Enable foreign key checks
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+
+
         \App\Models\MetaAuditHall::factory()->count(10)->create();
         \App\Models\MetaAuditType::factory()->count(10)->create();
         \App\Models\MetaBasicCause::factory()->count(10)->create();
@@ -53,6 +85,13 @@ class MetaDataSeeder extends Seeder
         MetaIncidentStatus::create([
             "status_title" => "Rejected",
             "status_code" => 4,
+        ]);
+
+        MetaSgflRelation::create([
+            "sgfl_relation_title" => "Contract",
+        ]);
+        MetaSgflRelation::create([
+            "sgfl_relation_title" => "Permanent",
         ]);
 
     }

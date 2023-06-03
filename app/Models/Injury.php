@@ -38,6 +38,11 @@ class Injury extends Model
         return $this->belongsTo(MetaInjuryCategory::class, 'meta_injury_category_id');
     }
 
+    public function msgfl_relation()
+    {
+        return $this->belongsTo(MetaSgflRelation::class, 'meta_sgfl_relation_id');
+    }
+
     public function incident_category()
     {
         return $this->belongsTo(MetaIncidentCategory::class, 'meta_incident_category_id');

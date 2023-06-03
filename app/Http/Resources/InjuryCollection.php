@@ -35,6 +35,8 @@ class InjuryCollection extends JsonResource
             "employee_involved" => $this->employee_involved,
             "witness_name" => $this->witness_name,
             "sgfl_relation" => $this->sgfl_relation,
+            "meta_sgfl_relation_id" => $this->meta_sgfl_relation_id,
+            "sgfl_relation_title" => $this->msgfl_relation->sgfl_relation_title ?? null,
             "details" => $this->details,
             "immediate_action" => $this->immediate_action,
             "key_finding" => $this->key_finding,
