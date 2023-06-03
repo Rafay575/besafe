@@ -98,6 +98,10 @@ class InternalExternalAuditAnswerController extends Controller
         if ($request->has('attachements')) {
             $this::uploadAuditAttachements($request->attachements, $ieAuditAnswer);
         }
+
+        // score calcuation 
+        InternalExternalAuditClauseController::auditScoreCalculator($auditClause->id);
+
         return ApiResponseController::successWithData('Audit Answer has been submitted.', new IEAuditAnswersCollection($ieAuditAnswer));
 
     }
@@ -146,6 +150,8 @@ class InternalExternalAuditAnswerController extends Controller
         // $ieAuditAnswer->remarks = $request->remarks;
 
         $ieAuditAnswer->save();
+        // score calcuation 
+        InternalExternalAuditClauseController::auditScoreCalculator($ieAuditAnswer->ie_audit_clause_id);
 
         if ($request->has('attachements')) {
             $this::uploadAuditAttachements($request->attachements, $ieAuditAnswer);

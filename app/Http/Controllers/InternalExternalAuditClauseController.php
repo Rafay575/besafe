@@ -87,8 +87,6 @@ class InternalExternalAuditClauseController extends Controller
         // Save the new model instance
         $ie_audit->save();
 
-        // score calcuation 
-        $this::auditScoreCalculator($ie_audit->id);
 
         if ($channel == "api") {
             return ApiResponseController::successWithData('IE Audit Clause Created.', new IEAuditClauseCollection($ie_audit));
@@ -166,7 +164,6 @@ class InternalExternalAuditClauseController extends Controller
 
         // Save the new model instance
         $ie_audit->save();
-        $this::auditScoreCalculator($ie_audit->id);
 
         if ($channel === 'api') {
             return ApiResponseController::successWithData('IE Audit Clause Updated.', new IEAuditClauseCollection($ie_audit));
@@ -179,7 +176,9 @@ class InternalExternalAuditClauseController extends Controller
         $true_answers = $ie_audit->audit_answers->where('yes_or_no', 1)->count();
         $false_answers = $ie_audit->audit_answers->where('yes_or_no', 0)->count();
         $total_answers = $true_answers + $false_answers;
-        $ie_audit->audit_score = ($true_answers / $total_answers) * 100; //in percentage
+        if ($total_answers > 0) {
+            $ie_audit->audit_score = ($true_answers / $total_answers) * 100; //in percentage
+        }
         $ie_audit->save();
         // return true;
 

@@ -18,6 +18,14 @@ class IEAuditBulkResponseController extends Controller
         return view('ie_audits.audit_init', compact('auditQuestions', 'ieAuditClause'));
     }
 
+    public function show($ieAuditClauseId)
+    {
+        $ieAuditClause = InternalExternalAuditClause::where('id', $ieAuditClauseId)->firstOrFail();
+        $auditQuestions = $ieAuditClause->audit_type->audit_questions;
+        // return $auditQuestions->find(27)->audit_answer->find(83)->attachements;
+        return view('ie_audits.audit_init_show', compact('auditQuestions', 'ieAuditClause'));
+    }
+
     public function store(Request $request)
     {
         RolesPermissionController::can(['ie_audit_cluase.create']);
