@@ -1,5 +1,5 @@
 
-<form action="{{route('audit_init.store')}}" class="col-12 row  ajax-sform" method="post"  enctype="multipart/form-data">
+<form action="{{route('audit_init.store')}}" class="col-12 row  ajax-form" method="post"  enctype="multipart/form-data">
     @csrf
     <div class="table-responsive">
         <table class="table table-flush table-bordered" >

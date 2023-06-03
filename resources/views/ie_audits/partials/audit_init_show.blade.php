@@ -4,7 +4,7 @@
     <div class="table-responsive">
         <table class="table table-flush table-bordered" >
           <thead class="thead-light bg-primary text-light">
-            <x-table.tblhead heads="Audit Hall, Audit Type, Initiator,Audit Date"></x-table.tblhead>
+            <x-table.tblhead heads="Audit Hall, Audit Type, Initiator,Audit Date,Audit Score"></x-table.tblhead>
           </thead>
           <tbody>
             <tr>
@@ -12,6 +12,7 @@
                 <th>{{$ieAuditClause->audit_type->audit_title}}</th>
                 <th>{{$ieAuditClause->initiator->first_name}}</th>
                 <th>{{$ieAuditClause->audit_date}}</td>
+                <th>{{$ieAuditClause->audit_score}}%</td>
             </tr>
           </tbody>
         </table>
