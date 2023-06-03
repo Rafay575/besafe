@@ -11,7 +11,8 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('injuries', function (Blueprint $table) {
-            $table->foreignId('meta_sgfl_relation_id')->nullable()->change();
+            $table->unsignedBigInteger('meta_sgfl_relation_id')->nullable();
+            $table->foreign('meta_sgfl_relation_id')->references('id')->on('meta_sgfl_relations')->onDelete('cascade');
         });
     }
 
