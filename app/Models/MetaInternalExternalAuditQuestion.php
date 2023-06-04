@@ -9,6 +9,8 @@ class MetaInternalExternalAuditQuestion extends Model
 {
     use HasFactory;
     protected $table = "meta_ie_audit_questions";
+    protected $fillable = ['question', 'group_name', 'meta_audit_type_id'];
+
 
     public function audit_type()
     {

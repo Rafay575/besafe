@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class MetaLine extends Model
 {
     use HasFactory;
+    protected $fillable = ['line_title', 'group_name'];
+
 }

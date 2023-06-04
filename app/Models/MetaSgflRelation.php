@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class MetaSgflRelation extends Model
 {
     use HasFactory;
+    protected $fillable = ['sgfl_relation_title', 'group_name'];
+
 }

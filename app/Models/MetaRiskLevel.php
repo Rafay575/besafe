@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class MetaRiskLevel extends Model
 {
     use HasFactory;
+    protected $fillable = ['risk_level_title', 'group_name', 'days_required'];
+
 }

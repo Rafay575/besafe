@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class MetaPropertyDamage extends Model
 {
     use HasFactory;
+    protected $fillable = ['property_damage_title', 'group_name'];
+
 }

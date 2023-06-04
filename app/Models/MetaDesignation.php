@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class MetaDesignation extends Model
 {
     use HasFactory;
+    protected $fillable = ['designation_title', 'group_name'];
+
 }

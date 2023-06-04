@@ -7,11 +7,11 @@
 @endphp
 
 <div class="d-flex justify-content-between">
-    <h5>
-      {{ucfirst(str_replace('_'," ",$meta_data_name))}}
-    </h5>
-    <a href="{{ route('meta-data.create', $meta_data_name)}}" class="btn btn-sm btn-primary align-right">Add</a>
-  </div>
+  <h5>
+    {{ucfirst(str_replace('_'," ",$meta_data_name))}}
+  </h5>
+  <a data-bs-toggle="modal" id="meta_data_add_button" data-title_field="{{$title_field}}" data-desc_field="{{$desc_field}}" data-meta_data_name="{{$meta_data_name}}"    data-bs-target="#metaDataCreate"class="btn btn-sm btn-primary align-right">Add</a>
+</div>
   
 <div class="table-responsive">
 

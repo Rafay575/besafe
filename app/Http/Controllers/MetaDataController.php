@@ -57,29 +57,29 @@ class MetaDataController extends Controller
             'SGFL Relations',
         ];
 
-        $auditHalls = MetaAuditHall::all();
-        $auditTypes = MetaAuditType::all();
-        $basicCauses = MetaBasicCause::all();
-        $contactTypes = MetaContactType::all();
-        $departments = MetaDepartment::all();
-        $departmentTags = MetaDepartmentTag::all();
-        $fireCategories = MetaFireCategory::all();
-        $designations = MetaDesignation::all();
-        $immediateCauses = MetaImmediateCause::all();
-        $incidentCategories = MetaIncidentCategory::all();
-        $injuryCategories = MetaInjuryCategory::all();
-        $lines = MetaLine::all();
-        $internalExternalAuditQuestions = MetaInternalExternalAuditQuestion::all();
-        $propertyDamages = MetaPropertyDamage::all();
-        $ptwItems = MetaPtwItem::all();
-        $ptwTypes = MetaPtwType::all();
-        $riskLevels = MetaRiskLevel::all();
-        $rootCauses = MetaRootCause::all();
-        $units = MetaUnit::all();
-        $unsafeBehaviorTypes = MetaUnsafeBehaviorType::all();
-        $incidentStatuses = MetaIncidentStatus::all();
-        $sgflRelations = MetaSgflRelation::all();
-        $rootCauses = MetaRootCause::all();
+        $auditHalls = MetaAuditHall::latest()->get();
+        $auditTypes = MetaAuditType::latest()->get();
+        $basicCauses = MetaBasicCause::latest()->get();
+        $contactTypes = MetaContactType::latest()->get();
+        $departments = MetaDepartment::latest()->get();
+        $departmentTags = MetaDepartmentTag::latest()->get();
+        $fireCategories = MetaFireCategory::latest()->get();
+        $designations = MetaDesignation::latest()->get();
+        $immediateCauses = MetaImmediateCause::latest()->get();
+        $incidentCategories = MetaIncidentCategory::latest()->get();
+        $injuryCategories = MetaInjuryCategory::latest()->get();
+        $lines = MetaLine::latest()->get();
+        $internalExternalAuditQuestions = MetaInternalExternalAuditQuestion::latest()->get();
+        $propertyDamages = MetaPropertyDamage::latest()->get();
+        $ptwItems = MetaPtwItem::latest()->get();
+        $ptwTypes = MetaPtwType::latest()->get();
+        $riskLevels = MetaRiskLevel::latest()->get();
+        $rootCauses = MetaRootCause::latest()->get();
+        $units = MetaUnit::latest()->get();
+        $unsafeBehaviorTypes = MetaUnsafeBehaviorType::latest()->get();
+        $incidentStatuses = MetaIncidentStatus::latest()->get();
+        $sgflRelations = MetaSgflRelation::latest()->get();
+        $rootCauses = MetaRootCause::latest()->get();
         return view(
             'meta-data.index',
             compact(
@@ -112,17 +112,76 @@ class MetaDataController extends Controller
         );
     }
 
-    public function create()
+    public function create($meta_data_name)
     {
 
+        return view('meta-data.create', compact('meta_data_name'));
     }
-    public function store()
+    public function store(Request $request)
     {
+        $requestData = $request->except('_token', 'redirect');
+        $redirect = str_replace('_', '-', $request->meta_data_name);
+        $metaDataTitle = ucfirst(str_replace("_", " ", $request->meta_data_name));
+        $modelClass = $this::getMetaDataModelClass($request->meta_data_name);
+        if ($modelClass) {
+            $data = $modelClass::create($requestData);
+            return ['success', "{$metaDataTitle} has been created!", route('meta-data.index') . "?saved={$data->id}#{$redirect}"];
+        } else {
+            return ['error', 'Key not found for the class'];
+        }
 
     }
 
     public function edit()
     {
 
+    }
+
+    public static function getMetaDataModelClass($key)
+    {
+
+        $models = [
+            'departments' => MetaDepartment::class,
+            'designations' => MetaDesignation::class,
+            'lines' => MetaLine::class,
+            'units' => MetaUnit::class,
+            'audit_halls' => MetaAuditHall::class,
+            'audit_types' => MetaAuditType::class,
+            'ie_audit_questions' => MetaInternalExternalAuditQuestion::class,
+            'basic_causes' => MetaBasicCause::class,
+            'root_causes' => MetaRootCause::class,
+            'contact_types' => MetaContactType::class,
+            'department_tags' => MetaDepartmentTag::class,
+            'fire_categories' => MetaFireCategory::class,
+            'immediate_causes' => MetaImmediateCause::class,
+            'incident_categories' => MetaIncidentCategory::class,
+            'injury_categories' => MetaInjuryCategory::class,
+            'property_damages' => MetaPropertyDamage::class,
+            'ptw_items' => MetaPtwItem::class,
+            'ptw_types' => MetaPtwType::class,
+            'risk_levels' => MetaRiskLevel::class,
+            'unsafe_behavior_types' => MetaUnsafeBehaviorType::class,
+            'incident_statuses' => MetaIncidentStatus::class,
+            'sgfl_relations' => MetaSgflRelation::class,
+        ];
+
+        if (array_key_exists($key, $models)) {
+            return $models[$key];
+        }
+        return false;
+    }
+
+    public function destroy(Request $request, $meta_data_id, $meta_data_name)
+    {
+        $modelClass = $this::getMetaDataModelClass($meta_data_name);
+        $redirect = str_replace('_', '-', $request->meta_data_name);
+        $metaDataTitle = ucfirst(str_replace("_", " ", $request->meta_data_name));
+        $data = $modelClass::where('id', $meta_data_id)->first();
+        if (!$data) {
+            return ["{$metaDataTitle} not found"];
+        }
+        if ($data->delete()) {
+            return ['deleted', "{$metaDataTitle} has been deleted!"];
+        }
     }
 }

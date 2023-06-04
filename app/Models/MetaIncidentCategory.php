@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class MetaIncidentCategory extends Model
 {
     use HasFactory;
+    protected $fillable = ['incident_category_title', 'group_name'];
+
 }

@@ -1,5 +1,5 @@
  {{-- nav_bar --}}
- <div class="col-2" style="max-height: 700px; overflow:auto;">
+ <div class="col-12 col-sm-3" style="">
      <div class="nav-wrapper position-relative end-0">
          <ul class="nav nav-pills nav-fill flex-column p-1 shadow" role="tablist">
              {{$heads}}
@@ -7,7 +7,7 @@
      </div>
  </div>
  {{-- content --}}
- <div class="col-10">
+ <div class="col-12 col-sm-9">
      <!-- Content Containers -->
      <div class="card">
          <div class="card-body">

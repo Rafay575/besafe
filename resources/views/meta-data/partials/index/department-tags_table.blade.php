@@ -10,9 +10,8 @@ $heads = "S.No,department tag ID,department tag title,Group,Date Created,Actions
   <h5>
     {{ucfirst(str_replace('_'," ",$meta_data_name))}}
   </h5>
-  <a href="{{ route('meta-data.create', $meta_data_name)}}" class="btn btn-sm btn-primary align-right">Add</a>
+  <a data-bs-toggle="modal" id="meta_data_add_button" data-title_field="{{$title_field}}" data-desc_field="{{$desc_field}}" data-meta_data_name="{{$meta_data_name}}"    data-bs-target="#metaDataCreate"class="btn btn-sm btn-primary align-right">Add</a>
 </div>
-
 <div class="table-responsive">
 <table class="table table-flush datatable" id="datatable">
   <thead class="thead-light">

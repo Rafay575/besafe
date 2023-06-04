@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class MetaAuditType extends Model
 {
     use HasFactory;
+    protected $fillable = ['audit_title', 'group_name'];
+
 
     public function audit_clauses()
     {

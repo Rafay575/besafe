@@ -8,7 +8,7 @@
 <script src="{{asset('assets/js/plugins/sweetalert.min.js')}}"></script>
 <script src="{{asset('assets/js/core/spin.min.js')}}"></script>
 <script src="{{asset('assets/js/core/ladda.min.js')}}"></script>
-<script src="{{asset('assets/js/sweet_alerts.js')}}"></script>
+<script src="{{asset('assets/js/sweet_alerts.js?v2')}}"></script>
 <script src="{{asset('assets/js/plugins/dropzone.min.js')}}"></script>
 <script src="{{asset('assets/js/validation.js?v9')}}"></script>
 

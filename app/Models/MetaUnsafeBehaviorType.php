@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class MetaUnsafeBehaviorType extends Model
 {
     use HasFactory;
+    protected $fillable = ['unsafe_behavior_type_title', 'group_name'];
+
 }

@@ -61,7 +61,7 @@ Route::middleware('auth')->group(function () {
     Route::get('meta-data', [MetaDataController::class, 'index'])->name('meta-data.index');
     Route::get('meta-data/{meta_data_id}/{meta_data_name}/edit', [MetaDataController::class, 'edit'])->name('meta-data.edit');
     Route::get('meta-data/{meta_data_name}/create', [MetaDataController::class, 'create'])->name('meta-data.create');
-    Route::post("meta-data/{meta_data_id}/{meta_data_name}/", [MetaDataController::class, 'store'])->name('meta-data.store');
+    Route::post("meta-data", [MetaDataController::class, 'store'])->name('meta-data.store');
     Route::delete('meta-data/{meta_data_id}/{meta_data_name}/destroy', [MetaDataController::class, 'destroy'])->name('meta-data.destroy');
 
     Route::delete('common_files/{file_id}/delete', [CommonAttachementController::class, 'destroy'])->name('common_files.destroy');

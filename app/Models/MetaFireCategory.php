@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class MetaFireCategory extends Model
 {
     use HasFactory;
+    protected $fillable = ['fire_category_title', 'group_name'];
+
 }

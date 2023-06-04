@@ -125,7 +125,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ (request()->is('meta-data')) ? 'active' : '' }}" href="{{route('meta-data.index')}}">
+          <a class="nav-link {{ (request()->is('meta-data')) ? 'active' : '' }}" href="{{route('meta-data.index')."?menu=departments"}}">
             <div class="icon icon-shape icon-sm text-center  me-2 d-flex align-items-center justify-content-center">
               <img src="{{asset('website/nav_icons/Meta-Data.ico')}}" alt="" width="18">
             
