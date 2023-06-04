@@ -63,7 +63,7 @@
     <input type="hidden" name="meta_data_id" id="meta_data_id" value="">
     <div class="col-12 form-group">
       <input type="hidden" name="redirect" value="{{url()->current()}}">
-      <button class="btn bg-gradient-dark ms-auto mb-0 btn-ladda" type="submit" title="Send" data-style="expand-left">Submit</button>
+      <button class="btn bg-gradient-dark ms-auto mb-0 btn-ladda" type="submit" id="submit-button" title="Send" data-style="expand-left">Submit</button>
     </div>
   </form>
 </x-modals.basic-modal>
@@ -79,6 +79,11 @@ const table = $('.datatable');
   table.DataTable({
     serverSide: false,
   });
+
+  $('#submit-button').on('click', function() {
+  history.replaceState({}, document.title, window.location.pathname);
+});
+
 
     // Get the URL fragment
     var urlFragment = window.location.hash;
