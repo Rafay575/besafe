@@ -22,9 +22,7 @@
               <tbody>
                 
               </tbody>
-              <tfoot>
-                <x-table.tblhead heads="S.No,Incident Name, Initiated By, Incident Status, Created at, Updated at,Action"></x-table.tblhead>
-              </tfoot>
+             
             </table>
         </div>
       {{-- defautl slot end here --}}

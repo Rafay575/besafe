@@ -47,9 +47,7 @@
               </td>
             </tr>
           </tbody>
-          <tfoot>
-            <x-table.tblhead heads="Name,Username,Email,Role,Status,Action"></x-table.tblhead>
-          </tfoot>
+          
         </table>
     </div>
     {{-- Data Table end here --}}

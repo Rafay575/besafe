@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('breadcrumb')
-<x-templates.bread-crumb page-title="Add New Audit">
+<x-templates.bread-crumb page-title="Initiatilize Audit">
   <li class="breadcrumb-item text-sm text-white"><a class="text-white" href="{{route('ie_audits.index')}}">List of Audit</a></li>
 </x-templates.bread-crumb>
 @endsection

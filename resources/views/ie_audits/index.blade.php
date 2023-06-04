@@ -21,13 +21,11 @@
         <div class="table-responsive">
             <table class="table table-flush" id="ie-audits-table" data-source="{{route('ie_audits.index')}}">
               <thead class="thead-light">
-                <x-table.tblhead heads="S.No,Audit Hall,Audit Type,Audit Date,Action"></x-table.tblhead>
+                <x-table.tblhead heads="S.No,Audit Hall,Audit Type,Audit Date,Audit Score,Action"></x-table.tblhead>
               </thead>
               <tbody>
               </tbody>
-              <tfoot>
-                <x-table.tblhead heads="S.No,Audit Hall,Audit Type,Audit Date,Action"></x-table.tblhead>
-              </tfoot>
+             
             </table>
         </div>
       {{-- defautl slot end here --}}
@@ -50,6 +48,7 @@ $(document).ready(function() {
       { data: 'audit_hall', name: 'audit_hall' },
       { data: 'audit_type', name: 'audit_type' },
       { data: 'audit_date', name: 'audit_date' },
+      { data: 'audit_score', name: 'audit_score' },
       { data: 'action', name: 'action', orderable: false, searchable: false },
     ],
     

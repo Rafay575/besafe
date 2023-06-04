@@ -25,9 +25,7 @@
               <tbody>
                 
               </tbody>
-              <tfoot>
-                <x-table.tblhead heads="S.No,Unit,Department,Line,Date,Status,Action"></x-table.tblhead>
-              </tfoot>
+             
             </table>
         </div>
       {{-- defautl slot end here --}}

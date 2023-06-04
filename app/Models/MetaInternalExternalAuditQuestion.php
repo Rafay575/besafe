@@ -12,7 +12,7 @@ class MetaInternalExternalAuditQuestion extends Model
 
     public function audit_type()
     {
-        return $this->belongsTo(MetaAuditType::class);
+        return $this->belongsTo(MetaAuditType::class, 'meta_audit_type_id');
     }
 
     public function audit_answer()

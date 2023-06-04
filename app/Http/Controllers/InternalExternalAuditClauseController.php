@@ -38,6 +38,7 @@ class InternalExternalAuditClauseController extends Controller
                     'audit_hall' => $ie_audit->audit_hall->hall_title,
                     'audit_type' => $ie_audit->audit_type->audit_title,
                     'audit_date' => $ie_audit->audit_date,
+                    'audit_score' => $ie_audit->audit_score . "%",
                     'action' => view('ie_audits.partials.action-buttons', ['ie_audit' => $ie_audit])->render()
                 ];
             }

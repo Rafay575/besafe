@@ -46,7 +46,6 @@ Route::middleware('auth')->group(function () {
     Route::get('card_chart', [CardChartController::class, 'index']);
     Route::get('dashboard', [DashboardController::class, 'index']);
     Route::resource('users', UserController::class);
-    Route::resource('meta-data', MetaDataController::class);
     Route::resource('unsafe-behaviors', UnsafeBehaviorController::class);
     Route::resource('near-miss', NearMissController::class);
     Route::resource('profile', ProfileController::class);
@@ -57,6 +56,14 @@ Route::middleware('auth')->group(function () {
     Route::resource('ie_audits', InternalExternalAuditClauseController::class);
     Route::resource('audit_init', IEAuditBulkResponseController::class);
     Route::resource('roles', RolesPermissionController::class);
+
+    // Route::resource('meta-data', MetaDataController::class);
+    Route::get('meta-data', [MetaDataController::class, 'index'])->name('meta-data.index');
+    Route::get('meta-data/{meta_data_id}/{meta_data_name}/edit', [MetaDataController::class, 'edit'])->name('meta-data.edit');
+    Route::get('meta-data/{meta_data_name}/create', [MetaDataController::class, 'create'])->name('meta-data.create');
+    Route::post("meta-data/{meta_data_id}/{meta_data_name}/", [MetaDataController::class, 'store'])->name('meta-data.store');
+    Route::delete('meta-data/{meta_data_id}/{meta_data_name}/destroy', [MetaDataController::class, 'destroy'])->name('meta-data.destroy');
+
     Route::delete('common_files/{file_id}/delete', [CommonAttachementController::class, 'destroy'])->name('common_files.destroy');
     Route::delete('ie_audit_ans_file/{file_id}/delete', [InternalExternalAuditAnswerAttachementController::class, 'destroy'])->name('ie_audit_ans_file.destroy');
     Route::get('incidents', [IncidentController::class, 'index'])->name('incidents.index');

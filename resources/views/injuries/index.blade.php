@@ -24,9 +24,7 @@
               </thead>
               <tbody>
               </tbody>
-              <tfoot>
-                <x-table.tblhead heads="S.No,Date,Incident Category,Injury Category,Employee Involved, SGFL Relation,Status,Action"></x-table.tblhead>
-              </tfoot>
+              
             </table>
         </div>
       {{-- defautl slot end here --}}

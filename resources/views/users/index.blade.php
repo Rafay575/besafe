@@ -25,9 +25,7 @@
               <tbody>
                
               </tbody>
-              <tfoot>
-                <x-table.tblhead heads="S.No,First Name,Last Name,Email,Role,Status,Action"></x-table.tblhead>
-              </tfoot>
+             
             </table>
         </div>
       {{-- defautl slot end here --}}
