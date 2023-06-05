@@ -28,11 +28,8 @@ $heads = "S.No,unsaef behavior type ID,unsaef behavior type title,Group,Date Cre
             <td>{{$meta_data->group_name}}</td>
             <td>{{$meta_data->created_at}}</td>
             <td class="text-sm">
-                <x-forms.action-btn href="{{ route('meta-data.edit', ['meta_data_id' => $meta_data->id, 'meta_data_name' => $meta_data_name]) }}" action="edit" title="edit {{$meta_data_name}}"></x-forms.action-btn>
-                <x-forms.action-btn href="" id="table_data_delete" action="delete" title="delete {{$meta_data_name}}"
-                    data-action="{{ route('meta-data.destroy', ['meta_data_id' => $meta_data->id, 'meta_data_name' => $meta_data_name]) }}
-                    " data-parent="tr"></x-forms.action-btn>
-            </td>
+              @include('meta-data.partials.index.meta_action_btn')
+          </td>
         </tr>
     @endforeach
 

@@ -119,13 +119,26 @@ class MetaDataController extends Controller
     }
     public function store(Request $request)
     {
-        $requestData = $request->except('_token', 'redirect');
+        $requestData = $request->except('_token', 'redirect', 'meta_data_id', 'meta_data_name');
+        $requestKeys = array_keys($requestData);
         $redirect = str_replace('_', '-', $request->meta_data_name);
         $metaDataTitle = ucfirst(str_replace("_", " ", $request->meta_data_name));
         $modelClass = $this::getMetaDataModelClass($request->meta_data_name);
         if ($modelClass) {
-            $data = $modelClass::create($requestData);
-            return ['success', "{$metaDataTitle} has been created!", route('meta-data.index') . "?saved={$data->id}#{$redirect}"];
+            if ($request->has('meta_data_id') && $request->meta_data_id != "") {
+                // updating meta data
+                $data = $modelClass::find($request->meta_data_id);
+                foreach ($requestKeys as $key) {
+                    $data->$key = $request->$key;
+                    $data->save();
+                    $message = "Updated";
+                }
+            } else {
+                // creating meta data
+                $data = $modelClass::create($requestData);
+                $message = "Created";
+            }
+            return ['success', "{$metaDataTitle} has been {$message}!", route('meta-data.index') . "?saved={$data->id}#{$redirect}"];
         } else {
             return ['error', 'Key not found for the class'];
         }
