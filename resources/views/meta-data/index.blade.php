@@ -18,6 +18,37 @@
         {{-- x slot page header ends here --}}
 
         {{-- default slot starts here --}}
+        <div class="row container">
+          <div class="col-12 mb-5">
+
+            <div class="accordion-item mb-3">
+              <h5 class="accordion-header" id="headingOne">
+                <button class="accordion-button border-bottom font-weight-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                  Meta Data Excel Import
+                  <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                  <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                </button>
+              </h5>
+              <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionRental" style="">
+                <div class="accordion-body text-sm opacity-8">
+                <form action="{{route('meta-data.excel.import')}}" method="post" class="ajax-form" enctype="multipart/form-data">
+                  @csrf
+                  <div class="form-group col-6">
+                    <label for="file">File</label>
+                    <input type="file" name="file" class="form-control form-control-sm" required>
+                  </div>
+                  <div class="form-group col-6">
+                  <input type="hidden" name="redirect" value="{{url()->current()}}">
+                  <x-forms.ajax-submit-btn div-class="col-12"  id="submit-button" btn-class="btn-sm btn-primary btn-ladda">Submit</x-forms.ajax-submit-btn>
+                  </div>
+                </form>
+                <a href="{{asset('excel_temp/meta_data.xlsx')}}" class="link">Download Template</a>
+
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
         <div class="row container mb-5">
         
            <x-verticle-nav-view>

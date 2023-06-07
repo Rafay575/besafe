@@ -3,6 +3,7 @@
 use App\Http\Controllers\CardChartController;
 use App\Http\Controllers\CommonAttachementController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExcelUtilityController;
 use App\Http\Controllers\FirePropertyDamageController;
 use App\Http\Controllers\HazardController;
 use App\Http\Controllers\IEAuditBulkResponseController;
@@ -71,6 +72,13 @@ Route::middleware('auth')->group(function () {
     Route::post('storeByIncidentName', [IncidentAssignController::class, 'storeByIncidentName'])->name('incidents.storeByIncidentName');
     Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::post('notifications', [NotificationController::class, 'activitySeen'])->name('notifications.activitySeen');
+
+
+    // excel utilities
+    // meta data excel import
+    Route::post('meta-data/excel/import', [ExcelUtilityController::class, 'importMetaData'])->name('meta-data.excel.import');
+
+
 });
 
 require __DIR__ . '/auth.php';
