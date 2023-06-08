@@ -111,6 +111,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
 
     // stats
     Route::get('/statistics', [DataStatsApiController::class, 'index']);
+    Route::get('/statistics/summary', [DataStatsApiController::class, 'summary']);
 
 
     Route::post('/ie_audits/answers/submit', [IEAuditClauseApiController::class, 'submitAnswer']);

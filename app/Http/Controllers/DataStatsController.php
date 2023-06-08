@@ -7,6 +7,7 @@ use App\Models\FirePropertyDamage;
 use App\Models\Hazard;
 use App\Models\Injury;
 use App\Models\InternalExternalAuditClause;
+use App\Models\MetaIncidentStatus;
 use App\Models\NearMiss;
 use App\Models\PermitToWork;
 use App\Models\UnsafeBehavior;
@@ -41,6 +42,45 @@ class DataStatsController extends Controller
             return ApiResponseController::error('please provide valid stats_of');
         }
 
+    }
+    public function summary(Request $request, $channel = "web")
+    {
+        return $this->incidentSummary($request);
+    }
+
+    public function incidentSummary(Request $request)
+    {
+        $pending = MetaIncidentStatus::where('status_code', 0)->first()->id;
+        $assigned = MetaIncidentStatus::where('status_code', 1)->first()->id;
+        $inprogress = MetaIncidentStatus::where('status_code', 2)->first()->id;
+        $completed = MetaIncidentStatus::where('status_code', 3)->first()->id;
+        $rejected = MetaIncidentStatus::where('status_code', 4)->first()->id;
+
+        $commonColumns = ['id', 'initiated_by', 'created_at', 'updated_at', 'meta_incident_status_id'];
+        $hazards = Hazard::select($commonColumns);
+        $nearMisses = NearMiss::select($commonColumns);
+        $unsafe_behaviors = UnsafeBehavior::select($commonColumns);
+        $injuries = Injury::select($commonColumns);
+        $fpdemages = FirePropertyDamage::select($commonColumns);
+        $results = $hazards->unionAll($nearMisses)
+            ->unionAll($unsafe_behaviors)
+            ->unionAll($injuries)
+            ->unionAll($fpdemages);
+        $pendingCount = $results->where('meta_incident_status_id', $pending)->get()->count();
+        $assignedCount = $results->where('meta_incident_status_id', $assigned)->get()->count();
+        $inprogressCount = $results->where('meta_incident_status_id', $inprogress)->get()->count();
+        $completedCount = $results->where('meta_incident_status_id', $completed)->get()->count();
+        $rejectedCount = $results->where('meta_incident_status_id', $rejected)->get()->count();
+        $total = $pendingCount + $assignedCount + $inprogressCount + $completedCount + $rejectedCount;
+
+        $data = [
+            'total' => $total,
+            'closed' => $rejectedCount + $completedCount,
+            'open' => $pendingCount,
+            'done' => $completedCount,
+        ];
+
+        return ApiResponseController::successWithJustData($data);
     }
 
     public function usersStats(Request $request)
