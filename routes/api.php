@@ -107,6 +107,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
 
     // charts and graphs
     Route::get('/line_chart', [ChartApiController::class, 'line_chart']);
+    Route::get('/line_chart/all_timelines', [ChartApiController::class, 'indexAllTimeLines']);
     Route::get('/card_chart', [ChartApiController::class, 'card_chart']);
 
     // stats

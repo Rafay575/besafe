@@ -15,7 +15,7 @@ class LineChartController extends Controller
     use ChartHelperMethods, IncidentChart, PtwChart, IEAuditCluase;
     public function index(Request $request, $channel = "web")
     {
-        $data = $this->dailyLineChartOfAMonth($request);
+        $data = [];
 
         if ($request->has('data_by')) {
             if ($request->data_by == "daily") {
@@ -34,6 +34,23 @@ class LineChartController extends Controller
         }
 
         return $data;
+    }
+
+    public function indexAllTimes($requests, $channel = "web")
+    {
+        $data = [];
+        foreach ($requests as $request) {
+            $keyName = $request->chart_of;
+            if ($request->has('incident')) {
+                $keyName = $keyName . "_" . $request->incident;
+            }
+            $keyName = $keyName . '_' . $request->data_by;
+            $data[$keyName] = $this->index($request, 'web');
+        }
+        if ($channel === "api") {
+            return ApiResponseController::successWithJustData($data);
+        }
+
     }
 
     public function dailyLineChartOfAMonth(Request $request)

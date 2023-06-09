@@ -17,4 +17,32 @@ class ChartApiController extends Controller
     {
         return (new CardChartController)->index($request, 'api');
     }
+
+    public function indexAllTimeLines()
+    {
+        $requests = [
+            $this->createRequest('monthly', 'incidents', 'all'),
+            $this->createRequest('daily', 'incidents', 'all'),
+            $this->createRequest('yearly', 'incidents', 'all'),
+
+            $this->createRequest('monthly', 'ptws'),
+            $this->createRequest('daily', 'ptws'),
+            $this->createRequest('yearly', 'ptws'),
+
+            $this->createRequest('monthly', 'ie_audit'),
+            $this->createRequest('daily', 'ie_audit'),
+            $this->createRequest('yearly', 'ie_audit'),
+
+        ];
+
+        return (new LineChartController)->indexAllTimes($requests, 'api');
+
+    }
+
+    private function createRequest($dataBy, $chart_of, $incident_name = "all")
+    {
+        $request = Request::create('/');
+        $request->merge(['data_by' => $dataBy, 'chart_of' => $chart_of, 'incident' => $incident_name]); // Set the desired property
+        return $request;
+    }
 }

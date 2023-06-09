@@ -23,7 +23,7 @@ trait IncidentChart
 {
     public static function incidentLineChartData($request, $date)
     {
-        if ($request->incident === 'all') {
+        if (!$request->has('incident') or $request->incident === 'all') {
             return self::incidentsCountOnADate($date, $request);
         }
         if ($request->incident === 'hazard') {
