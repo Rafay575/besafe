@@ -70,6 +70,11 @@ class IncidentAssignController extends Controller
             'assign_to' => 'required|exists:users,id',
         ]);
 
+        if (!$incident) {
+            if ($channel == "api") {
+                return ApiResponseController::error('Incident with given id not found');
+            }
+        }
 
         $formErrorsResponse = FormValidatitionDispatcherController::Response($validator, $channel);
         if ($formErrorsResponse) {
