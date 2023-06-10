@@ -23,7 +23,7 @@
         </thead>
         <tbody>
           @foreach($data as $hazard)
-          <tr>
+          {{-- <tr>
             <td>{{ $hazard->id }}</td>
             <td>{{ $hazard->unit->unit_title }}</td>
             <td>{{ $hazard->initiator->first_name }}</td>
@@ -36,7 +36,7 @@
             <td>{{ $hazard->description }}</td>
             <td>{{ $hazard->date }}</td>
             <td>{{ $hazard->created_at->format('m-d-Y') }}</td>
-          </tr>
+          </tr> --}}
           @endforeach
         </tbody>
       </table>

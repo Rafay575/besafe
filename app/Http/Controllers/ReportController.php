@@ -121,8 +121,8 @@ class ReportController extends Controller
         $file_name = \Str::slug($file_name) . ".pdf";
         $view = $this->getViewForReport($request->report_of);
         try {
-            // $file = \PDF::loadView($view, ['data' => $data])->setPaper('a4');
-            // $file->save(public_path('reports/' . $file_name));
+            $file = \PDF::loadView($view, ['data' => $data])->setPaper('a4');
+            $file->save(public_path('reports/' . $file_name));
             return $this->saveReport($request, $file_name);
         } catch (\Exception $e) {
             return $e->getMessage();
