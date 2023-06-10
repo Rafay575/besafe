@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Api\ReportApiController;
 use App\Http\Resources\IEAuditAnswersAttachementsCollection;
 use App\Http\Resources\IEAuditAnswersCollection;
 use App\Http\Resources\IncidentCollection;
@@ -14,6 +15,7 @@ use App\Models\NearMiss;
 use App\Models\UnsafeBehavior;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
 {
@@ -22,6 +24,13 @@ class DashboardController extends Controller
      */
     public function index(Request $request)
     {
+        return (new ReportApiController)->index($request);
+        $users = User::all();
+        $attachement = \PDF::loadView('pdftemps.users', ['users' => $users])->setPaper('a4');
+        $attachement->save(public_path('reports/report.pdf'));
+
+        // return Storage::put('public/reports/hahah.pdf', $attachement->output());
+
         return view('dashboard');
 
     }

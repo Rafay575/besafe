@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\MetaDataApiController;
 use App\Http\Controllers\Api\NearMissApiController;
 use App\Http\Controllers\Api\NotificationApiController;
 use App\Http\Controllers\Api\PermitToWorkApiController;
+use App\Http\Controllers\Api\ReportApiController;
 use App\Http\Controllers\Api\UnsafeBehaviorApiController;
 use App\Http\Controllers\Api\UserApiController;
 use App\Http\Controllers\UserController;
@@ -131,6 +132,12 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::post('/reset-password', [UserApiController::class, 'resetPasword']);
     Route::get('/notifications', [NotificationApiController::class, 'index']);
     Route::post('notifications', [NotificationApiController::class, 'activitySeen']);
+
+
+    Route::post('reports/generate', [ReportApiController::class, 'createReport']);
+    Route::get('reports', [ReportApiController::class, 'index']);
+    Route::delete('/reports/{report_id}/delete', [ReportApiController::class, 'destroy']);
+
 
 
 });
