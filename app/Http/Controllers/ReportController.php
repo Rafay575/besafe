@@ -65,7 +65,7 @@ class ReportController extends Controller
                 $data = $data->get();
                 if ($data) {
                     $report = $this->generatePdfReport($request, $data);
-                    if ($report) {
+                    if (@$report->user_id) {
                         return ApiResponseController::successWithData('Report has been generated', new ReportCollection($report));
                     }
                 }
@@ -122,7 +122,6 @@ class ReportController extends Controller
         $view = $this->getViewForReport($request->report_of);
         try {
             $file = \PDF::loadView($view, ['data' => $data])->setPaper('a4');
-
             $file->save(public_path('reports/' . $file_name));
             return $this->saveReport($request, $file_name);
         } catch (\Exception $e) {
