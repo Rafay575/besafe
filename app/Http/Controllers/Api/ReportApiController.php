@@ -19,6 +19,7 @@ class ReportApiController extends Controller
     }
     public function createReport(Request $request)
     {
+
         $response = (new ReportController)->createReport($request, 'api');
         if ($response) {
             return $response;

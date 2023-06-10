@@ -15,6 +15,7 @@ use App\Models\UnsafeBehavior;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 
 class ReportController extends Controller
 {
@@ -41,6 +42,15 @@ class ReportController extends Controller
 
     public function createReport(Request $request, $channel = "web")
     {
+        $validator = Validator::make($request->all(), [
+            'report_of' => 'required|in:hazards,near_misses,unsafe_behaviors,injuries,fpdamages,ptws,ie_audits',
+        ]);
+
+        $formErrorsResponse = FormValidatitionDispatcherController::Response($validator, $channel);
+        if ($formErrorsResponse) {
+            return $formErrorsResponse;
+        }
+
         $filters = $request->except('report_of', 'to_date', 'from_date');
         if ($request->has('report_of') && $request->report_of != "") {
             $model = $this->getIncidentModelViaKeys($request->report_of);
