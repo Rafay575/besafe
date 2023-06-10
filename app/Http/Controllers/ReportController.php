@@ -65,7 +65,9 @@ class ReportController extends Controller
                 $data = $data->get();
                 if ($data) {
                     $report = $this->generatePdfReport($request, $data);
-                    return ApiResponseController::successWithData('Report has been generated', new ReportCollection($report));
+                    if ($report) {
+                        return ApiResponseController::successWithData('Report has been generated', new ReportCollection($report));
+                    }
                 }
                 return ApiResponseController::error('No data returned', 404);
 
