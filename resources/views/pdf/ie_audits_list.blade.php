@@ -31,4 +31,4 @@
       </table>
     
     
-  @include('pdf.layout.footer');
+  @include('pdf.layout.footer')

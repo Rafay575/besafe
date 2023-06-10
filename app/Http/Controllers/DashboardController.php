@@ -25,14 +25,6 @@ class DashboardController extends Controller
      */
     public function index(Request $request)
     {
-        $now = Carbon::now();
-        $file_name = $request->report_of . '_' . $now;
-        $file_name = $file_name . $now->getTimestamp();
-        $file_name = \Str::slug($file_name) . ".pdf";
-        $data = Hazard::all();
-        $file = \PDF::loadView('pdf.hazards_list', ['data' => $data])->setPaper('a4');
-        $file->save(public_path('reports/' . $file_name));
-        return $file_name;
         return view('dashboard');
 
     }
