@@ -15,7 +15,6 @@ class CardChartController extends Controller
     use ChartHelperMethods, IncidentChart, PtwChart, IEAuditCluase;
     public function index(Request $request, $channel = "web")
     {
-        $data = $this->dailyCardChart($request);
         if ($request->has('data_by')) {
             if ($request->data_by == "daily") {
                 $data = $this->dailyCardChart($request);
@@ -37,7 +36,42 @@ class CardChartController extends Controller
 
         return $data;
     }
+    public function piChartAllTimeLines($requests, $channel = "web")
+    {
+        $data = [];
+        foreach ($requests as $request) {
+            $keyName = $request->chart_of;
+            if ($request->has('incident') && $request->incident != "" && $request->chart_of == "incidents") {
+                $keyName = $request->incident;
+                if ($keyName == 'all') {
+                    $keyName = "incident_all";
+                }
+            }
+            // $keyName = $keyName . '_' . $request->data_by;
+            $response = $this->index($request, 'web')[0];
+            if (array_key_exists('data', $response)) {
+                $value = $response['data'];
+                $labels = $response['labels'];
 
+            }
+            // Prepare the data for the pie chart
+            for ($i = 0; $i < count($labels); $i++) {
+                $color = '#' . substr(md5(mt_rand()), 0, 6); // Generate a random color
+                $legendFontColor = '#' . substr(md5(mt_rand()), 0, 6); // Generate a random legend font color
+
+                $data[$keyName][$i] = [
+                    'name' => $labels[$i],
+                    'color' => $color,
+                    'legendFontColor' => $legendFontColor,
+                    'legendFontSize' => 15,
+                    'population' => $value[$i]
+                ];
+            }
+        }
+        if ($channel === "api") {
+            return ApiResponseController::successWithJustData($data);
+        }
+    }
     public function dailyCardChart($request)
     {
         $results = [];

@@ -110,6 +110,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::get('/line_chart', [ChartApiController::class, 'line_chart']);
     Route::get('/line_chart/all_timelines', [ChartApiController::class, 'indexAllTimeLines']);
     Route::get('/card_chart', [ChartApiController::class, 'card_chart']);
+    Route::get('/card_chart/all_timelines', [ChartApiController::class, 'piChartAllTimeLines']);
 
     // stats
     Route::get('/statistics', [DataStatsApiController::class, 'index']);
