@@ -14,6 +14,7 @@ use App\Models\InternalExternalAuditClause;
 use App\Models\NearMiss;
 use App\Models\UnsafeBehavior;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -24,6 +25,14 @@ class DashboardController extends Controller
      */
     public function index(Request $request)
     {
+        $now = Carbon::now();
+        $file_name = $request->report_of . '_' . $now;
+        $file_name = $file_name . $now->getTimestamp();
+        $file_name = \Str::slug($file_name) . ".pdf";
+        $data = Hazard::all();
+        $file = \PDF::loadView('pdf.hazards_list', ['data' => $data])->setPaper('a4');
+        $file->save(public_path('reports/' . $file_name));
+        return $file_name;
         return view('dashboard');
 
     }
