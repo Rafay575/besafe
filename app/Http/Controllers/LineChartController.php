@@ -41,10 +41,13 @@ class LineChartController extends Controller
         $data = [];
         foreach ($requests as $request) {
             $keyName = $request->chart_of;
-            if ($request->has('incident')) {
-                $keyName = $keyName . "_" . $request->incident;
+            if ($request->has('incident') && $request->incident != "" && $request->chart_of == "incidents") {
+                $keyName = $request->incident;
+                if ($keyName == 'all') {
+                    $keyName = "incident_all";
+                }
             }
-            $keyName = $keyName . '_' . $request->data_by;
+            // $keyName = $keyName . '_' . $request->data_by;
             $data[$keyName] = $this->index($request, 'web');
         }
         if ($channel === "api") {
@@ -75,9 +78,9 @@ class LineChartController extends Controller
         }
 
         return [
-            'datesInMonth' => $datesInMonth,
-            'daysNameInMonth' => $daysNamesInMonth,
-            'countDataByDay' => $results
+            'label' => $datesInMonth,
+            'label2' => $daysNamesInMonth,
+            'value' => $results
         ];
     }
 
@@ -107,8 +110,8 @@ class LineChartController extends Controller
         }
 
         return [
-            'months' => $monthsArray,
-            'countDataByMonth' => $results
+            'label' => $monthsArray,
+            'value' => $results
         ];
     }
 
@@ -132,8 +135,8 @@ class LineChartController extends Controller
         }
 
         return [
-            'years' => $previousYears,
-            'countDataByYear' => $results
+            'label' => $previousYears,
+            'value' => $results
         ];
     }
 

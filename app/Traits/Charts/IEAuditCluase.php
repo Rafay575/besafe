@@ -74,6 +74,6 @@ trait IEAuditCluase
                 $data[] = count($value);
             }
         }
-        return ["labels" => $labels, "data" => $data];
+        return ["labels" => $labels, "value" => $data];
     }
 }
