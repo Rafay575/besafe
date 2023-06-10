@@ -15,7 +15,7 @@ class ReportCollection extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            // 'id' => $this->id,
+            'id' => $this->id,
             'from_date' => $this->from_date,
             'to_date' => $this->to_date,
             "file" => asset('reports/' . $this->file_name),

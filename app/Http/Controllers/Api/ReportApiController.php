@@ -10,7 +10,7 @@ class ReportApiController extends Controller
 {
     public function index(Request $request)
     {
-        return $response = (new ReportController)->index($request, 'api');
+        $response = (new ReportController)->index($request, 'api');
         if ($response) {
             return $response;
         } else {
