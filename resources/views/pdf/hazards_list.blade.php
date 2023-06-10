@@ -27,11 +27,11 @@
             <td>{{ $hazard->id }}</td>
             <td>{{ $hazard->unit->unit_title }}</td>
             <td>{{ $hazard->initiator->first_name }}</td>
-            <td>{{ $hazard->department->department_title }}</td>
-            <td>{{ $hazard->line->line_title }}</td>
-            <td>{{ $hazard->risk_level->risk_level_title }}</td>
-            <td>{{ $hazard->department_tag->department_tag_title }}</td>
-            <td>{{ $hazard->incident_status->status_title }}</td>
+            <td>{{ $hazard->department->department_title ?? '' }}</td>
+            <td>{{ $hazard->line->line_title ?? ''}}</td>
+            <td>{{ $hazard->risk_level->risk_level_title ?? '' }}</td>
+            <td>{{ $hazard->department_tag->department_tag_title ?? '' }}</td>
+            <td>{{ $hazard->incident_status->status_title  ?? ''}}</td>
             <td>{{ $hazard->location }}</td>
             <td>{{ $hazard->description }}</td>
             <td>{{ $hazard->date }}</td>
