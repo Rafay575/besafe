@@ -133,7 +133,7 @@ class ReportController extends Controller
     public function saveReport($request, $file_name)
     {
         $report = new Report();
-        // $report->user_id = auth()->user()->id;
+        $report->user_id = auth()->user()->id;
         $report->report_of = $request->report_of;
         $report->file_path = 'reports';
         $report->file_name = $file_name;
