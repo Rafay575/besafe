@@ -25,6 +25,26 @@ class ChartApiController extends Controller
             $this->createRequest('daily', 'incidents', 'all'),
             $this->createRequest('yearly', 'incidents', 'all'),
 
+            $this->createRequest('monthly', 'incidents', 'hazard'),
+            $this->createRequest('daily', 'incidents', 'hazard'),
+            $this->createRequest('yearly', 'incidents', 'hazard'),
+
+            $this->createRequest('monthly', 'incidents', 'unsafe_behavior'),
+            $this->createRequest('daily', 'incidents', 'unsafe_behavior'),
+            $this->createRequest('yearly', 'incidents', 'unsafe_behavior'),
+
+            $this->createRequest('monthly', 'incidents', 'fire_property_damage'),
+            $this->createRequest('daily', 'incidents', 'fire_property_damage'),
+            $this->createRequest('yearly', 'incidents', 'fire_property_damage'),
+
+            $this->createRequest('monthly', 'incidents', 'injury'),
+            $this->createRequest('daily', 'incidents', 'injury'),
+            $this->createRequest('yearly', 'incidents', 'injury'),
+
+            $this->createRequest('monthly', 'incidents', 'near_miss'),
+            $this->createRequest('daily', 'incidents', 'near_miss'),
+            $this->createRequest('yearly', 'incidents', 'near_miss'),
+
             $this->createRequest('monthly', 'ptws'),
             $this->createRequest('daily', 'ptws'),
             $this->createRequest('yearly', 'ptws'),
