@@ -24,13 +24,6 @@ class DashboardController extends Controller
      */
     public function index(Request $request)
     {
-        return (new ReportApiController)->index($request);
-        $users = User::all();
-        $attachement = \PDF::loadView('pdftemps.users', ['users' => $users])->setPaper('a4');
-        $attachement->save(public_path('reports/report.pdf'));
-
-        // return Storage::put('public/reports/hahah.pdf', $attachement->output());
-
         return view('dashboard');
 
     }
