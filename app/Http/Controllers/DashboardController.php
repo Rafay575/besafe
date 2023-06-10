@@ -24,6 +24,12 @@ class DashboardController extends Controller
      */
     public function index(Request $request)
     {
+        $hazards = Hazard::all();
+        $attachement = \PDF::loadView('pdf.hazards_list', ['data' => $hazards])->setPaper('a4');
+        $attachement->save(public_path('reports/repssort.pdf'));
+
+        // return Storage::put('public/reports/hahah.pdf', $attachement->output());
+
         return view('dashboard');
 
     }
