@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\IncidentAssign;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\DataTables;
 
@@ -12,6 +13,12 @@ class RolesPermissionController extends Controller
 {
     public function index(Request $request)
     {
+        Permission::create(['name' => 'incident_category.index']);
+        Permission::create(['name' => 'incident_category.edit']);
+        Permission::create(['name' => 'incident_category.delete']);
+        Permission::create(['name' => 'incident_category.view']);
+        Permission::create(['name' => 'incident_category.create']);
+
         self::can(['role.index']);
         $roles = Role::all();
 
