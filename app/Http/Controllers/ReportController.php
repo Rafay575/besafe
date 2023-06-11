@@ -24,6 +24,8 @@ class ReportController extends Controller
     public function index(Request $request, $channel = "web")
     {
 
+        return view('reports.index');
+
         $limit = 10;
         $reports = Report::query();
         if ($request->has('limit') && $request->limit != "") {
