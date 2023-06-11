@@ -52,14 +52,14 @@ class ReportController extends Controller
                     "file" => asset('reports/' . $report->file_name),
                     'generated_by' => $report->user->first_name,
                     'created_at' => $report->created_at->format('d-m-Y'),
-                    'action' => view('reports.partials.action-buttons', ['report' => $report])->render()
+                    'action' => view('pdfreports.partials.action-buttons', ['report' => $report])->render()
                 ];
             }
 
             return DataTables::of($data)->toJson();
         }
 
-        return view('reports.index');
+        return view('pdfreports.index');
     }
 
     public function store(Request $request)
