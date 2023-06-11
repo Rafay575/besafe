@@ -6,7 +6,7 @@
             © <script>
               document.write(new Date().getFullYear())
             </script>,
-            <a href="#" class="font-weight-bold" target="_blank">BeSafe</a>
+            <a href="#" class="font-weight-bold" target="_blank"></a>{{App\Models\About::first()->name}}
             developed by WeSoul
           </div>
         </div>

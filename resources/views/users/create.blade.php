@@ -29,7 +29,7 @@
   function generateP() {
     let firstname = $('input#first_name').val();
     if (firstname.length < 6) {
-      firstname = 'besafe'
+      firstname = "{{App\Models\About::first()->name}}"
     }
       var pass = '';
       // var str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +

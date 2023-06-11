@@ -4,5 +4,5 @@
     <link rel="icon" type="image/png" href="{{asset('website/img/logo-mini.png')}}">
     <meta name="csrf-token" content="{{ csrf_token() }}">   
     <title>
-     BeSafe CMS
+        {{App\Models\About::first()->name}} CMS
     </title>

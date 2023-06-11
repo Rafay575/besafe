@@ -43,7 +43,7 @@ return [
 
     'image' => [
         'enabled' => true,
-        'binary' => env('IMAGE_BINARY', (env('APP_ENV') === 'production') ? base_path('vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltoimage-amd64') : base_path('vendor/wemersonjanuario/wkhtmltoimage-windows/bin/64bit/wkhtmltoimage')),
+        'binary' => env('IMAGE_BINARY', (env('APP_ENV') === 'production') ? base_path('vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltoimage-amd64') : base_path('vendor/wemersonjanuario/wkhtmltopdf-windows/bin/64bit/wkhtmltoimage')),
         'timeout' => false,
         'options' => [],
         'env' => [],

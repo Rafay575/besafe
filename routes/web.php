@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\CardChartController;
 use App\Http\Controllers\CommonAttachementController;
 use App\Http\Controllers\DashboardController;
@@ -57,6 +58,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('ie_audits', InternalExternalAuditClauseController::class);
     Route::resource('audit_init', IEAuditBulkResponseController::class);
     Route::resource('roles', RolesPermissionController::class);
+
+    // about
+    // about company
+    Route::get('company/about', [AboutController::class, 'show'])->name('about.show');
+    Route::put('company/about', [AboutController::class, 'update'])->name('about.update');
 
     // Route::resource('meta-data', MetaDataController::class);
     Route::get('meta-data', [MetaDataController::class, 'index'])->name('meta-data.index');

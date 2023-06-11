@@ -69,9 +69,9 @@
   </style>
 <body>
     <div class="header">
-        {{-- <img class="logo" src="{{asset('website/img/logo.png')}}" alt="Company Logo"> --}}
+        {{-- <img class="logo" src="{{asset('website/img/logo.png')}}" alt="Company Logo" style="background: white;"> --}}
         <div>
-          <div class="company-name">Besafe</div>
+          <div class="company-name">{{App\Models\About::first()->name}}</div>
           <div class="report-title">{{$reportTitle}}</div>
           <div class="generated-on">Generated on: <?php echo date('Y-m-d'); ?></div>
         </div>

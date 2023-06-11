@@ -337,7 +337,7 @@
                   </a>
                 </div>
                 <div class="col">
-                  <h6>BeSafe</h6>
+                  <h6>{{About::first()->name}}</h6>
                   <div class="progress progress-xs mb-0">
                     <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 90%;"></div>
                   </div>
