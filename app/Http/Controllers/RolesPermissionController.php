@@ -13,12 +13,6 @@ class RolesPermissionController extends Controller
 {
     public function index(Request $request)
     {
-        Permission::create(['name' => 'incident_category.index']);
-        Permission::create(['name' => 'incident_category.edit']);
-        Permission::create(['name' => 'incident_category.delete']);
-        Permission::create(['name' => 'incident_category.view']);
-        Permission::create(['name' => 'incident_category.create']);
-
         self::can(['role.index']);
         $roles = Role::all();
 
@@ -41,7 +35,7 @@ class RolesPermissionController extends Controller
 
     public function show($role_id)
     {
-        // self::can(['role.view']);
+        self::can(['role.view']);
 
         $role = Role::where('id', $role_id)->first();
         $permissions = [];
@@ -60,7 +54,7 @@ class RolesPermissionController extends Controller
     }
     public function store(Request $request)
     {
-        // self::can(['role.create']);
+        self::can(['role.create']);
 
         $validator = Validator::make($request->all(), [
             'role_name' => ['string', 'required'],
