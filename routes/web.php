@@ -46,7 +46,7 @@ Route::redirect('/', '/dashboard');
 Route::middleware('auth')->group(function () {
     Route::get('line_chart', [LineChartController::class, 'index']);
     Route::get('card_chart', [CardChartController::class, 'index']);
-    Route::get('dashboard', [DashboardController::class, 'index']);
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('users', UserController::class);
     Route::resource('unsafe-behaviors', UnsafeBehaviorController::class);
     Route::resource('near-miss', NearMissController::class);
