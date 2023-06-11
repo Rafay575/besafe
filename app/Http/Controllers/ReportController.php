@@ -24,6 +24,7 @@ class ReportController extends Controller
     public function index(Request $request, $channel = "web")
     {
 
+        return 'its here';
         return view('reports.index');
 
         $limit = 10;
