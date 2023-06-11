@@ -15,6 +15,11 @@ class UserRolesAndPermissionSeeder extends Seeder
     public function run(): void
     {
 
+        // $roles = Role::all();
+        // foreach ($roles as $role) {
+        //     $role->delete();
+        // }
+
         $subModules = [
             'user',
             'role',

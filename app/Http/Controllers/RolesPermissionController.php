@@ -34,10 +34,13 @@ class RolesPermissionController extends Controller
 
     public function show($role_id)
     {
-        self::can(['role.view']);
+        // self::can(['role.view']);
 
         $role = Role::where('id', $role_id)->first();
-        $permissions = $role->permissions->pluck('name');
+        $permissions = [];
+        if ($role) {
+            $permissions = $role->permissions->pluck('name');
+        }
         $modules = $this->getSubModules();
 
         return view('roles.show', compact('role', 'permissions', 'modules'));
@@ -50,7 +53,7 @@ class RolesPermissionController extends Controller
     }
     public function store(Request $request)
     {
-        self::can(['role.create']);
+        // self::can(['role.create']);
 
         $validator = Validator::make($request->all(), [
             'role_name' => ['string', 'required'],

@@ -58,9 +58,9 @@
       {{-- <input type="submit" value="subimt"> --}}
       <input type="hidden" name="redirect" value="{{url()->previous()}}">
       <input type="hidden" name="role_id" value="{{$role->id}}">
-      @can(['role.edit'])
+      {{-- @can(['role.edit']) --}}
       <button class="btn bg-primary text-light text-bold ms-auto mb-0 btn-ladda" type="submit" title="Submit" data-style="expand-left">Submit</button>
-      @endcan
+      {{-- @endcan --}}
 
      </form>
 
