@@ -59,7 +59,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('ie_audits', InternalExternalAuditClauseController::class);
     Route::resource('audit_init', IEAuditBulkResponseController::class);
     Route::resource('roles', RolesPermissionController::class);
-    Route::resource('reports', ReportController::class);
+    Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::post('reports', [ReportController::class, 'store'])->name('reports.store');
+    Route::delete('reports/{report_id}/delete', [ReportController::class, 'destroy'])->name('reports.destroy');
+    // Route::resource('reports', ReportController::class);
 
     // about
     // about company

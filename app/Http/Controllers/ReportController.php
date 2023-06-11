@@ -24,8 +24,6 @@ class ReportController extends Controller
     public function index(Request $request, $channel = "web")
     {
 
-        return 'its here';
-        return view('reports.index');
 
         $limit = 10;
         $reports = Report::query();
@@ -60,6 +58,7 @@ class ReportController extends Controller
 
             return DataTables::of($data)->toJson();
         }
+
         return view('reports.index');
     }
 
@@ -208,7 +207,7 @@ class ReportController extends Controller
     {
         // RolesPermissionController::can(['report.delete']);
 
-        $report = Report::find($report_id);
+        $report = Report::where('id', $report_id)->first();
         if (!$report && $channel === "api") {
             return ApiResponseController::error('report not found', 404);
         }
