@@ -16,6 +16,9 @@
         @case("delete")
           <i class="fas fa-trash text-danger" {{$attributes}}></i>
             @break
+        @case("download")
+          <i class="fas fa-download text-success" {{$attributes}}></i>
+            @break
         @default
         <i class="fas fa-eye text-secondary" {{$attributes}}></i>
     @endswitch

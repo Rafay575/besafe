@@ -16,6 +16,7 @@ class ReportCollection extends JsonResource
     {
         return [
             'id' => $this->id,
+            'report_of' => $this->report_of,
             'from_date' => $this->from_date,
             'to_date' => $this->to_date,
             "file" => asset('reports/' . $this->file_name),

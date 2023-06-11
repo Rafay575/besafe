@@ -20,6 +20,7 @@ use App\Http\Controllers\NearMissController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PermitToWorkController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RolesPermissionController;
 use App\Http\Controllers\UnsafeBehaviorController;
 use App\Http\Controllers\UserController;
@@ -58,6 +59,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('ie_audits', InternalExternalAuditClauseController::class);
     Route::resource('audit_init', IEAuditBulkResponseController::class);
     Route::resource('roles', RolesPermissionController::class);
+    Route::resource('reports', ReportController::class);
 
     // about
     // about company

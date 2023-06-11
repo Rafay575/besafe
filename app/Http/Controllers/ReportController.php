@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\Facades\DataTables;
 
 class ReportController extends Controller
 {
@@ -24,21 +25,46 @@ class ReportController extends Controller
     {
 
         $limit = 10;
+        $reports = Report::query();
         if ($request->has('limit') && $request->limit != "") {
             $limit = $request->limit;
         }
         if ($request->has('report_of') && $request->report_of != "") {
-            $reports = Report::where('report_of', $request->report_of)->latest()->paginate($limit);
-            if ($reports) {
-                return ReportCollection::collection($reports);
-            }
-            return ApiResponseController::error('No data returned', 404);
-
-        } else {
-            return ApiResponseController::error('Please provide valid report_of');
+            $reports = $reports->where('report_of', $request->report_of);
         }
 
+        if ($channel == 'api') {
+            return ReportCollection::collection($reports->latest()->paginate($limit));
+        }
+
+
+        if ($request->ajax()) {
+            $data = [];
+            $i = 0;
+            foreach ($reports->latest()->get() as $report) {
+                $i++;
+                $data[] = [
+                    'sno' => $i,
+                    'report_of' => ucfirst($report->report_of),
+                    'from_date' => $report->from_date,
+                    'to_date' => $report->to_date,
+                    "file" => asset('reports/' . $report->file_name),
+                    'generated_by' => $report->user->first_name,
+                    'created_at' => $report->created_at->format('d-m-Y'),
+                    'action' => view('reports.partials.action-buttons', ['report' => $report])->render()
+                ];
+            }
+
+            return DataTables::of($data)->toJson();
+        }
+        return view('reports.index');
     }
+
+    public function store(Request $request)
+    {
+        return $this->createReport($request);
+    }
+
 
     public function createReport(Request $request, $channel = "web")
     {
@@ -75,16 +101,17 @@ class ReportController extends Controller
                 $data = $data->get();
                 if ($data) {
                     $report = $this->generatePdfReport($request, $data);
-                    if (@$report->user_id) {
+                    if (@$report->user_id && $channel == 'api') {
                         return ApiResponseController::successWithData('Report has been generated', new ReportCollection($report));
                     }
                 }
-                return ApiResponseController::error('No data returned', 404);
 
             } else {
                 return ApiResponseController::error('Please provide valid report_of');
             }
         }
+
+        return ['success', 'Report has been generated', $request->redirect];
     }
 
 
