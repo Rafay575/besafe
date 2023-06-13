@@ -25,7 +25,8 @@ class DashboardController extends Controller
      */
     public function index(Request $request)
     {
-        return view('dashboard');
+        $incidentStats = (new DataStatsController)->incidentSummary($request, 'web');
+        return view('dashboard.index', compact('incidentStats'));
 
     }
 

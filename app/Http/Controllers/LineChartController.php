@@ -35,6 +35,53 @@ class LineChartController extends Controller
 
         return $data;
     }
+    public function prepareForLineChart(Request $request, $channel = 'web')
+    {
+        $requestsArray = [];
+        if ($request->data_by === 'daily') {
+            $requestsArray[] = $this->createRequest('daily', 'incidents', 'unsafe_behavior');
+            $requestsArray[] = $this->createRequest('daily', 'incidents', 'all');
+            $requestsArray[] = $this->createRequest('daily', 'incidents', 'fire_property_damage');
+            $requestsArray[] = $this->createRequest('daily', 'incidents', 'hazard');
+            $requestsArray[] = $this->createRequest('daily', 'incidents', 'injury');
+            $requestsArray[] = $this->createRequest('daily', 'incidents', 'near_miss');
+            $requestsArray[] = $this->createRequest('daily', 'ptws');
+            $requestsArray[] = $this->createRequest('daily', 'ie_audit');
+        }
+
+        if ($request->data_by === 'monthly') {
+            $requestsArray[] = $this->createRequest('monthly', 'incidents', 'all');
+            $requestsArray[] = $this->createRequest('monthly', 'incidents', 'hazard');
+            $requestsArray[] = $this->createRequest('monthly', 'incidents', 'unsafe_behavior');
+            $requestsArray[] = $this->createRequest('monthly', 'incidents', 'fire_property_damage');
+            $requestsArray[] = $this->createRequest('monthly', 'incidents', 'near_miss');
+            $requestsArray[] = $this->createRequest('monthly', 'ie_audit');
+            $requestsArray[] = $this->createRequest('monthly', 'incidents', 'injury');
+            $requestsArray[] = $this->createRequest('monthly', 'ptws');
+        }
+
+        if ($request->data_by == 'yearly') {
+            $requestsArray[] = $this->createRequest('yearly', 'ptws');
+            $requestsArray[] = $this->createRequest('yearly', 'ie_audit');
+            $requestsArray[] = $this->createRequest('yearly', 'incidents', 'hazard');
+            $requestsArray[] = $this->createRequest('yearly', 'incidents', 'all');
+            $requestsArray[] = $this->createRequest('yearly', 'incidents', 'unsafe_behavior');
+            $requestsArray[] = $this->createRequest('yearly', 'incidents', 'fire_property_damage');
+            $requestsArray[] = $this->createRequest('yearly', 'incidents', 'injury');
+            $requestsArray[] = $this->createRequest('yearly', 'incidents', 'near_miss');
+        }
+
+        // if ($channel == 'api') {
+        return $this->indexAllTimes($requestsArray, 'api');
+        // }
+    }
+
+    private function createRequest($dataBy, $chart_of, $incident_name = "all")
+    {
+        $request = Request::create('/');
+        $request->merge(['data_by' => $dataBy, 'chart_of' => $chart_of, 'incident' => $incident_name]); // Set the desired property
+        return $request;
+    }
 
     public function indexAllTimes($requests, $channel = "web")
     {

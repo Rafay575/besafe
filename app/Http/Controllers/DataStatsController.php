@@ -45,10 +45,10 @@ class DataStatsController extends Controller
     }
     public function summary(Request $request, $channel = "web")
     {
-        return $this->incidentSummary($request);
+        return $this->incidentSummary($request, $channel);
     }
 
-    public function incidentSummary(Request $request)
+    public function incidentSummary(Request $request, $channel = "web")
     {
         $pending = MetaIncidentStatus::where('status_code', 0)->first()->id;
         $assigned = MetaIncidentStatus::where('status_code', 1)->first()->id;
@@ -80,7 +80,11 @@ class DataStatsController extends Controller
             'done' => $completedCount,
         ];
 
-        return ApiResponseController::successWithJustData($data);
+        if ($channel == 'api') {
+            return ApiResponseController::successWithJustData($data);
+        }
+
+        return $data;
     }
 
     public function usersStats(Request $request)

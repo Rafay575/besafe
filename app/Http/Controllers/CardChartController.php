@@ -59,17 +59,74 @@ class CardChartController extends Controller
                 $color = '#' . substr(md5(mt_rand()), 0, 6); // Generate a random color
                 $legendFontColor = '#' . substr(md5(mt_rand()), 0, 6); // Generate a random legend font color
 
-                $data[$keyName][$i] = [
-                    'name' => $labels[$i],
-                    'color' => $color,
-                    'legendFontColor' => $legendFontColor,
-                    'legendFontSize' => 15,
-                    'population' => $value[$i]
-                ];
+                if ($channel == 'api') {
+                    $data[$keyName][$i] = [
+                        'name' => $labels[$i],
+                        'color' => $color,
+                        'legendFontColor' => $legendFontColor,
+                        'legendFontSize' => 15,
+                        'population' => $value[$i]
+                    ];
+                } else {
+                    $data[$keyName][$i] = [
+                        'label' => $labels[$i],
+                        'color' => $color,
+                        'legendFontColor' => $legendFontColor,
+                        'data' => $value[$i]
+                    ];
+                }
             }
         }
         if ($channel === "api") {
             return ApiResponseController::successWithJustData($data);
+        }
+    }
+    private function createRequest($dataBy, $chart_of, $incident_name = "all")
+    {
+        $request = Request::create('/');
+        $request->merge(['data_by' => $dataBy, 'chart_of' => $chart_of, 'incident' => $incident_name]); // Set the desired property
+        return $request;
+    }
+
+
+    public function prepareForPiChart(Request $request, $channel = "web")
+    {
+        $requestsArray = [];
+        if ($request->data_by === 'daily') {
+            $requestsArray[] = $this->createRequest('daily', 'incidents', 'unsafe_behavior');
+            $requestsArray[] = $this->createRequest('daily', 'incidents', 'all');
+            $requestsArray[] = $this->createRequest('daily', 'incidents', 'fire_property_damage');
+            $requestsArray[] = $this->createRequest('daily', 'incidents', 'hazard');
+            $requestsArray[] = $this->createRequest('daily', 'incidents', 'injury');
+            $requestsArray[] = $this->createRequest('daily', 'incidents', 'near_miss');
+            $requestsArray[] = $this->createRequest('daily', 'ptws');
+            $requestsArray[] = $this->createRequest('daily', 'ie_audit');
+        }
+
+        if ($request->data_by === 'monthly') {
+            $requestsArray[] = $this->createRequest('monthly', 'incidents', 'all');
+            $requestsArray[] = $this->createRequest('monthly', 'incidents', 'hazard');
+            $requestsArray[] = $this->createRequest('monthly', 'incidents', 'unsafe_behavior');
+            $requestsArray[] = $this->createRequest('monthly', 'incidents', 'fire_property_damage');
+            $requestsArray[] = $this->createRequest('monthly', 'incidents', 'near_miss');
+            $requestsArray[] = $this->createRequest('monthly', 'ie_audit');
+            $requestsArray[] = $this->createRequest('monthly', 'incidents', 'injury');
+            $requestsArray[] = $this->createRequest('monthly', 'ptws');
+        }
+
+        if ($request->data_by == 'yearly') {
+            $requestsArray[] = $this->createRequest('yearly', 'ptws');
+            $requestsArray[] = $this->createRequest('yearly', 'ie_audit');
+            $requestsArray[] = $this->createRequest('yearly', 'incidents', 'hazard');
+            $requestsArray[] = $this->createRequest('yearly', 'incidents', 'all');
+            $requestsArray[] = $this->createRequest('yearly', 'incidents', 'unsafe_behavior');
+            $requestsArray[] = $this->createRequest('yearly', 'incidents', 'fire_property_damage');
+            $requestsArray[] = $this->createRequest('yearly', 'incidents', 'injury');
+            $requestsArray[] = $this->createRequest('yearly', 'incidents', 'near_miss');
+        }
+
+        if ($channel == "api") {
+            return $this->piChartAllTimeLines($requestsArray, 'api');
         }
     }
     public function dailyCardChart($request)

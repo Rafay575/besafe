@@ -87,6 +87,10 @@ Route::middleware('auth')->group(function () {
     Route::post('meta-data/excel/import', [ExcelUtilityController::class, 'importMetaData'])->name('meta-data.excel.import');
 
 
+    // charts
+    Route::get('/card_chart/all_timelines', [CardChartController::class, 'prepareForPiChart'])->name('pi_chart');
+    Route::get('/line_chart/all_timelines', [LineChartController::class, 'prepareForLineChart'])->name('line_chart');
+
 });
 
 require __DIR__ . '/auth.php';
