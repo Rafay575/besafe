@@ -5,7 +5,7 @@
 <select class="form-control {{$selectClass}}" name="{{$name}}" id="choices-button" {{$attributes}}>
     @if ($attributes->has('multiple'))
     @else   
-    <option selected disabled>Select {{$label}}</option>
+    <option selected disabled value="">Select {{$label}}</option>
     @endif
    {{$slot}}
   </select>

@@ -16,12 +16,32 @@
         </div>
         <ul class="navbar-nav  justify-content-end">
           @auth
-          <li class="nav-item d-flex align-items-center">
-            <a href="/login" class="nav-link text-white font-weight-bold px-0" target="_blank">
-              <i class="fa fa-user me-sm-1"></i>
-              <span class="d-sm-inline d-none">{{auth()->user()->name}}</span>
-            </a>
+          <li class="nav-item px-2 d-flex align-items-center">
+            <div class="dropdown">
+              <a href="/login" class="nav-link text-white font-weight-bold px-0" target="_blank" data-bs-toggle="dropdown" id="navbarDropdownMenuLink2">
+               @if (auth()->user()->image != "")
+               <img class="border-radius-lg avatar-sm" alt="profile" src="{{asset('images/profile/' . auth()->user()->image)}}">
+                @else 
+                <i class="fa fa-user me-sm-1"></i>
+               @endif
+                <span class="d-sm-inline d-none">{{auth()->user()->first_name}}</span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
+                 
+                  <li>
+                      <a class="dropdown-item" href="{{route('users.profileCreate')}}">Profile Settings</a>
+                  </li>
+                  
+                  <li>
+                      <a class="dropdown-item" href="{{ route('logout') }}" 
+                      onclick="event.preventDefault();
+                      document.getElementById('logout-form').submit();"">Logout</a>
+                  </li>
+                  
+              </ul>
+            </div>
           </li>
+
                 
             @endauth
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
@@ -33,15 +53,17 @@
               </div>
             </a>
           </li>
-          <li class="nav-item px-3 d-flex align-items-center">
+          
+          {{-- <li class="nav-item px-3 d-flex align-items-center">
             <a href="javascript:;" class="nav-link text-white p-0">
               <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
             </a>
-          </li>
+          </li> --}}
+
           <li class="nav-item dropdown pe-2 d-flex align-items-center">
             <a href="javascript:;" class="nav-link text-white p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
               <div class="notification-icon">
-                <i class="badge badge-sm badge-secondary"  id="notification-badge"style="position: absolute; top: 15px; right: -12px; "></i>
+                <i class="badge badge-sm badge-secondary"  id="notification-badge"style="position: absolute; top: 18px; right: -16px; "></i>
                 <i class="fa fa-bell cursor-pointer"></i>
               </div>
             </a>

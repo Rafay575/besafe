@@ -269,4 +269,15 @@ class UserController extends Controller
         }
         return Validator::make($request->all(), $rules);
     }
+
+    public function profileCreate()
+    {
+        return view('users.profile');
+    }
+
+    public function profileStore(Request $request)
+    {
+        return $this->update($request, auth()->user()->id, 'web');
+    }
+
 }

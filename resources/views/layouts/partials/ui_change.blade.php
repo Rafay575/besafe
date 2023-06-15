@@ -22,10 +22,8 @@
                 onclick="event.preventDefault();
                 document.getElementById('logout-form').submit();"
             
-            
             >Logout</a><br>
-            <a>Change Password</a><br>
-            <a>Profile Settings</a><br>
+            <a href="{{route('users.profileCreate')}}">Profile Settings</a><br>
         </div>  
 
         {{-- logout form  --}}

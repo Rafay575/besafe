@@ -48,6 +48,8 @@ Route::middleware('auth')->group(function () {
     Route::get('line_chart', [LineChartController::class, 'index']);
     Route::get('card_chart', [CardChartController::class, 'index']);
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('users/profile', [UserController::class, 'profileCreate'])->name('users.profileCreate');
+    Route::put('users/profile', [UserController::class, 'profileStore'])->name('users.profileStore');
     Route::resource('users', UserController::class);
     Route::resource('unsafe-behaviors', UnsafeBehaviorController::class);
     Route::resource('near-miss', NearMissController::class);
