@@ -15,7 +15,12 @@ class PermitToWorkCollection extends JsonResource
 
     public function toArray(Request $request): array
     {
-
+        $file_name = $this->getTable() . "_" . $this->id . ".pdf";
+        $file_path = public_path('reports/ptws/' . $file_name);
+        $report_file = "";
+        if (file_exists($file_path)) {
+            $report_file = asset('reports/ptws/' . $file_name);
+        }
         return [
             'id' => $this->id,
             'date' => $this->date,
@@ -40,6 +45,7 @@ class PermitToWorkCollection extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'ptw_items' => MetaPtwItemCollection::collection($this->ptw_items),
+            'report_file' => $report_file,
         ];
 
     }

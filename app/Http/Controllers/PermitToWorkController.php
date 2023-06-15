@@ -9,6 +9,7 @@ use App\Models\MetaPtwType;
 use App\Models\PermitToWork;
 use App\Rules\PtwActionData;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Yajra\DataTables\DataTables;
@@ -99,6 +100,8 @@ class PermitToWorkController extends Controller
         // Synchronize the meta PTW items
         $ptw->ptw_items()->sync($request->meta_ptw_item_id);
 
+        // generating pdf file
+        self::generatePdfFile($ptw);
 
         if ($channel === 'api') {
             return ApiResponseController::successWithData('PTW created.', new PermitToWorkCollection($ptw));
@@ -184,6 +187,8 @@ class PermitToWorkController extends Controller
         // Synchronize the meta PTW items
         $ptw->ptw_items()->sync($request->meta_ptw_item_id);
 
+        // generating pdf file
+        self::generatePdfFile($ptw);
 
         if ($channel === 'api') {
             return ApiResponseController::successWithData('PTW updated.', new PermitToWorkCollection($ptw));
@@ -247,5 +252,16 @@ class PermitToWorkController extends Controller
             'meta_ptw_item_id' => 'array',
             'meta_ptw_item_id.*' => 'exists:meta_ptw_items,id',
         ]);
+    }
+
+    public static function generatePdfFile($ptw)
+    {
+        $file_name = $ptw->getTable() . "_" . $ptw->id . ".pdf";
+        $file_path = public_path('reports/ptws/' . $file_name);
+        if (file_exists($file_path)) {
+            File::delete($file_path);
+        }
+        $file = \PDF::loadView('pdf.ptws_show', ['ptw' => $ptw])->setPaper('a4');
+        $file->save($file_path);
     }
 }
