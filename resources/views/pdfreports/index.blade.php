@@ -51,8 +51,14 @@
              <x-forms.basic-input label="From Date" name="from_date" type="date" value=""  width="col-4" input-class="form-control-sm"></x-forms.basic-input>
              <x-forms.basic-input label="To Date" name="to_date" type="date" value="" width="col-4" input-class="form-control-sm"></x-forms.basic-input>
 
-
-                <div class="form-group col-6">
+             <div class="form-group col-4">
+              <label for="report_file_format">Report File Format</label>
+              <select name="report_file_format" class="form-control-sm form-control">
+                  <option value="pdf">PDF</option>
+                  <option value="excel">Excel</option>
+              </select>
+            </div>
+                <div class="form-group col-12">
                 <input type="hidden" name="redirect" value="{{url()->current()}}">
                 <x-forms.ajax-submit-btn div-class="col-12"  id="submit-button" btn-class="btn-sm btn-primary btn-ladda">Generate Report</x-forms.ajax-submit-btn>
                 </div>

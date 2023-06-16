@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Api\ReportApiController;
+use App\Http\Resources\HazardCollection;
 use App\Http\Resources\IEAuditAnswersAttachementsCollection;
 use App\Http\Resources\IEAuditAnswersCollection;
 use App\Http\Resources\IncidentCollection;

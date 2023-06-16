@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\BasicExcelExport;
+use App\Exports\IncidentExport;
 use App\Http\Controllers\Api\ApiResponseController;
 use App\Http\Resources\ReportCollection;
 use App\Models\FirePropertyDamage;
@@ -15,7 +17,9 @@ use App\Models\UnsafeBehavior;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class ReportController extends Controller
@@ -101,11 +105,20 @@ class ReportController extends Controller
 
                 // gettting final data
                 $data = $data->get();
-                if ($data) {
-                    $report = $this->generatePdfReport($request, $data);
+                if ($data->first()) {
+                    if ($request->report_file_format == 'excel') {
+                        $report = $this->generateExcelReport($request, $data);
+                    } else {
+                        $report = $this->generatePdfReport($request, $data);
+                    }
                     if (@$report->user_id && $channel == 'api') {
                         return ApiResponseController::successWithData('Report has been generated', new ReportCollection($report));
                     }
+                } else {
+                    if ($channel == 'api') {
+                        return ApiResponseController::error('No Data Returned. Please change attributes');
+                    }
+                    return ['error', 'No Data Returned. Please change attributes'];
                 }
 
             } else {
@@ -162,6 +175,30 @@ class ReportController extends Controller
         try {
             $file = \PDF::loadView($view, ['data' => $data])->setPaper('a4');
             $file->save(public_path('reports/' . $file_name));
+            return $this->saveReport($request, $file_name);
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+
+
+    }
+    public function generateExcelReport($request, $data)
+    {
+        $now = Carbon::now();
+        $file_name = $request->report_of . '_' . $now;
+        if ($request->has('from_date') && $request->has('to_date')) {
+            $file_name = $request->report_of . '_' . $request->from_date . "_to_" . $request->to_date;
+        }
+        $file_name = $file_name . $now->getTimestamp();
+        $file_name = \Str::slug($file_name) . ".xlsx";
+
+        try {
+            if (Excel::store(new BasicExcelExport($data), $file_name)) {
+                $sourceFilePath = storage_path('app/' . $file_name);
+                $file_path = public_path('reports/' . $file_name);
+                File::move($sourceFilePath, $file_path);
+            }
+
             return $this->saveReport($request, $file_name);
         } catch (\Exception $e) {
             return $e->getMessage();
