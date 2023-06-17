@@ -35,6 +35,8 @@ class UserCollection extends JsonResource
             "line_title" => $this->line ? $this->line->line_title : null,
             "meta_designation_id" => $this->designation ? $this->designation->id : null,
             "designation_title" => $this->designation ? $this->designation->designation_title : null,
+            "role_id" => $this->roles->first() ? $this->roles->first()->id : null,
+            "role_name" => $this->roles->first() ? $this->roles->first()->name : null,
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at,
 

@@ -17,7 +17,7 @@
   @include('dashboard.partials.top_stats')
   <div class="row mb-3">
     <div class="col-8"></div>
-    <div class="nav-wrapper position-relative end-0 col-4">
+    <div class="nav-wrapper position-relative end-0 col-4" style="cursor: pointer">
       <ul class="nav nav-pills nav-fill p-1" role="tablist">
          <li class="nav-item">
             <a class="nav-link mb-0 px-0 py-1 active" id="data_by" data-data_by="daily" data-bs-toggle="tab"  role="tab" aria-controls="daily" aria-selected="true">
