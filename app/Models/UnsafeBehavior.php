@@ -21,6 +21,11 @@ class UnsafeBehavior extends Model
         return $this->belongsToMany(MetaUnsafeBehaviorType::class, 'unsafe_behavior_and_type');
     }
 
+    public function unsafe_behavior_action()
+    {
+        return $this->belongsTo(MetaUnsafeBehaviorAction::class, 'meta_unsafe_behavior_action_id');
+    }
+
 
     // meta ends above
 

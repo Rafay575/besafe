@@ -42,7 +42,7 @@
                   <x-forms.ajax-submit-btn div-class="col-12"  id="submit-button" btn-class="btn-sm btn-primary btn-ladda">Submit</x-forms.ajax-submit-btn>
                   </div>
                 </form>
-                <a href="{{asset('excel_temp/meta_data.xlsx')}}" class="link">Download Template</a>
+                <a href="{{asset('excel_temp/meta_data_v1.xlsx')}}" class="link">Download Template</a>
 
               </div>
             </div>

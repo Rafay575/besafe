@@ -42,6 +42,12 @@
     {{isset($unsafe_behavior) ? $unsafe_behavior->details : ''}}
     </x-forms.text-area>
 
+    <x-forms.select-option name="meta_unsafe_behavior_action_id" selectClass="form-control-sm" label="Action" divClass="col-12 col-sm-6">
+      @foreach ($unsafe_behavior_actions as $action)
+      <option value="{{ $action->id }}" {{ isset($unsafe_behavior) && $unsafe_behavior->meta_unsafe_behavior_action_id == $action->id ? 'selected' : '' }}>{{ $action->action_title }}</option>
+      @endforeach
+  </x-forms.select-option>
+
       <div class="form-group col-12 mt-2">
         <input type="hidden" name="redirect" value="{{url()->previous()}}">
         <button class="btn btn-primary ms-auto mb-0 btn-ladda" type="submit" id="submit-button" title="Submit" data-style="expand-left">Submit</button>

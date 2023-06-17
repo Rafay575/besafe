@@ -31,6 +31,8 @@ class UnsafeBehaviorCollection extends JsonResource
             'id' => $this->id,
             "meta_department_id" => $this->meta_department_id ?? null,
             "department_title" => $this->department ? $this->department->department_title : null,
+            "meta_unsafe_behavior_action_id" => $this->meta_unsafe_behavior_action_id ?? null,
+            "unsafe_behavior_action_title" => $this->unsafe_behavior_action ? $this->unsafe_behavior_action->action_title : null,
             "meta_unit_id" => $this->meta_unit_id ?? null,
             "unit_title" => $this->unit ? $this->unit->unit_title : null,
             "meta_line_id" => $this->meta_line_id ?? null,

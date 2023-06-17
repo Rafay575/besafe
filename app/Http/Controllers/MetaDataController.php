@@ -24,7 +24,8 @@ use App\Models\{
     MetaUnit,
     MetaUnsafeBehaviorType,
     MetaIncidentStatus,
-    MetaSgflRelation
+    MetaSgflRelation,
+    MetaUnsafeBehaviorAction
 };
 use Illuminate\Http\Request;
 
@@ -55,6 +56,7 @@ class MetaDataController extends Controller
             'Unsafe Behavior Types',
             'Incident Statuses',
             'SGFL Relations',
+            'Unsafe Behavior Actions'
         ];
 
         $auditHalls = MetaAuditHall::latest()->get();
@@ -80,6 +82,7 @@ class MetaDataController extends Controller
         $incidentStatuses = MetaIncidentStatus::latest()->get();
         $sgflRelations = MetaSgflRelation::latest()->get();
         $rootCauses = MetaRootCause::latest()->get();
+        $unsafe_behavior_actions = MetaUnsafeBehaviorAction::latest()->get();
         return view(
             'meta-data.index',
             compact(
@@ -107,14 +110,14 @@ class MetaDataController extends Controller
                 'units',
                 'unsafeBehaviorTypes',
                 'incidentStatuses',
-                'sgflRelations'
+                'sgflRelations',
+                'unsafe_behavior_actions'
             )
         );
     }
 
     public function create($meta_data_name)
     {
-
         return view('meta-data.create', compact('meta_data_name'));
     }
     public function store(Request $request)
@@ -176,6 +179,7 @@ class MetaDataController extends Controller
             'unsafe_behavior_types' => MetaUnsafeBehaviorType::class,
             'incident_statuses' => MetaIncidentStatus::class,
             'sgfl_relations' => MetaSgflRelation::class,
+            'unsafe_behavior_actions' => MetaUnsafeBehaviorAction::class,
         ];
 
         if (array_key_exists($key, $models)) {

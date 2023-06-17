@@ -32,6 +32,7 @@ class MetaDataExcelImport implements WithMultipleSheets
             'unsafe_behavior_types' => new MetaUnsafeBehaviorTypeExcelImport(),
             'incident_statuses' => new MetaIncidentStatusExcelImport(),
             'sgfl_relations' => new MetaSgflRelationExcelImport(),
+            'unsafe_behavior_actions' => new MetaUnsafeBehaviorActionExcelImport(),
         ];
     }
 

@@ -8,6 +8,7 @@ use App\Models\MetaDepartment;
 use App\Models\MetaIncidentStatus;
 use App\Models\MetaLine;
 use App\Models\MetaUnit;
+use App\Models\MetaUnsafeBehaviorAction;
 use App\Models\MetaUnsafeBehaviorType;
 use App\Models\UnsafeBehavior;
 use Illuminate\Http\Request;
@@ -62,7 +63,8 @@ class UnsafeBehaviorController extends Controller
         $lines = MetaLine::select('id', 'line_title')->get();
         $ub_types = MetaUnsafeBehaviorType::select('id', 'unsafe_behavior_type_title')->get();
         $incident_statuses = MetaIncidentStatus::select('status_code', 'status_title', 'id')->get();
-        return view('unsafe-behavior.create', compact('units', 'departments', 'lines', 'ub_types', 'incident_statuses'));
+        $unsafe_behavior_actions = MetaUnsafeBehaviorAction::select('action_title', 'id')->get();
+        return view('unsafe-behavior.create', compact('units', 'departments', 'lines', 'ub_types', 'incident_statuses', 'unsafe_behavior_actions'));
     }
 
     /**
@@ -120,7 +122,8 @@ class UnsafeBehaviorController extends Controller
         $lines = MetaLine::select('id', 'line_title')->get();
         $ub_types = MetaUnsafeBehaviorType::select('id', 'unsafe_behavior_type_title')->get();
         $incident_statuses = MetaIncidentStatus::select('status_code', 'status_title', 'id')->get();
-        return view('unsafe-behavior.edit', compact('units', 'departments', 'lines', 'ub_types', 'incident_statuses', 'unsafe_behavior'));
+        $unsafe_behavior_actions = MetaUnsafeBehaviorAction::select('action_title', 'id')->get();
+        return view('unsafe-behavior.edit', compact('units', 'departments', 'lines', 'ub_types', 'incident_statuses', 'unsafe_behavior', 'unsafe_behavior_actions'));
     }
 
     /**
@@ -152,6 +155,7 @@ class UnsafeBehaviorController extends Controller
         $unsafe_behavior->meta_line_id = $request->meta_line_id;
         $unsafe_behavior->meta_incident_status_id = $request->meta_incident_status_id;
         $unsafe_behavior->details = $request->details;
+        $unsafe_behavior->meta_unsafe_behavior_action_id = $request->meta_unsafe_behavior_action_id;
         $unsafe_behavior->save();
         $unsafe_behavior->unsafe_behavior_types()->sync($request->unsafe_behavior_types);
 
@@ -224,6 +228,7 @@ class UnsafeBehaviorController extends Controller
                 'initiated_by' => ['nullable', 'exists:users,id'],
                 'meta_unit_id' => ['required', 'exists:meta_units,id'],
                 'meta_department_id' => ['required', 'exists:meta_departments,id'],
+                'meta_unsafe_behavior_action_id' => ['nullable', 'exists:meta_unsafe_behavior_actions,id'],
                 'meta_line_id' => ['required', 'exists:meta_lines,id'],
                 'meta_incident_status_id' => ['required', 'exists:meta_incident_statuses,id'],
                 'details' => ['nullable', 'string'],
