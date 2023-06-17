@@ -10,13 +10,32 @@
           </div>
         </a>
       </div>
-      <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-        <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-            <a href="{{route('incidents.index')}}" class="btn btn-light btn-sm mt-3">Incidents Assign</a>
-        </div>
+      
         <ul class="navbar-nav  justify-content-end">
-          @auth
-          <li class="nav-item px-2 d-flex align-items-center">
+          
+
+          <li class="nav-item dropdown pe-2 px-5 mt-1 d-flex align-items-center">
+            <a href="javascript:;" class="nav-link text-white p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              <div class="notification-icon">
+                <i class="badge badge-sm badge-secondary"  id="notification-badge"style="position: absolute; top: 18px; right: -16px; "></i>
+                <i class="fa fa-bell cursor-pointer"></i>
+              </div>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end px-2 py-3 me-sm-n4 notifications"  style="height: 300px; overflow-y: auto;" aria-labelledby="dropdownMenuButton">
+             {{-- it is to be populated by ajax  --}}
+              
+            </ul>
+          </li>
+
+
+          <li class="nav-item px-4 d-flex align-items-center">
+            <a href="javascript:;" class="nav-link text-white p-0">
+              <a href="{{route('incidents.index')}}" class="btn btn-light btn-sm mt-3 p-2">Incidents Assign</a>
+            </a>
+          </li>
+
+
+          <li class="nav-item  d-flex align-items-center">
             <div class="dropdown">
               <a href="/login" class="nav-link text-white font-weight-bold px-0" target="_blank" data-bs-toggle="dropdown" id="navbarDropdownMenuLink2">
                @if (auth()->user()->image != "")
@@ -24,7 +43,7 @@
                 @else 
                 <i class="fa fa-user me-sm-1"></i>
                @endif
-                <span class="d-sm-inline d-none">{{auth()->user()->first_name}}</span>
+                <span class="d-sm-inline d-none">{{auth()->user()->first_name}} {{auth()->user()->last_name}}</span>
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
                  
@@ -41,9 +60,7 @@
               </ul>
             </div>
           </li>
-
                 
-            @endauth
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-white p-0" id="iconNavbarSidenav">
               <div class="sidenav-toggler-inner">
@@ -54,24 +71,8 @@
             </a>
           </li>
           
-          {{-- <li class="nav-item px-3 d-flex align-items-center">
-            <a href="javascript:;" class="nav-link text-white p-0">
-              <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
-            </a>
-          </li> --}}
-
-          <li class="nav-item dropdown pe-2 d-flex align-items-center">
-            <a href="javascript:;" class="nav-link text-white p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-              <div class="notification-icon">
-                <i class="badge badge-sm badge-secondary"  id="notification-badge"style="position: absolute; top: 18px; right: -16px; "></i>
-                <i class="fa fa-bell cursor-pointer"></i>
-              </div>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end px-2 py-3 me-sm-n4 notifications"  style="height: 300px; overflow-y: auto;" aria-labelledby="dropdownMenuButton">
-             {{-- it is to be populated by ajax  --}}
-              
-            </ul>
-          </li>
+        
+         
         </ul>
       </div>
     </div>
