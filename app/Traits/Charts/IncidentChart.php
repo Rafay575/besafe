@@ -47,7 +47,23 @@ trait IncidentChart
         $date = Carbon::parse($date);
         // if request has specific incident requirment
         if ($model) {
-            $incident = $model::whereDate('created_at', $date);
+            $incident = $model::query();
+            if ($request->has('data_by')) {
+                switch ($request->data_by) {
+                    case 'monthly':
+                        $incident = $incident->whereMonth('created_at', $date->month)->whereYear('created_at', $date->year);
+                        break;
+                    case 'yearly':
+                        $incident = $incident->whereYear('created_at', $date->year);
+                        break;
+
+                    default:
+                        $incident = $incident->whereDate('created_at', $date);
+                        break;
+                }
+            } else {
+                $incident = $incident->whereDate('created_at', $date);
+            }
             if ($request->has('incident_status')) {
                 $incident = $incident->where('meta_incident_status_id', $request->incident_status);
             }

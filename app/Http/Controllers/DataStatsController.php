@@ -65,12 +65,13 @@ class DataStatsController extends Controller
         $results = $hazards->unionAll($nearMisses)
             ->unionAll($unsafe_behaviors)
             ->unionAll($injuries)
-            ->unionAll($fpdemages);
-        $pendingCount = $results->where('meta_incident_status_id', $pending)->get()->count();
-        $assignedCount = $results->where('meta_incident_status_id', $assigned)->get()->count();
-        $inprogressCount = $results->where('meta_incident_status_id', $inprogress)->get()->count();
-        $completedCount = $results->where('meta_incident_status_id', $completed)->get()->count();
-        $rejectedCount = $results->where('meta_incident_status_id', $rejected)->get()->count();
+            ->unionAll($fpdemages)
+            ->get();
+        $pendingCount = $results->where('meta_incident_status_id', $pending)->count();
+        $assignedCount = $results->where('meta_incident_status_id', $assigned)->count();
+        $inprogressCount = $results->where('meta_incident_status_id', $inprogress)->count();
+        $completedCount = $results->where('meta_incident_status_id', $completed)->count();
+        $rejectedCount = $results->where('meta_incident_status_id', $rejected)->count();
         $total = $pendingCount + $assignedCount + $inprogressCount + $completedCount + $rejectedCount;
 
         $data = [
