@@ -40,6 +40,10 @@
                         <td>{{ $unsafe_behavior->department->department_title ?? '' }}</td>
                     </tr>
                     <tr>
+                        <th>Actions Taken</th>
+                        <td>{{ $unsafe_behavior->unsafe_behavior_action->action_title ?? '' }}</td>
+                    </tr>
+                    <tr>
                         <th>Line</th>
                         <td>{{ $unsafe_behavior->line->line_title ?? '' }}</td>
                     </tr>
