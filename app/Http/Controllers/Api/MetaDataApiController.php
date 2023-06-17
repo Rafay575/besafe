@@ -22,6 +22,7 @@ use App\Models\MetaPtwType;
 use App\Models\MetaRiskLevel;
 use App\Models\MetaRootCause;
 use App\Models\MetaUnit;
+use App\Models\MetaUnsafeBehaviorAction;
 use App\Models\MetaUnsafeBehaviorType;
 use Illuminate\Http\Request;
 
@@ -66,6 +67,7 @@ class MetaDataApiController extends Controller
             "root_causes" => MetaRootCause::class,
             'units' => MetaUnit::class,
             'unsafe_behavior_types' => MetaUnsafeBehaviorType::class,
+            'unsafe_behavior_actions' => MetaUnsafeBehaviorAction::class,
         ];
     }
 }
