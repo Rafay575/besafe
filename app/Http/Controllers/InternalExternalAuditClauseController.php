@@ -154,6 +154,14 @@ class InternalExternalAuditClauseController extends Controller
         if (!$ie_audit) {
             return ['error', 'IE Audit not found'];
         }
+        if ($ie_audit->audit_answers->count() > 0) {
+            if ($channel == 'api') {
+                return ApiResponseController::error('IE Audit cannot be updated as it is already responded. Please delete it.');
+            }
+            return ['error', 'IE Audit cannot be updated as it is already responded and some questions are answered. Please delete it'];
+        }
+
+        // cannot update if audit answer is given
         $ie_audit->meta_audit_hall_id = $request->meta_audit_hall_id;
         $ie_audit->meta_audit_type_id = $request->meta_audit_type_id;
         $ie_audit->audit_date = $request->audit_date;
