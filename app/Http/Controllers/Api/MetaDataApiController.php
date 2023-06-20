@@ -21,6 +21,7 @@ use App\Models\MetaPtwItem;
 use App\Models\MetaPtwType;
 use App\Models\MetaRiskLevel;
 use App\Models\MetaRootCause;
+use App\Models\MetaSgflRelation;
 use App\Models\MetaUnit;
 use App\Models\MetaUnsafeBehaviorAction;
 use App\Models\MetaUnsafeBehaviorType;
@@ -68,6 +69,7 @@ class MetaDataApiController extends Controller
             'units' => MetaUnit::class,
             'unsafe_behavior_types' => MetaUnsafeBehaviorType::class,
             'unsafe_behavior_actions' => MetaUnsafeBehaviorAction::class,
+            'sgfl_relations' => MetaSgflRelation::class,
         ];
     }
 }
