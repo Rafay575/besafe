@@ -161,7 +161,7 @@ class FirePropertyDamageController extends Controller
     public function update(Request $request, $fpdamage_id, $channel = "web")
     {
 
-        $validator = $this->validateData($request);
+        $validator = $this->validateData($request, 'update');
 
         $formErrorsResponse = FormValidatitionDispatcherController::Response($validator, $channel);
         if ($formErrorsResponse) {
@@ -179,22 +179,24 @@ class FirePropertyDamageController extends Controller
 
         // $fpdamage->date = $request->date;
         // $fpdamage->initiated_by = auth()->user()->id;
-        $fpdamage->reference = $request->reference;
-        $fpdamage->meta_unit_id = $request->meta_unit_id ?? null;
-        $fpdamage->location = $request->location;
-        $fpdamage->meta_fire_category_id = $request->meta_fire_category_id ?? null;
-        $fpdamage->meta_property_damage_id = $request->meta_property_damage_id ?? null;
-        $fpdamage->meta_incident_status_id = $request->meta_incident_status_id ?? null;
-        $fpdamage->description = $request->description;
-        $fpdamage->immediate_action = $request->immediate_action;
-        $fpdamage->immediate_cause = $request->immediate_cause;
-        $fpdamage->root_cause = $request->root_cause;
-        $fpdamage->similar_incident_before = $request->similar_incident_before;
-        $fpdamage->loss_calculation = $request->loss_calculation; //json
-        $fpdamage->loss_recovery_method = $request->loss_recovery_method;
-        $fpdamage->preventative_measure = $request->preventative_measure;
-        $fpdamage->actions = $request->actions; //json
+        $fpdamage->reference = $request->has('reference') ? $request->reference : $fpdamage->reference;
+        $fpdamage->meta_unit_id = $request->has('meta_unit_id') ? $request->meta_unit_id : $fpdamage->meta_unit_id;
+        $fpdamage->location = $request->has('location') ? $request->location : $fpdamage->location;
+        $fpdamage->meta_fire_category_id = $request->has('meta_fire_category_id') ? $request->meta_fire_category_id : $fpdamage->meta_fire_category_id;
+        $fpdamage->meta_property_damage_id = $request->has('meta_property_damage_id') ? $request->meta_property_damage_id : $fpdamage->meta_property_damage_id;
+        $fpdamage->meta_incident_status_id = $request->has('meta_incident_status_id') ? $request->meta_incident_status_id : $fpdamage->meta_incident_status_id;
+        $fpdamage->description = $request->has('description') ? $request->description : $fpdamage->description;
+        $fpdamage->immediate_action = $request->has('immediate_action') ? $request->immediate_action : $fpdamage->immediate_action;
+        $fpdamage->immediate_cause = $request->has('immediate_cause') ? $request->immediate_cause : $fpdamage->immediate_cause;
+        $fpdamage->root_cause = $request->has('root_cause') ? $request->root_cause : $fpdamage->root_cause;
+        $fpdamage->similar_incident_before = $request->has('similar_incident_before') ? $request->similar_incident_before : $fpdamage->similar_incident_before;
+        $fpdamage->loss_calculation = $request->has('loss_calculation') ? $request->loss_calculation : $fpdamage->loss_calculation;
+        $fpdamage->loss_recovery_method = $request->has('loss_recovery_method') ? $request->loss_recovery_method : $fpdamage->loss_recovery_method;
+        $fpdamage->preventative_measure = $request->has('preventative_measure') ? $request->preventative_measure : $fpdamage->preventative_measure;
+        $fpdamage->actions = $request->has('actions') ? $request->actions : $fpdamage->actions;
+
         $fpdamage->save();
+
 
         if ($request->has('attachements')) {
             (new CommonAttachementController)->syncUploadedArray($request->attachements, $fpdamage, 'attachements');
@@ -265,55 +267,83 @@ class FirePropertyDamageController extends Controller
         }
     }
 
-    public function validateData(Request $request)
+    public function validateData(Request $request, $method = 'store')
     {
-        return
-            Validator::make($request->all(), [
-                'date' => ['required', 'date', 'date_format:Y-m-d'],
-                'meta_unit_id' => ['required', 'exists:meta_units,id'],
-                'meta_fire_category_id' => ['required_without:meta_property_damage_id', 'exists:meta_fire_categories,id'],
-                'meta_property_damage_id' => ['required_without:meta_fire_category_id', 'exists:meta_property_damages,id'],
-                // 'meta_fire_category_id' => ['required', 'exists:meta_fire_categories,id'],
-                // 'meta_property_damage_id' => ['required', 'exists:meta_property_damages,id'],
-                'meta_incident_status_id' => ['required', 'exists:meta_incident_statuses,id'],
+        $rules = [
+            'date' => ['required', 'date', 'date_format:Y-m-d'],
+            'meta_unit_id' => ['required', 'exists:meta_units,id'],
+            'meta_fire_category_id' => ['required_without:meta_property_damage_id', 'exists:meta_fire_categories,id'],
+            'meta_property_damage_id' => ['required_without:meta_fire_category_id', 'exists:meta_property_damages,id'],
+            // 'meta_fire_category_id' => ['required', 'exists:meta_fire_categories,id'],
+            // 'meta_property_damage_id' => ['required', 'exists:meta_property_damages,id'],
+            'meta_incident_status_id' => ['required', 'exists:meta_incident_statuses,id'],
+            'actions' => ['array', new FirePropertyActionData],
+            'location' => ['nullable', 'string'],
+            'reference' => ['nullable', 'string'],
+            'description' => ['nullable', 'string'],
+            'immediate_action' => ['nullable', 'string'],
+            'immediate_cause' => ['nullable', 'string'],
+            'root_cause' => ['nullable', 'string'],
+            'similar_incident_before' => ['nullable', 'string'],
+            'loss_recovery_method' => ['nullable', 'string'],
+            'preventative_measure' => ['nullable', 'string'],
+            'loss_calculation' => ['array', 'required', 'size:3'],
+            'loss_calculation.direct_loss' => ['required', 'array'],
+            'loss_calculation.direct_loss.description' => ['required', 'string'],
+            'loss_calculation.direct_loss.value' => ['required', 'numeric'],
+            'loss_calculation.indirect_loss' => ['required', 'array'],
+            'loss_calculation.total_loss' => ['required', 'numeric', new TotalLossCalculation],
+            'loss_calculation.indirect_loss.description' => ['required', 'string'],
+            'loss_calculation.indirect_loss.value' => ['required', 'numeric'],
 
-                'actions' => ['array', new FirePropertyActionData],
+            'attachements' => ['array', 'nullable'],
+            'attachements.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
 
-                'location' => ['nullable', 'string'],
-                'reference' => ['nullable', 'string'],
-                'description' => ['nullable', 'string'],
-                'immediate_action' => ['nullable', 'string'],
-                'immediate_cause' => ['nullable', 'string'],
-                'root_cause' => ['nullable', 'string'],
-                'similar_incident_before' => ['nullable', 'string'],
-                'loss_recovery_method' => ['nullable', 'string'],
-                'preventative_measure' => ['nullable', 'string'],
-                'loss_calculation' => ['array', 'required', 'size:3'],
-                'loss_calculation.direct_loss' => ['required', 'array'],
-                'loss_calculation.direct_loss.description' => ['required', 'string'],
-                'loss_calculation.direct_loss.value' => ['required', 'numeric'],
-                'loss_calculation.indirect_loss' => ['required', 'array'],
-                'loss_calculation.total_loss' => ['required', 'numeric', new TotalLossCalculation],
-                'loss_calculation.indirect_loss.description' => ['required', 'string'],
-                'loss_calculation.indirect_loss.value' => ['required', 'numeric'],
+            'initial_attachs' => ['array', 'nullable'],
+            'initial_attachs.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
 
-                'attachements' => ['array', 'nullable'],
-                'attachements.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
+            'interview_attachs' => ['array', 'nullable'],
+            'interview_attachs.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
 
-                'initial_attachs' => ['array', 'nullable'],
-                'initial_attachs.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
+            'record_attachs' => ['array', 'nullable'],
+            'record_attachs.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
 
-                'interview_attachs' => ['array', 'nullable'],
-                'interview_attachs.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
+            'photograph_attachs' => ['array', 'nullable'],
+            'photograph_attachs.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
 
-                'record_attachs' => ['array', 'nullable'],
-                'record_attachs.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
+            'other_attachs' => ['array', 'nullable'],
+            'other_attachs.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
+        ];
 
-                'photograph_attachs' => ['array', 'nullable'],
-                'photograph_attachs.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
+        if ($method === 'update') {
+            // Update method rules
+            $rules['date'] = ['nullable', 'date', 'date_format:Y-m-d'];
+            $rules['meta_unit_id'] = ['nullable', 'exists:meta_units,id'];
+            $rules['meta_fire_category_id'] = ['exists:meta_fire_categories,id'];
+            $rules['meta_property_damage_id'] = ['exists:meta_property_damages,id'];
+            $rules['meta_incident_status_id'] = ['exists:meta_incident_statuses,id'];
 
-                'other_attachs' => ['array', 'nullable'],
-                'other_attachs.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
-            ]);
+            if ($request->has('loss_calculation')) {
+                $rules['loss_calculation'] = ['array', 'required', 'size:3'];
+                $rules['loss_calculation.direct_loss'] = ['required', 'array'];
+                $rules['loss_calculation.direct_loss.description'] = ['required', 'string'];
+                $rules['loss_calculation.direct_loss.value'] = ['required', 'numeric'];
+                $rules['loss_calculation.indirect_loss'] = ['required', 'array'];
+                $rules['loss_calculation.total_loss'] = ['required', 'numeric', new TotalLossCalculation];
+                $rules['loss_calculation.indirect_loss.description'] = ['required', 'string'];
+                $rules['loss_calculation.indirect_loss.value'] = ['required', 'numeric'];
+            } else {
+                unset($rules['loss_calculation']);
+                unset($rules['loss_calculation.direct_loss']);
+                unset($rules['loss_calculation.direct_loss.description']);
+                unset($rules['loss_calculation.direct_loss.value']);
+                unset($rules['loss_calculation.indirect_loss']);
+                unset($rules['loss_calculation.total_loss']);
+                unset($rules['loss_calculation.indirect_loss.description']);
+                unset($rules['loss_calculation.indirect_loss.value']);
+            }
+        }
+
+        return Validator::make($request->all(), $rules);
     }
 }
