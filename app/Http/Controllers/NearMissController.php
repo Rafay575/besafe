@@ -127,7 +127,7 @@ class NearMissController extends Controller
     public function update(Request $request, $near_miss_id, $channel = "web")
     {
 
-        $validator = $this->validateData($request);
+        $validator = $this->validateData($request, 'update');
 
         $formErrorsResponse = FormValidatitionDispatcherController::Response($validator, $channel);
         if ($formErrorsResponse) {
@@ -141,15 +141,44 @@ class NearMissController extends Controller
         // if allowed to update
         RolesPermissionController::canEditIncident($near_miss, 'near_miss');
 
-        $near_miss->date = $request->date;
-        $near_miss->time = $request->time;
-        $near_miss->location = $request->location;
-        $near_miss->description = $request->description;
-        $near_miss->immediate_action = $request->immediate_action;
-        $near_miss->immediate_cause = $request->immediate_cause;
-        $near_miss->root_cause = $request->root_cause;
-        $near_miss->actions = $request->actions;
-        $near_miss->meta_incident_status_id = $request->meta_incident_status_id;
+        if ($request->has('date') && !empty($request->date)) {
+            $near_miss->date = $request->date;
+        }
+
+        if ($request->has('time') && !empty($request->time)) {
+            $near_miss->time = $request->time;
+        }
+
+        if ($request->has('location') && !empty($request->location)) {
+            $near_miss->location = $request->location;
+        }
+
+        if ($request->has('description') && !empty($request->description)) {
+            $near_miss->description = $request->description;
+        }
+
+        if ($request->has('immediate_action') && !empty($request->immediate_action)) {
+            $near_miss->immediate_action = $request->immediate_action;
+        }
+
+        if ($request->has('immediate_cause') && !empty($request->immediate_cause)) {
+            $near_miss->immediate_cause = $request->immediate_cause;
+        }
+
+        if ($request->has('root_cause') && !empty($request->root_cause)) {
+            $near_miss->root_cause = $request->root_cause;
+        }
+
+        if ($request->has('actions') && !empty($request->actions)) {
+            $near_miss->actions = $request->actions;
+        }
+
+        if ($request->has('meta_incident_status_id') && !empty($request->meta_incident_status_id)) {
+            $near_miss->meta_incident_status_id = $request->meta_incident_status_id;
+        }
+
+        $near_miss->save();
+
 
         // Save the model to create a new record
         $near_miss->save();
@@ -209,23 +238,29 @@ class NearMissController extends Controller
         }
     }
 
-    public function validateData(Request $request)
+    public function validateData(Request $request, $method = "store")
     {
-        return
-            Validator::make($request->all(), [
-                'date' => ['required', 'date', 'date_format:Y-m-d'],
-                'time' => ['required', 'date_format:H:i'],
-                'location' => ['nullable', 'string'],
-                'description' => ['nullable', 'string'],
-                'immediate_action' => ['nullable', 'string'],
-                'immediate_cause' => ['nullable', 'string'],
-                'root_cause' => ['nullable', 'string'],
-                'meta_incident_status_id' => ['required', 'exists:meta_incident_statuses,id'],
-                'attachements' => ['array', 'nullable'],
-                'attachements.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
-                'actions' => ['array', new NearMissActionData],
+        $rules = [
+            'date' => ['required', 'date', 'date_format:Y-m-d'],
+            'time' => ['required', 'date_format:H:i'],
+            'location' => ['nullable', 'string'],
+            'description' => ['nullable', 'string'],
+            'immediate_action' => ['nullable', 'string'],
+            'immediate_cause' => ['nullable', 'string'],
+            'root_cause' => ['nullable', 'string'],
+            'meta_incident_status_id' => ['required', 'exists:meta_incident_statuses,id'],
+            'attachements' => ['array', 'nullable'],
+            'attachements.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
+            'actions' => ['array', new NearMissActionData],
 
-            ], );
+        ];
+        if ($method == 'update') {
+            $rules['date'] = ['nullable', 'date', 'date_format:Y-m-d'];
+            $rules['time'] = ['nullable', 'date_format:H:i'];
+            $rules['meta_incident_status_id'] = ['nullable', 'exists:meta_incident_statuses,id'];
+        }
+        return
+            Validator::make($request->all(), $rules, );
 
     }
 }
