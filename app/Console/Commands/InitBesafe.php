@@ -28,7 +28,7 @@ class InitBesafe extends Command
         $this->call('migrate:fresh');
         $this->call('db:seed', ['--class' => 'UserRolesAndPermissionSeeder']);
         $this->call('db:seed', ['--class' => 'DefaultUserSeeder']);
-        // $this->call('db:seed', ['--class' => 'MetaDataSeeder']);
+        $this->call('db:seed', ['--class' => 'MetaDataSeeder']);
         $this->call('db:seed', ['--class' => 'AboutSeeder']);
         // $this->call('storage:link');
     }
