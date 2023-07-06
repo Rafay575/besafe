@@ -50,11 +50,11 @@ class DataStatsController extends Controller
 
     public function incidentSummary(Request $request, $channel = "web")
     {
-        $pending = MetaIncidentStatus::where('status_code', 0)->first()->id;
-        $assigned = MetaIncidentStatus::where('status_code', 1)->first()->id;
-        $inprogress = MetaIncidentStatus::where('status_code', 2)->first()->id;
-        $completed = MetaIncidentStatus::where('status_code', 3)->first()->id;
-        $rejected = MetaIncidentStatus::where('status_code', 4)->first()->id;
+        $pending = @MetaIncidentStatus::where('status_code', 0)->first()->id;
+        $assigned = @MetaIncidentStatus::where('status_code', 1)->first()->id;
+        $inprogress = @MetaIncidentStatus::where('status_code', 2)->first()->id;
+        $completed = @MetaIncidentStatus::where('status_code', 3)->first()->id;
+        $rejected = @MetaIncidentStatus::where('status_code', 4)->first()->id;
 
         $commonColumns = ['id', 'initiated_by', 'created_at', 'updated_at', 'meta_incident_status_id'];
         $hazards = Hazard::select($commonColumns);
