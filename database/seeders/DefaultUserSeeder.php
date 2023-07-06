@@ -15,12 +15,8 @@ class DefaultUserSeeder extends Seeder
      */
     public function run(): void
     {
-        $userNames = [
-            'level_1',
-            'level_2',
-            'level_3',
-            'admin'
-        ];
+        $userNames = ['worker', 'sp', 'hod', 'admin'];
+
         foreach ($userNames as $name) {
             $user = $this->createUser($name);
             if ($user) {
