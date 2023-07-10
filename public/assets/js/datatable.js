@@ -13,7 +13,36 @@ $.extend(true, $.fn.dataTable.defaults, {
     },
   },
   buttons: [
-    'copy', 'csv', 'excel', 'pdf', 'print'
+    {
+      extend: 'copy',
+      exportOptions: {
+        columns: ':not(:last-child)'
+      }
+    },
+    {
+      extend: 'csv',
+      exportOptions: {
+        columns: ':not(:last-child)'
+      }
+    },
+    {
+      extend: 'excel',
+      exportOptions: {
+        columns: ':not(:last-child)'
+      }
+    },
+    {
+      extend: 'pdf',
+      exportOptions: {
+        columns: ':not(:last-child)'
+      }
+    },
+    {
+      extend: 'print',
+      exportOptions: {
+        columns: ':not(:last-child)'
+      }
+    }
   ],
   dom: '<"text-center"<"d-flex justify-content-between align-items-center"lBf>>rtip',
 } );

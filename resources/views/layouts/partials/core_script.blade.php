@@ -43,7 +43,7 @@
   <script src="{{asset('assets/js/plugins/datatables.js')}}"></script>
   <script src="{{asset('assets/js/plugins/moment.min.js')}}"></script>
   <script src="{{asset('assets/js/datatable/datatables.min.js')}}"></script>
-  <script src="{{asset('assets/js/datatable.js')}}"></script>
+  <script src="{{asset('assets/js/datatable.js?v1')}}"></script>
 
 
  
