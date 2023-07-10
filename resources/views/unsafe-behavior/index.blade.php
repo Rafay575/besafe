@@ -9,9 +9,11 @@
     {{-- x-slot:pageheader referes to the second slot in one componenet --}}
       <x-slot:pageHeader>
         <div class="ms-auto my-auto mt-lg-0 mt-4">
+          @can('unsafe_behavior.create')              
           <div class="ms-auto my-auto">
             <a href="{{route('unsafe-behaviors.create')}}" class="btn bg-gradient-primary btn-sm mb-0" >+&nbsp; Add New</a>
           </div>
+          @endcan
         </div>
       </x-slot>
       {{-- x slot page header ends here --}}

@@ -40,7 +40,9 @@
                 </tr>
             </thead>
             @foreach ($modules as $module)
-                
+            
+           @if (!in_array('meta',$module))
+               
             <tr>
                 <td>{{$loop->iteration}}</td>
                 <td class="d-flex"><span class="text-bold text-sm">{{$module['name']}}</span> <a class="px-2 text-success text-sm" href="#" id="select_all">Select All</a></td>
@@ -51,6 +53,8 @@
                 <td><span class="text-sm"><x-forms.toggle-check label="" name="permissions[]"  value="{{$module['slug']}}.delete" width="col-6" check-box-class="" id="{{$module['slug']}}.delete" checked="{{$permissions->contains($module['slug'].'.delete') ? 'true' : 'false'}}"></x-forms.toggle-check></span></td>
                 
             </tr>
+           @endif 
+
             @endforeach
             
         </tbody>

@@ -17,7 +17,9 @@
           </div>
         </x-slot> --}}
         {{-- x slot page header ends here --}}
-        @include('users.partials.user_create_form')
+        @canany(['user.create','user.edit'])
+          @include('users.partials.user_create_form')
+        @endcanany
 {{-- </x-templates.basic-page-temp>  --}}
 @endsection
 @section('script')

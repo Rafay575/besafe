@@ -10,7 +10,10 @@
       <x-slot:pageHeader>
         <div class="ms-auto my-auto mt-lg-0 mt-4">
           <div class="ms-auto my-auto">
+            @can('injury.create')
             <a href="{{route('injuries.create')}}" class="btn bg-gradient-primary btn-sm mb-0" >+&nbsp; New Injuries</a>
+                
+            @endcan
           </div>
         </div>
       </x-slot>

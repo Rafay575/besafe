@@ -50,6 +50,9 @@
 
       <div class="form-group col-12 mt-2">
         <input type="hidden" name="redirect" value="{{url()->previous()}}">
+        @canany(['unsafe_behavior.create','unsafe_behavior.edit'])
         <button class="btn btn-primary ms-auto mb-0 btn-ladda" type="submit" id="submit-button" title="Submit" data-style="expand-left">Submit</button>
+            
+        @endcan
       </div>
 </form>

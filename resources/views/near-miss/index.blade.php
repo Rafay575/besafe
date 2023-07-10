@@ -10,7 +10,9 @@
     <x-slot:pageHeader>
       <div class="ms-auto my-auto mt-lg-0 mt-4">
         <div class="ms-auto my-auto">
+          @can('near_miss.create')
           <a href="{{route('near-miss.create')}}" class="btn bg-gradient-primary btn-sm mb-0" >+&nbsp; New Near Miss</a>
+          @endcan
         </div>
       </div>
     </x-slot>

@@ -9,9 +9,11 @@
     {{-- x-slot:pageheader referes to the second slot in one componenet --}}
       <x-slot:pageHeader>
         <div class="ms-auto my-auto mt-lg-0 mt-4">
-          <div class="ms-auto my-auto">
-            <a href="{{route('users.create')}}" class="btn bg-gradient-primary btn-sm mb-0" >+&nbsp; New User</a>
-          </div>
+          @can('user.create')
+            <div class="ms-auto my-auto">
+              <a href="{{route('users.create')}}" class="btn bg-gradient-primary btn-sm mb-0" >+&nbsp; New User</a>
+            </div>
+          @endcan
         </div>
       </x-slot>
       {{-- x slot page header ends here --}}

@@ -10,7 +10,10 @@
             <div class="col-12 col-lg-8 mx-auto my-4">
               <div class="card">
                 <div class="card-body">
-                    @include('ie_audits.partials.audit_create_form')
+                  @can('ie_audit_cluase.create')
+                  @include('ie_audits.partials.audit_create_form')
+                      
+                  @endcan
                 </div>
               </div>
             </div>

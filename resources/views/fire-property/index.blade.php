@@ -10,7 +10,9 @@
       <x-slot:pageHeader>
         <div class="ms-auto my-auto mt-lg-0 mt-4">
           <div class="ms-auto my-auto">
+            @can('fire_property_damage.create')
             <a href="{{route('fire-property.create')}}" class="btn bg-gradient-primary btn-sm mb-0" >+&nbsp; New damage</a>
+            @endcan
           </div>
         </div>
       </x-slot>

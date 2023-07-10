@@ -21,6 +21,7 @@
         <div class="row container">
           <div class="col-12 mb-5">
 
+            @can('meta_data.create')
             <div class="accordion-item mb-3">
               <h5 class="accordion-header" id="headingOne">
                 <button class="accordion-button border-bottom font-weight-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
@@ -46,11 +47,13 @@
 
               </div>
             </div>
+            @endcan
           </div>
           </div>
         </div>
+        @can('meta_data.create')
         <div class="row container mb-5">
-        
+            
            <x-verticle-nav-view>
             <x-slot:heads>
               @foreach ($menus as $menu)
@@ -73,6 +76,8 @@
             </x-slot:contents>
            </x-verticle-nav-view>
         </div>
+        @endcan
+
         {{-- defautl slot end here --}}
 
 </x-templates.basic-page-temp>

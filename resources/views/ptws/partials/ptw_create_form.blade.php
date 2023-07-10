@@ -57,5 +57,8 @@
 
     
      <input type="hidden" name="redirect" value="{{url()->previous()}}">
-    <x-forms.ajax-submit-btn div-class="col-12"  id="submit-button" btn-class="btn-sm btn-primary btn-ladda">Submit</x-forms.ajax-submit-btn>
+     @canany(['ptw.create','ptw.edit'])
+     <x-forms.ajax-submit-btn div-class="col-12"  id="submit-button" btn-class="btn-sm btn-primary btn-ladda">Submit</x-forms.ajax-submit-btn>
+         
+     @endcanany
 </form>

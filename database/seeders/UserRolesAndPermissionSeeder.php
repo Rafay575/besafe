@@ -50,7 +50,11 @@ class UserRolesAndPermissionSeeder extends Seeder
             'basic_cuase',
             'root_cause',
             'fire_property_damage',
-            'contact_type'
+            'contact_type',
+            'meta_data',
+            'report',
+            'setting',
+            'dashboard'
         ];
         $subModulesAssociative = array_combine($subModules, array_map(function ($value) {
             $words = explode('_', $value);

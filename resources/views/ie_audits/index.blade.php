@@ -10,7 +10,9 @@
       <x-slot:pageHeader>
         <div class="ms-auto my-auto mt-lg-0 mt-4">
           <div class="ms-auto my-auto">
-            <a href="{{route('ie_audits.create')}}" class="btn bg-gradient-primary btn-sm mb-0" >+&nbsp; New IE Audit</a>
+            @can('ie_audit_cluase.create')
+             <a href="{{route('ie_audits.create')}}" class="btn bg-gradient-primary btn-sm mb-0" >+&nbsp; New IE Audit</a>
+            @endcan
             {{-- <button class="btn btn-outline-primary btn-sm export mb-0 mt-sm-0 mt-1" data-type="csv" type="button" name="button">Export</button> --}}
           </div>
         </div>

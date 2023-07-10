@@ -117,9 +117,9 @@
               {{--form row end above  --}}
               <div class="form-group mt-5">
                 <input type="hidden" value="{{url()->current()}}" name="redirect" >
-                {{-- @can('about_company_edit') --}}
+                @can('setting.edit')
                  <button class="btn btn-primary btn-ladda" type="submit" name="add" data-style="expand-right">Update</button>
-                {{-- @endcan --}}
+                @endcan
               </div>                                    
 
             </form>
