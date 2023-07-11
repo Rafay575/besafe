@@ -272,10 +272,8 @@ class FirePropertyDamageController extends Controller
         $rules = [
             'date' => ['required', 'date', 'date_format:Y-m-d'],
             'meta_unit_id' => ['required', 'exists:meta_units,id'],
-            'meta_fire_category_id' => ['required_without:meta_property_damage_id', 'exists:meta_fire_categories,id'],
-            'meta_property_damage_id' => ['required_without:meta_fire_category_id', 'exists:meta_property_damages,id'],
-            // 'meta_fire_category_id' => ['required', 'exists:meta_fire_categories,id'],
-            // 'meta_property_damage_id' => ['required', 'exists:meta_property_damages,id'],
+            'meta_fire_category_id' => ['required_without:meta_property_damage_id'],
+            'meta_property_damage_id' => ['required_without:meta_fire_category_id'],
             'meta_incident_status_id' => ['required', 'exists:meta_incident_statuses,id'],
             'actions' => ['array', new FirePropertyActionData],
             'location' => ['nullable', 'string'],
@@ -314,13 +312,16 @@ class FirePropertyDamageController extends Controller
             'other_attachs' => ['array', 'nullable'],
             'other_attachs.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
         ];
-
+        if ($request->has('meta_fire_category_id') && $request->meta_fire_category_id != "") {
+            $rules['meta_fire_category_id'][0] = 'exists:meta_fire_categories,id';
+        }
+        if ($request->has('meta_property_damage_id') && $request->meta_property_damage_id != "") {
+            $rules['meta_property_damage_id'][0] = 'exists:meta_property_damages,id';
+        }
         if ($method === 'update') {
             // Update method rules
             $rules['date'] = ['nullable', 'date', 'date_format:Y-m-d'];
             $rules['meta_unit_id'] = ['nullable', 'exists:meta_units,id'];
-            $rules['meta_fire_category_id'] = ['exists:meta_fire_categories,id'];
-            $rules['meta_property_damage_id'] = ['exists:meta_property_damages,id'];
             $rules['meta_incident_status_id'] = ['exists:meta_incident_statuses,id'];
 
             if ($request->has('loss_calculation')) {
