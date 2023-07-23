@@ -260,6 +260,7 @@ class PermitToWorkController extends Controller
 
     public static function generatePdfFile($ptw)
     {
+
         $file_name = $ptw->getTable() . "_" . $ptw->id . ".pdf";
         $file_path = public_path('reports/ptws/' . $file_name);
         if (file_exists($file_path)) {
