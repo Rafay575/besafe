@@ -254,7 +254,7 @@ class HazardController extends Controller
             // 'meta_line_id' => 'required|exists:meta_lines,id',
             'meta_risk_level_id' => 'required|exists:meta_risk_levels,id',
             'meta_department_tag_id' => 'required|exists:meta_department_tags,id',
-            'location' => 'nullable|string|max:255',
+            // 'location' => 'nullable|string|max:255',
             'other_location' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:255',
             'line' => 'nullable|string|max:255',
