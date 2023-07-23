@@ -65,6 +65,9 @@ class NotificationController extends Controller
                         if ($attribute === 'actions') {
                             return "Some <strong>{$attribute}</strong> were changed <br>";
                         }
+                        if ($attribute === 'persons') {
+                            return "Some <strong>{$attribute}</strong> were changed <br>";
+                        }
                         if ($attribute === 'loss_calculation') {
                             return "Some <strong>{$attribute}</strong> were changed <br>";
                         }
