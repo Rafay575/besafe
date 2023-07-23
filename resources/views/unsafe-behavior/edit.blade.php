@@ -7,21 +7,13 @@
 
 @section('content')
         <div class="row">
-            <div class="col-12 col-lg-8  my-4">
-              <div class="card">
-                <div class="card-body">
-                  
-
-                 
-
-
+            <div class="col-12 my-4">
                     @include('unsafe-behavior.partials.unsafe_behavior_form')
-                </div>
-              </div>
             </div>
-            <div class="col-12 col-sm-4 mx-auto my-4">
+            <div class="col-12 col-sm-8 mx-auto my-4">
                 <div class="card p-0">
                     <div class="card-body row">
+                      <x-others.common-attach-view label="Initial_Attachments" :attachements="$unsafe_behavior->initial_attachements" shouldDelete="true"></x-others.common-attach-view>
                       <x-others.common-attach-view label="Attachments" :attachements="$unsafe_behavior->attachements" shouldDelete="true"></x-others.common-attach-view>
                     </div>
                   </div>
@@ -30,14 +22,8 @@
 @endsection
 @section('script')
 
-<script>
-    // Dropzone initialization
-    Dropzone.options.dropzone = {
-      ...DropzoneConfig,
-        url: "{{ route('unsafe-behaviors.update',$unsafe_behavior->id) }}",
-        paramName: "attachements",
-        shouldFormReset: false
-      };
-  </script>
+<script src="{{asset('assets/js/plugins/multistep-form.js')}}"></script>
+
+@include('partials.location_script')
   
 @endsection

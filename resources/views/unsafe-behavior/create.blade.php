@@ -6,24 +6,13 @@
 @endsection
 
 @section('content')
-        <div class="row">
-            <div class="col-12 col-lg-8 mx-auto my-4">
-              <div class="card">
-                <div class="card-body">
-                    @include('unsafe-behavior.partials.unsafe_behavior_form')
-                </div>
-              </div>
-            </div>
-        </div>
+@include('unsafe-behavior.partials.unsafe_behavior_form')
+        
 @endsection
 @section('script')
 
-<script>
-  // Dropzone initialization
-  Dropzone.options.dropzone = {
-    ...DropzoneConfig,
-    paramName: "attachements",
-    url: "{{ route('unsafe-behaviors.store') }}",
-  };
-</script>
+<script src="{{asset('assets/js/plugins/multistep-form.js')}}"></script>
+
+@include('partials.location_script')
+
 @endsection

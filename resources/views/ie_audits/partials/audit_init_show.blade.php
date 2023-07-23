@@ -72,6 +72,6 @@
     </tbody>
     </table>
 
-    <button onclick="window.print()" class="btn btn-primary mt-5">Print</button>
+    <button onclick="window.print()" class="btn btn-primary mt-5 d-print-none">Print</button>
 
 </div>

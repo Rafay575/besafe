@@ -1,10 +1,12 @@
 <?php
 namespace App\Traits;
 
+use App\Models\CommonAttachement;
 use App\Models\IncidentAssign;
 use App\Models\MetaDepartment;
 use App\Models\MetaIncidentStatus;
 use App\Models\MetaLine;
+use App\Models\MetaLocation;
 use App\Models\MetaUnit;
 use App\Models\User;
 use Carbon\Carbon;
@@ -65,5 +67,18 @@ trait CommonRelation
     {
         return $this->belongsTo(User::class, 'initiated_by');
     }
+
+    public function meta_location()
+    {
+        return $this->belongsTo(MetaLocation::class, 'meta_location_id');
+    }
+
+    public function common_Attachements()
+    {
+
+        return $this->hasMany(CommonAttachement::class, 'incident_id')->where('form_name', $this->getTable());
+    }
+
+
 
 }

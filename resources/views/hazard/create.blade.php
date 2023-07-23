@@ -6,24 +6,11 @@
 @endsection
 
 @section('content')
-        <div class="row">
-            <div class="col-12 col-lg-8 mx-auto my-4">
-              <div class="card">
-                <div class="card-body">
-                    @include('hazard.partials.hazard_create_form')
-                </div>
-              </div>
-            </div>
-        </div>
+@include('hazard.partials.hazard_create_form')
+       
 @endsection
 @section('script')
-
-<script>
-  // Dropzone initialization
-  Dropzone.options.dropzone = {
-    ...DropzoneConfig,
-    paramName: "attachements",
-    url: "{{ route('hazards.store') }}",
-  };
-</script>
+  <script src="{{asset('assets/js/plugins/multistep-form.js')}}"></script>
+  @include('partials.location_script')
 @endsection
+

@@ -45,7 +45,15 @@
                     </tr>
                     <tr>
                         <th>Line</th>
-                        <td>{{ $unsafe_behavior->line->line_title ?? '' }}</td>
+                        <td>{{ $unsafe_behavior->line}}</td>
+                    </tr>
+                    <tr>
+                        <th>Other Location</th>
+                        <td>{{ $unsafe_behavior->other_location}}</td>
+                    </tr>
+                    <tr>
+                        <th>Location</th>
+                        <td>{{ $unsafe_behavior->meta_location ? $unsafe_behavior->meta_location->location_title : ''}}</td>
                     </tr>
                     <tr>
                         <th>Status</th>
@@ -63,7 +71,7 @@
             </div>
             {{-- activites finsihed here --}}
 
-            <button onclick="window.print()" class="btn btn-primary mt-5">Print</button>
+            <button onclick="window.print()" class="btn btn-primary mt-5 d-print-none">Print</button>
         </div>
 
 

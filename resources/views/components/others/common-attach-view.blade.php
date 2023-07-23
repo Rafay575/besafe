@@ -18,9 +18,19 @@
         </div>
         @endif
 
-        <a test={{$attachement->id}} href="{{ asset("attachements/{$attachement->form_name}/{$attachement->form_input_name}/" . $attachement->file_name) }}">
+        @if (getimagesize(public_path("attachements/{$attachement->form_name}/{$attachement->form_input_name}/" . $attachement->file_name)))
+          <a test="{{ $attachement->id }}" href="{{ asset("attachements/{$attachement->form_name}/{$attachement->form_input_name}/" . $attachement->file_name) }}">
+              <img class="w-100 border-radius-lg p-1 shadow-lg" src="{{ asset("attachements/{$attachement->form_name}/{$attachement->form_input_name}/" . $attachement->file_name) }}" alt="attachements">
+          </a>
+      @else
+          <a test="{{ $attachement->id }}" href="{{ asset("attachements/{$attachement->form_name}/{$attachement->form_input_name}/" . $attachement->file_name) }}">
+              {{ $attachement->file_name }}
+          </a>
+      @endif
+
+        {{-- <a test={{$attachement->id}} href="{{ asset("attachements/{$attachement->form_name}/{$attachement->form_input_name}/" . $attachement->file_name) }}">
             <img class="w-100 border-radius-lg p-1 shadow-lg" src="{{ asset("attachements/{$attachement->form_name}/{$attachement->form_input_name}/" . $attachement->file_name) }}" alt="attachements">
-        </a>
+        </a> --}}
     </div>
     @endforeach
 </div>
@@ -33,7 +43,7 @@
         <h5 class="accordion-header" id="{{(!empty($label)) ? $label : 'ItemOne'}}">
           <button class="accordion-button border-bottom font-weight-bold  collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{(!empty($label)) ? $label : 'ItemOne'}}" aria-expanded="false" aria-controls="collapse{{(!empty($label)) ? $label : 'ItemOne'}}">
               @if (!empty($label))
-              {{$label}}
+              {{str_replace('_',' ',$label)}}
               @endif
             <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
             <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
@@ -52,9 +62,16 @@
                 </div>
                 @endif
 
-                <a test={{$attachement->id}} href="{{ asset("attachements/{$attachement->form_name}/{$attachement->form_input_name}/" . $attachement->file_name) }}">
-                    <img class="w-100 border-radius-lg p-1 shadow-lg" src="{{ asset("attachements/{$attachement->form_name}/{$attachement->form_input_name}/" . $attachement->file_name) }}" alt="attachements">
-                </a>
+                @if (getimagesize(public_path("attachements/{$attachement->form_name}/{$attachement->form_input_name}/" . $attachement->file_name)))
+                  <a test="{{ $attachement->id }}" href="{{ asset("attachements/{$attachement->form_name}/{$attachement->form_input_name}/" . $attachement->file_name) }}">
+                      <img class="w-100 border-radius-lg p-1 shadow-lg" src="{{ asset("attachements/{$attachement->form_name}/{$attachement->form_input_name}/" . $attachement->file_name) }}" alt="attachements">
+                  </a>
+              @else
+                  <a test="{{ $attachement->id }}" href="{{ asset("attachements/{$attachement->form_name}/{$attachement->form_input_name}/" . $attachement->file_name) }}">
+                      {{ $attachement->file_name }}
+                  </a>
+              @endif
+
             </div>
             @endforeach
           </div>

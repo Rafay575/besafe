@@ -35,8 +35,12 @@ class UnsafeBehaviorCollection extends JsonResource
             "unsafe_behavior_action_title" => $this->unsafe_behavior_action ? $this->unsafe_behavior_action->action_title : null,
             "meta_unit_id" => $this->meta_unit_id ?? null,
             "unit_title" => $this->unit ? $this->unit->unit_title : null,
-            "meta_line_id" => $this->meta_line_id ?? null,
-            "line_title" => $this->line ? $this->line->line_title : null,
+            "meta_location_id" => $this->meta_location_id ?? null,
+            "location_title" => $this->meta_location ? $this->meta_location->location_title : null,
+            "line" => $this->line,
+            "other_location" => $this->other_location,
+            // "meta_line_id" => $this->meta_line_id ?? null,
+            // "line_title" => $this->line ? $this->line->line_title : null,
             'meta_incident_status_id' => $this->meta_incident_status_id ?? null,
             'incident_status_title' => $this->incident_status ? $this->incident_status->status_title : null,
             'initiated_by' => $this->initiated_by,
@@ -48,6 +52,7 @@ class UnsafeBehaviorCollection extends JsonResource
         ];
         if ($this->withAttachs) {
             $data['attachements'] = CommonAttachsCollection::collection($this->attachements);
+            $data['initial_attachements'] = CommonAttachsCollection::collection($this->initial_attachements);
         }
         if ($this->withAssignUser) {
             $data['assigned_users'] = IncidentAssignCollection::collection($this->assignedUsers);

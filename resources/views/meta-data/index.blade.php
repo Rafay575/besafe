@@ -43,7 +43,7 @@
                   <x-forms.ajax-submit-btn div-class="col-12"  id="submit-button" btn-class="btn-sm btn-primary btn-ladda">Submit</x-forms.ajax-submit-btn>
                   </div>
                 </form>
-                <a href="{{asset('excel_temp/meta_data_v1.xlsx')}}" class="link">Download Template</a>
+                <a href="{{asset('excel_temp/meta_data_v3.xlsx')}}" class="link">Download Template</a>
 
               </div>
             </div>
@@ -173,6 +173,10 @@ const table = $('.datatable');
         // setRiskLevelDayRequiredInput(5);
         setRiskLevelDayRequiredInput();
       }
+      if (meta_data_name === "locations") {
+        // setRiskLevelDayRequiredInput(5);
+        setLocationsRequiredInput();
+      }
 
 
   });
@@ -199,6 +203,10 @@ const table = $('.datatable');
 
       if (meta_data_name === "risk_levels") {
         setRiskLevelDayRequiredInput(parsed_obj);
+      }
+      if (meta_data_name === "locations") {
+        // setRiskLevelDayRequiredInput(5);
+        setLocationsRequiredInput(parsed_obj);
       }
 
 
@@ -244,6 +252,28 @@ function setRiskLevelDayRequiredInput(defaultValue = {}){
   $('div#group_name').after(div);
   
 }
+function setLocationsRequiredInput(defaultValue = {}) {
+  let value = "";
+  let selected = "";
+  if (defaultValue !== "") {
+    value = defaultValue['meta_unit_id'];
+  }
+
+  // Create a new div
+  let locationDiv = `<div class="col-12 col-sm-6 form-group" id="meta_unit_id_for_location"></div>`;
+  let selectLocation = `<label for="meta_unit_id" class="col_form_label">Unit Title</label><select name="meta_unit_id" id="meta_unit_id_for_location" class="form-control form-control-sm">`;
+
+  // Append options to the select element
+  @foreach ($units as $unit)
+    selectLocation += `<option value="{{$unit->id}}" ${value == {{$unit->id}} ? 'selected' : ''}>{{$unit->unit_title}}</option>`;
+  @endforeach
+
+  selectLocation += `</select>`;
+  $('div#group_name').after(locationDiv);
+  $('div#meta_unit_id_for_location').empty().append(selectLocation);
+  $('div#group_name').remove();
+}
+
 
 </script>
 @endsection

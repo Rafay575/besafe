@@ -37,19 +37,31 @@
                 </tr>
                 <tr>
                   <th>Unit</th>
-                  <td>{{ $fire_property->unit->unit_title }}</td>
+                  <td>{{ $fire_property->unit ? $fire_property->unit->unit_title : ''}}</td>
+                </tr>
+                <tr>
+                  <th>Department</th>
+                  <td>{{ $fire_property->department ? $fire_property->department->department_title : ''}}</td>
                 </tr>
                 <tr>
                   <th>Location</th>
-                  <td>{{ $fire_property->location }}</td>
+                  <td>{{ $fire_property->meta_location ? $fire_property->meta_location->location_title : '' }}</td>
+                </tr>
+                <tr>
+                  <th>Other Location</th>
+                  <td>{{$fire_property->other_location}}</td>
+                </tr>
+                <tr>
+                  <th>Line</th>
+                  <td>{{$fire_property->line}}</td>
                 </tr>
                 <tr>
                   <th>Fire Category</th>
-                  <td>{{ $fire_property->fire_category->fire_category_title }}</td>
+                  <td>{{ $fire_property->fire_category ? $fire_property->fire_category->fire_category_title : '' }}</td>
                 </tr>
                 <tr>
                   <th>Property Damage</th>
-                  <td>{{ $fire_property->property_damage->property_damage_title }}</td>
+                  <td>{{ $fire_property->property_damage ? $fire_property->property_damage->property_damage_title : '' }}</td>
                 </tr>
                 <tr>
                   <th>Incident Status</th>
@@ -111,15 +123,23 @@
                   <td>{{ $fire_property->preventative_measure }}</td>
                 </tr>
                 <tr>
+                  <th>Investigated By</th>
+                  <td>{{ $fire_property->investigated_by }}</td>
+                </tr>
+                <tr>
+                  <th>Reviewed By</th>
+                  <td>{{ $fire_property->reviewed_by}}</td>
+                </tr>
+                <tr>
                   <th>Actions</th>
                   <td>
                     <table class="table text-xxs table-sm table-responsive table-bordered">
                         <thead>
                             <tr>
                                 {{-- <th>Sno</th> --}}
-                                <th>Action</th>
-                                <th>Timeline</th>
                                 <th>Description</th>
+                                <th>Responsibility</th>
+                                <th>Timeline</th>
                                 <th>Status</th>
                             </tr>
                             
@@ -129,9 +149,9 @@
                           @foreach ($fire_property->actions as $action)
                           <tr>
                               {{-- <td>{{$action['sno']}}</td> --}}
-                              <td>{{$action['action']}}</td>
-                              <td>{{$action['timeline']}}</td>
                               <td>{{$action['description']}}</td>
+                              <td>{{$action['responsibility']}}</td>
+                              <td>{{$action['timeline']}}</td>
                               <td>{{$action['status']}}</td>
                           </tr>
                           @endforeach
@@ -148,18 +168,19 @@
         </div>
         {{-- activites finsihed here --}}
 
-        <button onclick="window.print()" class="btn btn-primary mt-5">Print</button>
+        <button onclick="window.print()" class="btn btn-primary mt-5 d-print-none">Print</button>
     </div>
 
 
 
     {{-- left side --}}
     <div class="col-4">
+        <x-others.common-attach-view label="Initial_Attachments" :attachements="$fire_property->initial_attachements" shouldDelete="false"></x-others.common-attach-view>
         <x-others.common-attach-view label="Attachments" :attachements="$fire_property->attachements" shouldDelete="false"></x-others.common-attach-view>
-        <x-others.common-attach-view label="Interview" :attachements="$fire_property->interview_attachs" shouldDelete="false"></x-others.common-attach-view>
-        <x-others.common-attach-view label="Records" :attachements="$fire_property->record_attachs" shouldDelete="false"></x-others.common-attach-view>
-        <x-others.common-attach-view label="Photographs" :attachements="$fire_property->photograph_attachs" shouldDelete="false"></x-others.common-attach-view>
-        <x-others.common-attach-view label="Other" :attachements="$fire_property->other_attachs" shouldDelete="false"></x-others.common-attach-view>
+        {{-- <x-others.common-attach-view label="Interview" :attachements="$fire_property->interview_attachs" shouldDelete="false"></x-others.common-attach-view> --}}
+        {{-- <x-others.common-attach-view label="Records" :attachements="$fire_property->record_attachs" shouldDelete="false"></x-others.common-attach-view> --}}
+        {{-- <x-others.common-attach-view label="Photographs" :attachements="$fire_property->photograph_attachs" shouldDelete="false"></x-others.common-attach-view> --}}
+        {{-- <x-others.common-attach-view label="Other" :attachements="$fire_property->other_attachs" shouldDelete="false"></x-others.common-attach-view> --}}
     </div>
 </div>
 </x-templates.basic-page-temp>     

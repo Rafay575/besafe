@@ -4,8 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Api\ApiResponseController;
 use App\Http\Resources\NearMissCollection;
+use App\Models\MetaDepartment;
 use App\Models\MetaIncidentStatus;
+use App\Models\MetaLine;
+use App\Models\MetaLocation;
+use App\Models\MetaNearMissClass;
+use App\Models\MetaUnit;
 use App\Models\NearMiss;
+use App\Rules\MetaLocationValidate;
+use App\Rules\MetaPersonValidate;
 use App\Rules\NearMissActionData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -34,7 +41,7 @@ class NearMissController extends Controller
                     'date' => $near_miss->date,
                     'time' => $near_miss->time,
                     'immediate_action' => $near_miss->immediate_action,
-                    'location' => $near_miss->location,
+                    'location' => $near_miss->meta_location ? $near_miss->meta_location->location_title : '',
                     'incident_status' => $near_miss->incident_status->status_title,
                     'action' => view('near-miss.partials.action-buttons', ['near_miss' => $near_miss])->render()
                 ];
@@ -52,7 +59,13 @@ class NearMissController extends Controller
     {
         RolesPermissionController::can(['near_miss.create']);
         $incident_statuses = MetaIncidentStatus::select('id', 'status_title')->get();
-        return view('near-miss.create', compact('incident_statuses'));
+        $units = MetaUnit::select('id', 'unit_title')->get();
+        $locations = MetaLocation::select('id', 'meta_unit_id', 'location_title')->get();
+        $departments = MetaDepartment::select('id', 'department_title')->get();
+        $lines = MetaLine::select('id', 'line_title')->get();
+        $near_miss_classes = MetaNearMissClass::select('id', 'class_title')->get();
+
+        return view('near-miss.create', compact('lines', 'near_miss_classes', 'incident_statuses', 'units', 'locations', 'departments'));
     }
 
     /**
@@ -76,15 +89,26 @@ class NearMissController extends Controller
         $near_miss->location = $request->location;
         $near_miss->description = $request->description;
         $near_miss->immediate_action = $request->immediate_action;
+        $near_miss->meta_unit_id = $request->meta_unit_id;
+        $near_miss->meta_location_id = $request->meta_location_id;
         $near_miss->immediate_cause = $request->immediate_cause;
         $near_miss->root_cause = $request->root_cause;
         $near_miss->actions = $request->actions;
         $near_miss->meta_incident_status_id = MetaIncidentStatus::where('status_code', 0)->first()->id; //pending
+        $near_miss->other_location = $request->other_location;
+        $near_miss->person_involved = $request->person_involved;
+        $near_miss->shift = $request->shift;
+        $near_miss->witness_name = $request->witness_name;
+        $near_miss->initial_recommendation = $request->initial_recommendation;
+        $near_miss->meta_department_id = $request->meta_department_id;
+        $near_miss->meta_near_miss_class_id = $request->meta_near_miss_class_id;
+        $near_miss->persons = $request->persons;
+        $near_miss->line = $request->line;
         // Save the model to create a new record
         $near_miss->save();
 
-        if ($request->has('attachements')) {
-            (new CommonAttachementController)->syncUploadedArray($request->attachements, $near_miss, 'attachements');
+        if ($request->has('initial_attachements')) {
+            (new CommonAttachementController)->syncUploadedArray($request->initial_attachements, $near_miss, 'initial_attachements');
         }
 
         if ($channel === 'api') {
@@ -118,7 +142,12 @@ class NearMissController extends Controller
     {
         RolesPermissionController::can(['near_miss.edit']);
         $incident_statuses = MetaIncidentStatus::select('id', 'status_title')->get();
-        return view('near-miss.edit', compact('incident_statuses', 'near_miss'));
+        $units = MetaUnit::select('id', 'unit_title')->get();
+        $locations = MetaLocation::select('id', 'meta_unit_id', 'location_title')->get();
+        $departments = MetaDepartment::select('id', 'department_title')->get();
+        $lines = MetaLine::select('id', 'line_title')->get();
+        $near_miss_classes = MetaNearMissClass::select('id', 'class_title')->get();
+        return view('near-miss.edit', compact('near_miss_classes', 'incident_statuses', 'near_miss', 'units', 'locations', 'departments', 'lines'));
     }
 
     /**
@@ -172,16 +201,33 @@ class NearMissController extends Controller
         if ($request->has('actions') && !empty($request->actions)) {
             $near_miss->actions = $request->actions;
         }
+        if ($request->has('meta_unit_id') && !empty($request->meta_unit_id)) {
+            $near_miss->meta_unit_id = $request->meta_unit_id;
+            $near_miss->meta_location_id = $request->meta_location_id;
+        }
 
         if ($request->has('meta_incident_status_id') && !empty($request->meta_incident_status_id)) {
             $near_miss->meta_incident_status_id = $request->meta_incident_status_id;
         }
+        $near_miss->other_location = $request->other_location ?? $near_miss->other_location;
+        $near_miss->person_involved = $request->person_involved ?? $near_miss->person_involved;
+        $near_miss->shift = $request->shift ?? $near_miss->shift;
+        $near_miss->witness_name = $request->witness_name ?? $near_miss->witness_name;
+        $near_miss->initial_recommendation = $request->initial_recommendation ?? $near_miss->initial_recommendation;
+        $near_miss->meta_department_id = $request->meta_department_id ?? $near_miss->meta_department_id;
+        $near_miss->meta_near_miss_class_id = $request->meta_near_miss_class_id ?? $near_miss->meta_near_miss_class_id;
+        $near_miss->persons = $request->persons ?? $near_miss->persons;
+        $near_miss->line = $request->line ?? $near_miss->line;
 
         $near_miss->save();
 
 
         // Save the model to create a new record
         $near_miss->save();
+
+        if ($request->has('initial_attachements')) {
+            (new CommonAttachementController)->syncUploadedArray($request->initial_attachements, $near_miss, 'initial_attachements');
+        }
 
         if ($request->has('attachements')) {
             (new CommonAttachementController)->syncUploadedArray($request->attachements, $near_miss, 'attachements');
@@ -243,21 +289,40 @@ class NearMissController extends Controller
         $rules = [
             'date' => ['required', 'date', 'date_format:Y-m-d'],
             'time' => ['required', 'date_format:H:i'],
-            'location' => ['nullable', 'string'],
+            'meta_unit_id' => 'required|exists:meta_units,id',
+            'meta_line_id' => 'nullable|exists:meta_lines,id',
+            'meta_location_id' => ['exists:meta_locations,id', new MetaLocationValidate],
+            // 'location' => ['nullable', 'string'],
+
+            'other_location' => ['nullable', 'string'],
+            'line' => ['nullable', 'string'],
+            'person_involved' => ['in:1,0'],
+            'shift' => ['nullable', 'string'],
+            'witness_name' => ['nullable', 'string'],
+            'initial_recommendation' => ['nullable', 'string'],
+            'meta_department_id' => 'required|exists:meta_departments,id',
+            'meta_near_miss_class_id' => 'nullable|exists:meta_near_miss_classes,id',
+            'persons' => ['array', new MetaPersonValidate],
+
+
+
             'description' => ['nullable', 'string'],
             'immediate_action' => ['nullable', 'string'],
             'immediate_cause' => ['nullable', 'string'],
             'root_cause' => ['nullable', 'string'],
-            'meta_incident_status_id' => ['required', 'exists:meta_incident_statuses,id'],
             'attachements' => ['array', 'nullable'],
-            'attachements.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
+            'attachements.*' => ['mimes:jpeg,png,jpg,gif,pdf,doc,docx,xlsx,csv|max:2048'],
+            'initial_attachements' => ['array', 'nullable'],
+            'initial_attachements.*' => ['mimes:jpeg,png,jpg,gif,pdf,doc,docx,xlsx,csv|max:2048'],
             'actions' => ['array', new NearMissActionData],
 
         ];
         if ($method == 'update') {
             $rules['date'] = ['nullable', 'date', 'date_format:Y-m-d'];
             $rules['time'] = ['nullable', 'date_format:H:i'];
-            $rules['meta_incident_status_id'] = ['nullable', 'exists:meta_incident_statuses,id'];
+            $rules['meta_incident_status_id'] = ['required', 'exists:meta_incident_statuses,id'];
+            $rules['meta_unit_id'] = 'nullable|exists:meta_units,id';
+            $rules['meta_department_id'] = 'nullable|exists:meta_departments,id';
         }
         return
             Validator::make($request->all(), $rules, );

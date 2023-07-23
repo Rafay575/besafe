@@ -8,7 +8,7 @@
 
 <body class="g-sidenav-show bg-gray-100">
   @include('layouts.partials.site_nav')
-  <main class="main-content position-relative border-radius-lg ">
+  <main class="main-content position-relative border-radius-lg">
     <!-- Navbar -->
    @include('layouts.partials.header_nav')
     <!-- End Navbar -->

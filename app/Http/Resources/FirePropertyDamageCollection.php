@@ -28,12 +28,17 @@ class FirePropertyDamageCollection extends JsonResource
         }
         $data = [
             'id' => $this->id,
+            "meta_department_id" => $this->meta_department_id ?? null,
+            "department_title" => $this->department ? $this->department->department_title : null,
             "meta_unit_id" => $this->meta_unit_id ?? null,
             "unit_title" => $this->unit ? $this->unit->unit_title : null,
+            "meta_location_id" => $this->meta_location_id ?? null,
+            "location_title" => $this->meta_location ? $this->meta_location->location_title : null,
             'meta_incident_status_id' => $this->meta_incident_status_id ?? null,
             'incident_status_title' => $this->incident_status ? $this->incident_status->status_title : null,
             'initiated_by' => $this->initiated_by,
-            'location' => $this->location,
+            'other_location' => $this->other_location,
+            'line' => $this->line,
             'description' => $this->description,
             'date' => $this->date,
             'reference' => $this->reference,
@@ -54,11 +59,12 @@ class FirePropertyDamageCollection extends JsonResource
         ];
         if ($this->withAttachs) {
             $data['attachements'] = CommonAttachsCollection::collection($this->attachements);
+            $data['initial_attachements'] = CommonAttachsCollection::collection($this->initial_attachements);
             // $data['initial_attachs'] = CommonAttachsCollection::collection($this->initial_attachs);
-            $data['interview_attachs'] = CommonAttachsCollection::collection($this->interview_attachs);
-            $data['record_attachs'] = CommonAttachsCollection::collection($this->record_attachs);
-            $data['photograph_attachs'] = CommonAttachsCollection::collection($this->photograph_attachs);
-            $data['other_attachs'] = CommonAttachsCollection::collection($this->other_attachs);
+            // $data['interview_attachs'] = CommonAttachsCollection::collection($this->interview_attachs);
+            // $data['record_attachs'] = CommonAttachsCollection::collection($this->record_attachs);
+            // $data['photograph_attachs'] = CommonAttachsCollection::collection($this->photograph_attachs);
+            // $data['other_attachs'] = CommonAttachsCollection::collection($this->other_attachs);
         }
         if ($this->withAssignUser) {
             $data['assigned_users'] = IncidentAssignCollection::collection($this->assignedUsers);

@@ -63,10 +63,10 @@
                     <th>MOC Description</th>
                     <td>{{ $ptw->moc_desc }}</td>
                 </tr>
-                <tr>
+                {{-- <tr>
                     <th>PTW Type</th>
                     <td>{{$ptw->meta_ptw_type_id ? $ptw->ptw_type->ptw_type_title : ''}}</td>
-                </tr>
+                </tr> --}}
                 <tr>
                     <th>Working Group</th>
                     <td>{{ $ptw->working_group }}</td>
@@ -76,9 +76,13 @@
                     <td>{{ $ptw->worker_name }}</td>
                 </tr>
                 <tr>
+                    <th>PTW Types</th>
+                    <td>{{ $ptw->ptw_types ? $ptw->ptw_types->pluck('ptw_type_title')->implode(', ') : '' }}</td>
+                </tr>
+                {{-- <tr>
                     <th>PTW Item</th>
                     <td>{{ $ptw->ptw_items ? $ptw->ptw_items->pluck('ptw_item_title')->implode(', ') : '' }}</td>
-                </tr>
+                </tr> --}}
                 <tr>
                     <th>Work Description</th>
                     <td>{{ $ptw->work_desc }}</td>
@@ -96,7 +100,7 @@
     
         </table>
 
-        <button onclick="window.print()" class="btn btn-primary mt-5">Print</button>
+        <button onclick="window.print()" class="btn btn-primary mt-5 d-print-none">Print</button>
     </div>
 
 

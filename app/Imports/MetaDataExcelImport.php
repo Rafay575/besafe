@@ -33,6 +33,8 @@ class MetaDataExcelImport implements WithMultipleSheets
             'incident_statuses' => new MetaIncidentStatusExcelImport(),
             'sgfl_relations' => new MetaSgflRelationExcelImport(),
             'unsafe_behavior_actions' => new MetaUnsafeBehaviorActionExcelImport(),
+            'locations' => new MetaLocationImport(),
+            'near_miss_classes' => new MetaNearMissClassImport(),
         ];
     }
 

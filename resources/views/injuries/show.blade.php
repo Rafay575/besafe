@@ -27,17 +27,52 @@
                     <th>ID</th>
                     <td>{{ $injury->id }}</td>
                   </tr>
+                 <tr>
+                    <th>Reference</th>
+                    <td>{{ $injury->reference }}</td>
+                  </tr>
+                 <tr>
+                    <th>Time</th>
+                    <td>{{ $injury->time }}</td>
+                  </tr>
+                 <tr>
+                    <th>Date</th>
+                    <td>{{ $injury->date }}</td>
+                  </tr>
                   <tr>
                     <th>Initiated By</th>
                     <td>{{ $injury->initiator->first_name }}</td>
                   </tr>
                   <tr>
-                    <th>Meta Injury Category</th>
-                    <td>{{ $injury->injury_category->injury_category_title }}</td>
+                    <th>Unit</th>
+                    <td>{{ $injury->unit ? $injury->unit->unit_title : '' }}</td>
                   </tr>
                   <tr>
+                    <th>Department</th>
+                    <td>{{ $injury->department ? $injury->department->department_title : '' }}</td>
+                  </tr>
+                  <tr>
+                    <th>Location</th>
+                    <td>{{ $injury->meta_location ? $injury->meta_location->location_title : '' }}</td>
+                  </tr>
+                  <tr>
+                    <th>Other Location</th>
+                    <td>{{ $injury->other_location}}</td>
+                  </tr>
+                  <tr>
+                    <th>Line</th>
+                    <td>{{ $injury->line}}</td>
+                  </tr>
+                  
+                  
+                  <tr>
+                    <th>Meta Injury Category</th>
+                    <td>{{ $injury->injury_category ? $injury->injury_category->injury_category_title : '' }}</td>
+                  </tr>
+                  
+                  <tr>
                     <th>Meta Incident Category</th>
-                    <td>{{ $injury->incident_category->incident_category_title }}</td>
+                    <td>{{ $injury->incident_category ? $injury->incident_category->incident_category_title : '' }}</td>
                   </tr>
                   <tr>
                     <th>Meta Incident Status</th>
@@ -48,13 +83,17 @@
                     <td>{{ $injury->employee_involved }}</td>
                   </tr>
                   <tr>
+                    <th>Injured Person</th>
+                    <td>{{ $injury->injured_person}}</td>
+                  </tr>
+                  <tr>
                     <th>Witness Name</th>
                     <td>{{ $injury->witness_name }}</td>
                   </tr>
-                  <tr>
+                  {{-- <tr>
                     <th>SGFL Relation</th>
                     <td>{{$injury->meta_sgfl_relation_id ?  $injury->msgfl_relation->sgfl_relation_title : '' }}</td>
-                  </tr>
+                  </tr> --}}
                   <tr>
                     <th>Details</th>
                     <td>{{ $injury->details }}</td>
@@ -80,10 +119,10 @@
                     <th>Root Causes</th>
                     <td>{{ $injury->root_causes ? $injury->root_causes->pluck('cause_title')->implode(', ') : '' }}</td>
                   </tr>
-                  <tr>
+                  {{-- <tr>
                     <th>Basic Causes</th>
                     <td>{{ $injury->basic_causes ? $injury->basic_causes->pluck('cause_title')->implode(', ') : '' }}</td>
-                  </tr>
+                  </tr> --}}
 
                   <tr>
                     <th>Contact Types</th>
@@ -102,8 +141,8 @@
                         <thead>
                             <tr>
                                 {{-- <th>Sno</th> --}}
-                                <th>Action</th>
                                 <th>Description</th>
+                                <th>Responsibility</th>
                                 <th>Timeline</th>
                                 <th>Status</th>
                             </tr>
@@ -114,8 +153,8 @@
                           @foreach ($injury->actions as $action)
                           <tr>
                               {{-- <td>{{$action['sno']}}</td> --}}
-                              <td>{{$action['action']}}</td>
                               <td>{{$action['description']}}</td>
+                              <td>{{$action['responsibility']}}</td>
                               <td>{{$action['timeline']}}</td>
                               <td>{{$action['status']}}</td>
                           </tr>
@@ -133,15 +172,16 @@
         </div>
         {{-- activites finsihed here --}}
 
-        <button onclick="window.print()" class="btn btn-primary mt-5">Print</button>
+        <button onclick="window.print()" class="btn btn-primary mt-5 d-print-none">Print</button>
     </div>
 
 
 
     {{-- left side --}}
     <div class="col-4">
+        <x-others.common-attach-view label="Initial_Attachments" :attachements="$injury->initial_attachements" shouldDelete="false"></x-others.common-attach-view>
         <x-others.common-attach-view label="Attachments" :attachements="$injury->attachements" shouldDelete="false"></x-others.common-attach-view>
-        <x-others.common-attach-view label="Interview" :attachements="$injury->interview_attachs" shouldDelete="false"></x-others.common-attach-view>
+        {{-- <x-others.common-attach-view label="Interview" :attachements="$injury->interview_attachs" shouldDelete="false"></x-others.common-attach-view> --}}
     </div>
 </div>
 </x-templates.basic-page-temp>     

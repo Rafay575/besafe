@@ -25,19 +25,27 @@
             <tbody>
                 <tr>
                   <th>Unit</th>
-                  <td>{{ $hazard->unit->unit_title }}</td>
+                  <td>{{ $hazard->unit ? $hazard->unit->unit_title : '' }}</td>
                 </tr>
                 <tr>
                   <th>Initiated By</th>
-                  <td>{{ $hazard->initiator->first_name }}</td>
+                  <td>{{ $hazard->initiator ? $hazard->initiator->first_name : ''}}</td>
                 </tr>
                 <tr>
                   <th>Department</th>
-                  <td>{{ $hazard->department->department_title }}</td>
+                  <td>{{ $hazard->department ? $hazard->department->department_title : ''}}</td>
+                </tr>
+                <tr>
+                  <th>Location</th>
+                  <td>{{ $hazard->meta_location ? $hazard->meta_location->location_title : ''}}</td>
+                </tr>
+                <tr>
+                  <th>Other Location</th>
+                  <td>{{ $hazard->other_location }}</td>
                 </tr>
                 <tr>
                   <th>Line</th>
-                  <td>{{ $hazard->line->line_title }}</td>
+                  <td>{{ $hazard->line }}</td>
                 </tr>
                 <tr>
                   <th>Risk Level</th>
@@ -51,10 +59,7 @@
                   <th>Status</th>
                   <td>{{ $hazard->incident_status->status_title }}</td>
                 </tr>
-                <tr>
-                  <th>Location</th>
-                  <td>{{ $hazard->location }}</td>
-                </tr>
+               
                 <tr>
                   <th>Description</th>
                   <td>{{ $hazard->description }}</td>
@@ -66,6 +71,10 @@
                 <tr>
                   <th>Action Cost</th>
                   <td>{{ $hazard->action_cost }}</td>
+                </tr>
+                <tr>
+                  <th>Action</th>
+                  <td>{{ $hazard->action }}</td>
                 </tr>
                 <tr>
                   <th>Created At</th>
@@ -83,13 +92,14 @@
         </div>
         {{-- activites finsihed here --}}
 
-        <button onclick="window.print()" class="btn btn-primary mt-5">Print</button>
+        <button onclick="window.print()" class="btn btn-primary mt-5 d-print-none">Print</button>
     </div>
 
 
 
     {{-- left side --}}
     <div class="col-5">
+        <x-others.common-attach-view label="Initial_Attachments" :attachements="$hazard->initial_attachements" shouldNotCollapse="true"></x-others.common-attach-view>
         <x-others.common-attach-view label="Attachments" :attachements="$hazard->attachements" shouldNotCollapse="true"></x-others.common-attach-view>
     </div>
 </div>

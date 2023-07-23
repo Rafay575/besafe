@@ -31,6 +31,10 @@ class FirePropertyDamage extends Model
     {
         return $this->common_Attachements()->where('form_input_name', 'attachements');
     }
+    public function initial_attachements()
+    {
+        return $this->common_Attachements()->where('form_input_name', 'initial_attachements');
+    }
     public function interview_attachs()
     {
         return $this->common_Attachements()->where('form_input_name', 'interview_attachs');

@@ -7,17 +7,14 @@
 
 @section('content')
         <div class="row">
-            <div class="col-12 col-lg-8 mx-auto my-4">
-              <div class="card">
-                <div class="card-body">
-                    @include('hazard.partials.hazard_create_form')
-                </div>
-              </div>
+            <div class="col-12  mx-auto my-4">
+              @include('hazard.partials.hazard_create_form')
             </div>
 
-            <div class="col-12 col-sm-4 mx-auto my-4">
+            <div class="col-12 col-sm-8 mx-auto my-4">
                 <div class="card p-0">
                     <div class="card-body row">
+                      <x-others.common-attach-view label="Initial_Attachments" :attachements="$hazard->initial_attachements" shouldDelete="true"></x-others.common-attach-view>
                       <x-others.common-attach-view label="Attachments" :attachements="$hazard->attachements" shouldDelete="true"></x-others.common-attach-view>
                     </div>
                   </div>
@@ -27,13 +24,8 @@
 @endsection
 @section('script')
 
-<script>
-  // Dropzone initialization
-  Dropzone.options.dropzone = {
-    ...DropzoneConfig,
-    url: "{{ route('hazards.update',$hazard->id) }}",
-    paramName: "attachements",
-    shouldFormReset: false
-  };
-</script>
+
+<script src="{{asset('assets/js/plugins/multistep-form.js')}}"></script>
+
+@include('partials.location_script')
 @endsection

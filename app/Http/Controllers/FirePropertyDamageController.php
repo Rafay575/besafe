@@ -8,9 +8,11 @@ use App\Models\FirePropertyDamage;
 use App\Models\MetaDepartment;
 use App\Models\MetaFireCategory;
 use App\Models\MetaIncidentStatus;
+use App\Models\MetaLocation;
 use App\Models\MetaPropertyDamage;
 use App\Models\MetaUnit;
 use App\Rules\FirePropertyActionData;
+use App\Rules\MetaLocationValidate;
 use App\Rules\TotalLossCalculation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -40,7 +42,7 @@ class FirePropertyDamageController extends Controller
                     'date' => $fpdamage->date,
                     'reference' => $fpdamage->reference,
                     'unit' => $fpdamage->unit->unit_title,
-                    'location' => $fpdamage->location,
+                    'location' => $fpdamage->meta_location ? $fpdamage->meta_location->location_title : '',
                     'incident_status' => $fpdamage->incident_status->status_title,
                     'action' => view('fire-property.partials.action-buttons', ['fpdamage' => $fpdamage])->render()
                 ];
@@ -59,10 +61,11 @@ class FirePropertyDamageController extends Controller
         RolesPermissionController::can(['fire_property_damage.create']);
         $incident_statuses = MetaIncidentStatus::select('id', 'status_title')->get();
         $units = MetaUnit::select('id', 'unit_title')->get();
+        $locations = MetaLocation::select('id', 'meta_unit_id', 'location_title')->get();
         $property_damages = MetaPropertyDamage::select('id', 'property_damage_title')->get();
         $fire_categories = MetaFireCategory::select('id', 'fire_category_title')->get();
         $departments = MetaDepartment::select('id', 'department_title')->get();
-        return view('fire-property.create', compact('incident_statuses', 'units', 'property_damages', 'departments', 'fire_categories'));
+        return view('fire-property.create', compact('locations', 'incident_statuses', 'units', 'property_damages', 'departments', 'fire_categories'));
     }
 
     /**
@@ -82,9 +85,9 @@ class FirePropertyDamageController extends Controller
         $fpdamage = new FirePropertyDamage();
         $fpdamage->date = $request->date;
         $fpdamage->initiated_by = auth()->user()->id;
-        $fpdamage->reference = $request->reference;
-        $fpdamage->meta_unit_id = $request->meta_unit_id ?? null;
-        $fpdamage->location = $request->location;
+        $fpdamage->reference = self::getNextRef();
+        $fpdamage->meta_unit_id = $request->meta_unit_id;
+        $fpdamage->meta_location_id = $request->meta_location_id;
         $fpdamage->meta_fire_category_id = $request->meta_fire_category_id ?? null;
         $fpdamage->meta_property_damage_id = $request->meta_property_damage_id ?? null;
         $fpdamage->meta_incident_status_id = MetaIncidentStatus::where('status_code', 0)->first()->id; //pending
@@ -97,25 +100,33 @@ class FirePropertyDamageController extends Controller
         $fpdamage->loss_recovery_method = $request->loss_recovery_method;
         $fpdamage->preventative_measure = $request->preventative_measure;
         $fpdamage->actions = $request->actions; //json
+
+        $fpdamage->other_location = $request->other_location;
+        $fpdamage->line = $request->line;
+        $fpdamage->investigated_by = $request->investigated_by;
+        $fpdamage->reviewed_by = $request->reviewed_by;
+        $fpdamage->meta_department_id = $request->meta_department_id;
+
+
         $fpdamage->save();
 
-        if ($request->has('attachements')) {
-            (new CommonAttachementController)->syncUploadedArray($request->attachements, $fpdamage, 'attachements');
+        if ($request->has('initial_attachements')) {
+            (new CommonAttachementController)->syncUploadedArray($request->initial_attachements, $fpdamage, 'initial_attachements');
         }
 
-        if ($request->has('interview_attachs')) {
-            (new CommonAttachementController)->syncUploadedArray($request->interview_attachs, $fpdamage, 'interview_attachs');
-        }
-        if ($request->has('record_attachs')) {
-            (new CommonAttachementController)->syncUploadedArray($request->record_attachs, $fpdamage, 'record_attachs');
-        }
-        if ($request->has('photograph_attachs')) {
-            (new CommonAttachementController)->syncUploadedArray($request->photograph_attachs, $fpdamage, 'photograph_attachs');
-        }
+        // if ($request->has('interview_attachs')) {
+        //     (new CommonAttachementController)->syncUploadedArray($request->interview_attachs, $fpdamage, 'interview_attachs');
+        // }
+        // if ($request->has('record_attachs')) {
+        //     (new CommonAttachementController)->syncUploadedArray($request->record_attachs, $fpdamage, 'record_attachs');
+        // }
+        // if ($request->has('photograph_attachs')) {
+        //     (new CommonAttachementController)->syncUploadedArray($request->photograph_attachs, $fpdamage, 'photograph_attachs');
+        // }
 
-        if ($request->has('other_attachs')) {
-            (new CommonAttachementController)->syncUploadedArray($request->other_attachs, $fpdamage, 'other_attachs');
-        }
+        // if ($request->has('other_attachs')) {
+        //     (new CommonAttachementController)->syncUploadedArray($request->other_attachs, $fpdamage, 'other_attachs');
+        // }
 
         if ($channel === 'api') {
             return ApiResponseController::successWithData('Fire Property and damage created.', new FirePropertyDamageCollection($fpdamage));
@@ -147,11 +158,12 @@ class FirePropertyDamageController extends Controller
         RolesPermissionController::canEditIncident($fire_property, 'fire_property_damage');
         $incident_statuses = MetaIncidentStatus::select('id', 'status_title')->get();
         $units = MetaUnit::select('id', 'unit_title')->get();
+        $locations = MetaLocation::select('id', 'meta_unit_id', 'location_title')->get();
         $fire_categories = MetaFireCategory::select('id', 'fire_category_title')->get();
         $property_damages = MetaPropertyDamage::select('id', 'property_damage_title')->get();
         $departments = MetaDepartment::select('id', 'department_title')->get();
 
-        return view('fire-property.edit', compact('fire_property', 'incident_statuses', 'units', 'property_damages', 'departments', 'fire_categories'));
+        return view('fire-property.edit', compact('locations', 'fire_property', 'incident_statuses', 'units', 'property_damages', 'departments', 'fire_categories'));
 
     }
 
@@ -179,8 +191,9 @@ class FirePropertyDamageController extends Controller
 
         // $fpdamage->date = $request->date;
         // $fpdamage->initiated_by = auth()->user()->id;
-        $fpdamage->reference = $request->has('reference') ? $request->reference : $fpdamage->reference;
+        // $fpdamage->reference = $request->has('reference') ? $request->reference : $fpdamage->reference;
         $fpdamage->meta_unit_id = $request->has('meta_unit_id') ? $request->meta_unit_id : $fpdamage->meta_unit_id;
+        $fpdamage->meta_location_id = $request->has('meta_location_id') ? $request->meta_location_id : $fpdamage->meta_location_id;
         $fpdamage->location = $request->has('location') ? $request->location : $fpdamage->location;
         $fpdamage->meta_fire_category_id = $request->has('meta_fire_category_id') ? $request->meta_fire_category_id : $fpdamage->meta_fire_category_id;
         $fpdamage->meta_property_damage_id = $request->has('meta_property_damage_id') ? $request->meta_property_damage_id : $fpdamage->meta_property_damage_id;
@@ -194,29 +207,36 @@ class FirePropertyDamageController extends Controller
         $fpdamage->loss_recovery_method = $request->has('loss_recovery_method') ? $request->loss_recovery_method : $fpdamage->loss_recovery_method;
         $fpdamage->preventative_measure = $request->has('preventative_measure') ? $request->preventative_measure : $fpdamage->preventative_measure;
         $fpdamage->actions = $request->has('actions') ? $request->actions : $fpdamage->actions;
-
+        $fpdamage->other_location = $request->other_location ?? $fpdamage->other_location;
+        $fpdamage->line = $request->line ?? $fpdamage->line;
+        $fpdamage->investigated_by = $request->investigated_by ?? $fpdamage->investigated_by;
+        $fpdamage->reviewed_by = $request->reviewed_by ?? $fpdamage->reviewed_by;
+        $fpdamage->meta_department_id = $request->meta_department_id ?? $fpdamage->meta_department_id;
         $fpdamage->save();
 
 
         if ($request->has('attachements')) {
             (new CommonAttachementController)->syncUploadedArray($request->attachements, $fpdamage, 'attachements');
         }
-
-
-
-        if ($request->has('interview_attachs')) {
-            (new CommonAttachementController)->syncUploadedArray($request->interview_attachs, $fpdamage, 'interview_attachs');
-        }
-        if ($request->has('record_attachs')) {
-            (new CommonAttachementController)->syncUploadedArray($request->record_attachs, $fpdamage, 'record_attachs');
-        }
-        if ($request->has('photograph_attachs')) {
-            (new CommonAttachementController)->syncUploadedArray($request->photograph_attachs, $fpdamage, 'photograph_attachs');
+        if ($request->has('initial_attachements')) {
+            (new CommonAttachementController)->syncUploadedArray($request->initial_attachements, $fpdamage, 'initial_attachements');
         }
 
-        if ($request->has('other_attachs')) {
-            (new CommonAttachementController)->syncUploadedArray($request->other_attachs, $fpdamage, 'other_attachs');
-        }
+
+
+        // if ($request->has('interview_attachs')) {
+        //     (new CommonAttachementController)->syncUploadedArray($request->interview_attachs, $fpdamage, 'interview_attachs');
+        // }
+        // if ($request->has('record_attachs')) {
+        //     (new CommonAttachementController)->syncUploadedArray($request->record_attachs, $fpdamage, 'record_attachs');
+        // }
+        // if ($request->has('photograph_attachs')) {
+        //     (new CommonAttachementController)->syncUploadedArray($request->photograph_attachs, $fpdamage, 'photograph_attachs');
+        // }
+
+        // if ($request->has('other_attachs')) {
+        //     (new CommonAttachementController)->syncUploadedArray($request->other_attachs, $fpdamage, 'other_attachs');
+        // }
 
         if ($channel === 'api') {
             return ApiResponseController::successWithData('Fire Property and damage updated.', new FirePropertyDamageCollection($fpdamage));
@@ -272,11 +292,19 @@ class FirePropertyDamageController extends Controller
         $rules = [
             'date' => ['required', 'date', 'date_format:Y-m-d'],
             'meta_unit_id' => ['required', 'exists:meta_units,id'],
+            'meta_location_id' => ['exists:meta_locations,id', new MetaLocationValidate],
             'meta_fire_category_id' => ['required_without:meta_property_damage_id'],
             'meta_property_damage_id' => ['required_without:meta_fire_category_id'],
-            'meta_incident_status_id' => ['required', 'exists:meta_incident_statuses,id'],
             'actions' => ['array', new FirePropertyActionData],
             'location' => ['nullable', 'string'],
+
+            'other_location' => ['nullable', 'string'],
+            'line' => ['nullable', 'string'],
+            'investigated_by' => ['nullable', 'string'],
+            'reviewed_by' => ['nullable', 'string'],
+            'meta_department_id' => ['nullable', 'exists:meta_departments,id'],
+
+
             'reference' => ['nullable', 'string'],
             'description' => ['nullable', 'string'],
             'immediate_action' => ['nullable', 'string'],
@@ -285,32 +313,33 @@ class FirePropertyDamageController extends Controller
             'similar_incident_before' => ['nullable', 'string'],
             'loss_recovery_method' => ['nullable', 'string'],
             'preventative_measure' => ['nullable', 'string'],
-            'loss_calculation' => ['array', 'required', 'size:3'],
-            'loss_calculation.direct_loss' => ['required', 'array'],
-            'loss_calculation.direct_loss.description' => ['required', 'string'],
-            'loss_calculation.direct_loss.value' => ['required', 'numeric'],
-            'loss_calculation.indirect_loss' => ['required', 'array'],
-            'loss_calculation.total_loss' => ['required', 'numeric', new TotalLossCalculation],
-            'loss_calculation.indirect_loss.description' => ['required', 'string'],
-            'loss_calculation.indirect_loss.value' => ['required', 'numeric'],
+            // 'loss_calculation' => ['array', 'required', 'size:3'],
+            // 'loss_calculation.direct_loss' => ['required', 'array'],
+            // 'loss_calculation.direct_loss.description' => ['required', 'string'],
+            // 'loss_calculation.direct_loss.value' => ['required', 'numeric'],
+            // 'loss_calculation.indirect_loss' => ['required', 'array'],
+            // 'loss_calculation.total_loss' => ['required', 'numeric', new TotalLossCalculation],
+            // 'loss_calculation.indirect_loss.description' => ['required', 'string'],
+            // 'loss_calculation.indirect_loss.value' => ['required', 'numeric'],
 
             'attachements' => ['array', 'nullable'],
-            'attachements.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
+            'attachements.*' => ['mimes:jpeg,png,jpg,gif,pdf,doc,docx,xlsx,csv|max:2048'],
 
-            'initial_attachs' => ['array', 'nullable'],
-            'initial_attachs.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
 
-            'interview_attachs' => ['array', 'nullable'],
-            'interview_attachs.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
+            'initial_attachements' => ['array', 'nullable'],
+            'initial_attachements.*' => ['mimes:jpeg,png,jpg,gif,pdf,doc,docx,xlsx,csv|max:2048'],
 
-            'record_attachs' => ['array', 'nullable'],
-            'record_attachs.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
+            // 'interview_attachs' => ['array', 'nullable'],
+            // 'interview_attachs.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
 
-            'photograph_attachs' => ['array', 'nullable'],
-            'photograph_attachs.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
+            // 'record_attachs' => ['array', 'nullable'],
+            // 'record_attachs.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
 
-            'other_attachs' => ['array', 'nullable'],
-            'other_attachs.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
+            // 'photograph_attachs' => ['array', 'nullable'],
+            // 'photograph_attachs.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
+
+            // 'other_attachs' => ['array', 'nullable'],
+            // 'other_attachs.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
         ];
         if ($request->has('meta_fire_category_id') && $request->meta_fire_category_id != "") {
             $rules['meta_fire_category_id'][0] = 'exists:meta_fire_categories,id';
@@ -323,7 +352,6 @@ class FirePropertyDamageController extends Controller
             $rules['date'] = ['nullable', 'date', 'date_format:Y-m-d'];
             $rules['meta_unit_id'] = ['nullable', 'exists:meta_units,id'];
             $rules['meta_incident_status_id'] = ['exists:meta_incident_statuses,id'];
-
             if ($request->has('loss_calculation')) {
                 $rules['loss_calculation'] = ['array', 'required', 'size:3'];
                 $rules['loss_calculation.direct_loss'] = ['required', 'array'];
@@ -347,4 +375,28 @@ class FirePropertyDamageController extends Controller
 
         return Validator::make($request->all(), $rules);
     }
+
+
+    public static function getNextRef()
+    {
+        $count = FirePropertyDamage::count();
+        $month = date('n');
+        $reference = $month . str_pad($count + 1, 2, '0', STR_PAD_LEFT);
+        return $reference;
+
+        // Get the last created order
+        // $lastOrder = FirePropertyDamage::orderBy('created_at', 'desc')->first();
+
+
+        // if (!$lastOrder) {
+        //     $number = 0;
+        // } else {
+        //     $number = substr($lastOrder->reference, 5);
+        // }
+
+        // $year = date('Y');
+        // return $year . "-" . sprintf('%06d', intval($number) + 1);
+    }
+
+
 }

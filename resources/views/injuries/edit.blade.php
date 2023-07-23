@@ -11,8 +11,9 @@
           <div class="col-12 col-sm-8 mx-auto">
               <div class="card p-0">
                   <div class="card-body row">
+                    <x-others.common-attach-view label="Initial_Attachments" :attachements="$injury->initial_attachements" shouldDelete="true"></x-others.common-attach-view>
                     <x-others.common-attach-view label="Attachments" :attachements="$injury->attachements" shouldDelete="true"></x-others.common-attach-view>
-                    <x-others.common-attach-view label="Interview" :attachements="$injury->interview_attachs" shouldDelete="true"></x-others.common-attach-view>
+                    {{-- <x-others.common-attach-view label="Interview" :attachements="$injury->interview_attachs" shouldDelete="true"></x-others.common-attach-view> --}}
                   </div>
                 </div>
           </div>      
@@ -37,8 +38,8 @@ $(document).ready(function(){
         
         // Create a new row with form inputs
         var newRow = $('<tr>').append(
-          $('<td>').html('<input type="hidden" name="actions['+nextRowNo+'][sno]" value="'+nextRowNo+'"><input type="text" class="form-control form-control-sm" name="actions['+nextRowNo+'][action]">'),
-            $('<td>').html('<input type="text" class="form-control form-control-sm" name="actions['+nextRowNo+'][description]">'),
+          $('<td>').html('<input type="hidden" name="actions['+nextRowNo+'][sno]" value="'+nextRowNo+'"><input type="text" class="form-control form-control-sm" name="actions['+nextRowNo+'][description]">'),
+            $('<td>').html('<input type="text" class="form-control form-control-sm" name="actions['+nextRowNo+'][responsibility]">'),
           $('<td>').html('<input type="text" class="form-control form-control-sm" name="actions['+nextRowNo+'][timeline]">'),
           $('<td>').html('<select name="actions['+nextRowNo+'][status]" class="form-control form-control-sm"><option value="active">Active</option><option value="inactive">InActive</option></select>'),
           $('<td>').html('<span class="btn btn-sm btn-danger deleteActionRecord">X</span>')
@@ -58,4 +59,6 @@ $(document).ready(function(){
       });
 })
 </script>   
+@include('partials.location_script')
+
 @endsection

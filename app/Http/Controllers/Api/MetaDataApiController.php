@@ -16,6 +16,8 @@ use App\Models\MetaIncidentCategory;
 use App\Models\MetaInjuryCategory;
 use App\Models\MetaInternalExternalAuditQuestion;
 use App\Models\MetaLine;
+use App\Models\MetaLocation;
+use App\Models\MetaNearMissClass;
 use App\Models\MetaPropertydamage;
 use App\Models\MetaPtwItem;
 use App\Models\MetaPtwType;
@@ -70,6 +72,8 @@ class MetaDataApiController extends Controller
             'unsafe_behavior_types' => MetaUnsafeBehaviorType::class,
             'unsafe_behavior_actions' => MetaUnsafeBehaviorAction::class,
             'sgfl_relations' => MetaSgflRelation::class,
+            'locations' => MetaLocation::class,
+            'near_miss_classes' => MetaNearMissClass::class,
         ];
     }
 }

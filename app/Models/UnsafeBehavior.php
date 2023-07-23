@@ -29,8 +29,12 @@ class UnsafeBehavior extends Model
 
     // meta ends above
 
+    public function initial_attachements()
+    {
+        return $this->common_Attachements()->where('form_input_name', 'initial_attachements');
+    }
     public function attachements()
     {
-        return $this->hasMany(CommonAttachement::class, 'incident_id')->where('form_name', $this->getTable());
+        return $this->common_Attachements()->where('form_input_name', 'attachements');
     }
 }

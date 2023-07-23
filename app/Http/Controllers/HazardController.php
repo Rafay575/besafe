@@ -9,8 +9,10 @@ use App\Models\MetaDepartment;
 use App\Models\MetaDepartmentTag;
 use App\Models\MetaIncidentStatus;
 use App\Models\MetaLine;
+use App\Models\MetaLocation;
 use App\Models\MetaRiskLevel;
 use App\Models\MetaUnit;
+use App\Rules\MetaLocationValidate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
@@ -38,7 +40,7 @@ class HazardController extends Controller
                     'unit' => $hazard->unit->unit_title,
                     'date' => $hazard->date,
                     'department' => $hazard->department->department_title,
-                    'line' => $hazard->line->line_title,
+                    'line' => $hazard->line,
                     'risk_level' => $hazard->risk_level->risk_level_title,
                     'incident_status' => $hazard->incident_status->status_title,
 
@@ -58,13 +60,14 @@ class HazardController extends Controller
     public function create()
     {
         RolesPermissionController::can(['hazard.create']);
-        $units = MetaUnit::select('id', 'unit_title')->get();
         $departments = MetaDepartment::select('id', 'department_title')->get();
         $lines = MetaLine::select('id', 'line_title')->get();
         $incident_statuses = MetaIncidentStatus::select('status_code', 'status_title', 'id')->get();
         $risk_levels = MetaRiskLevel::select('id', 'risk_level_title')->get();
         $department_tags = MetaDepartmentTag::select('id', 'department_tag_title')->get();
-        return view('hazard.create', compact('lines', 'departments', 'units', 'incident_statuses', 'risk_levels', 'department_tags'));
+        $units = MetaUnit::select('id', 'unit_title')->get();
+        $locations = MetaLocation::select('id', 'meta_unit_id', 'location_title')->get();
+        return view('hazard.create', compact('lines', 'departments', 'units', 'incident_statuses', 'risk_levels', 'department_tags', 'locations'));
     }
 
     /**
@@ -88,16 +91,20 @@ class HazardController extends Controller
         $hazard->meta_department_id = $request->meta_department_id ?? null;
         $hazard->meta_risk_level_id = $request->meta_risk_level_id ?? null;
         $hazard->meta_department_tag_id = $request->meta_department_tag_id ?? null;
-        $hazard->meta_line_id = $request->meta_line_id ?? null;
+        // $hazard->meta_line_id = $request->meta_line_id ?? null;
         $hazard->meta_incident_status_id = MetaIncidentStatus::where('status_code', 0)->first()->id; //pending
         $hazard->initiated_by = auth()->user()->id;
-        $hazard->location = $request->location;
+        $hazard->meta_location_id = $request->meta_location_id;
         $hazard->description = $request->description;
+        $hazard->other_location = $request->other_location;
         $hazard->date = $request->date;
         $hazard->action_cost = $request->action_cost;
+        $hazard->action = $request->action;
+        $hazard->line = $request->line;
         $hazard->save();
-        if ($request->has('attachements')) {
-            (new CommonAttachementController)->syncUploadedArray($request->attachements, $hazard, 'attachements');
+        if ($request->has('initial_attachements')) {
+            // (new CommonAttachementController)->uploadedArray($request->attachements, $hazard, 'attachements');
+            (new CommonAttachementController)->syncUploadedArray($request->initial_attachements, $hazard, 'initial_attachements');
         }
 
         if ($channel === 'api') {
@@ -134,7 +141,8 @@ class HazardController extends Controller
         $incident_statuses = MetaIncidentStatus::select('status_code', 'status_title', 'id')->get();
         $risk_levels = MetaRiskLevel::select('id', 'risk_level_title')->get();
         $department_tags = MetaDepartmentTag::select('id', 'department_tag_title')->get();
-        return view('hazard.edit', compact('lines', 'departments', 'units', 'incident_statuses', 'risk_levels', 'department_tags', 'hazard'));
+        $locations = MetaLocation::select('id', 'meta_unit_id', 'location_title')->get();
+        return view('hazard.edit', compact('lines', 'departments', 'units', 'incident_statuses', 'risk_levels', 'department_tags', 'hazard', 'locations'));
     }
 
     /**
@@ -143,7 +151,8 @@ class HazardController extends Controller
     public function update(Request $request, $hazard_id, $channel = "web")
     {
 
-        $validator = $this->validateData($request);
+
+        $validator = $this->validateData($request, 'update');
 
         $formErrorsResponse = FormValidatitionDispatcherController::Response($validator, $channel);
         if ($formErrorsResponse) {
@@ -162,20 +171,28 @@ class HazardController extends Controller
 
 
 
-        $hazard->meta_unit_id = $request->meta_unit_id ?? null;
-        $hazard->meta_department_id = $request->meta_department_id ?? null;
-        $hazard->meta_risk_level_id = $request->meta_risk_level_id ?? null;
-        $hazard->meta_department_tag_id = $request->meta_department_tag_id ?? null;
-        $hazard->meta_line_id = $request->meta_line_id ?? null;
-        $hazard->meta_incident_status_id = $request->meta_incident_status_id ?? null;
-        $hazard->location = $request->location;
-        $hazard->description = $request->description;
-        $hazard->date = $request->date;
-        $hazard->action_cost = $request->action_cost;
+        $hazard->meta_unit_id = $request->meta_unit_id ?? $hazard->meta_unit_id;
+        $hazard->meta_department_id = $request->meta_department_id ?? $hazard->meta_department_id;
+        $hazard->meta_risk_level_id = $request->meta_risk_level_id ?? $hazard->meta_risk_level_id;
+        $hazard->meta_department_tag_id = $request->meta_department_tag_id ?? $hazard->meta_department_tag_id;
+        // $hazard->meta_line_id = $request->meta_line_id ?? $hazard->meta_line_id;
+        $hazard->meta_incident_status_id = $request->meta_incident_status_id ?? $hazard->meta_incident_status_id;
+        $hazard->meta_location_id = $request->meta_location_id ?? $hazard->meta_location_id;
+        $hazard->description = $request->description ?? $hazard->description;
+        $hazard->other_location = $request->other_location ?? $hazard->other_location;
+        $hazard->date = $request->date ?? $hazard->date;
+        $hazard->action_cost = $request->action_cost ?? $hazard->action_cost;
+        // $hazard->others = $request->others;
+        $hazard->action = $request->action ?? $hazard->action;
+        $hazard->line = $request->line ?? $hazard->line;
         $hazard->save();
         if ($request->has('attachements')) {
             // (new CommonAttachementController)->uploadedArray($request->attachements, $hazard, 'attachements');
             (new CommonAttachementController)->syncUploadedArray($request->attachements, $hazard, 'attachements');
+        }
+        if ($request->has('initial_attachements')) {
+            // (new CommonAttachementController)->uploadedArray($request->attachements, $hazard, 'attachements');
+            (new CommonAttachementController)->syncUploadedArray($request->initial_attachements, $hazard, 'initial_attachements');
         }
 
         if ($channel === 'api') {
@@ -228,22 +245,32 @@ class HazardController extends Controller
         }
     }
 
-    public function validateData(Request $request)
+    public function validateData(Request $request, $method = "store")
     {
-        return
-            Validator::make($request->all(), [
-                'meta_unit_id' => 'required|exists:meta_units,id',
-                'meta_department_id' => 'required|exists:meta_departments,id',
-                'meta_line_id' => 'required|exists:meta_lines,id',
-                'meta_risk_level_id' => 'required|exists:meta_risk_levels,id',
-                'meta_department_tag_id' => 'required|exists:meta_department_tags,id',
-                'meta_incident_status_id' => 'required|exists:meta_incident_statuses,id',
-                'location' => 'nullable|string|max:255',
-                'description' => 'nullable|string',
-                'date' => 'required|date',
-                'action_cost' => 'nullable|numeric|min:0|max:9999999.99',
-                'attachements' => ['array', 'nullable'],
-                'attachements.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
-            ]);
+        $rules = [
+            'meta_unit_id' => 'required|exists:meta_units,id',
+            'meta_location_id' => ['exists:meta_locations,id', new MetaLocationValidate],
+            'meta_department_id' => 'required|exists:meta_departments,id',
+            // 'meta_line_id' => 'required|exists:meta_lines,id',
+            'meta_risk_level_id' => 'required|exists:meta_risk_levels,id',
+            'meta_department_tag_id' => 'required|exists:meta_department_tags,id',
+            'location' => 'nullable|string|max:255',
+            'other_location' => 'nullable|string|max:255',
+            'description' => 'nullable|string|max:255',
+            'line' => 'nullable|string|max:255',
+            'action' => 'nullable|string|max:255',
+            'date' => 'required|date',
+            'action_cost' => 'nullable|numeric|min:0|max:9999999.99',
+            'attachements' => ['array', 'nullable'],
+            'attachements.*' => ['mimes:jpeg,png,jpg,gif,doc,docx,pdf,xlsx,csv|max:2048'],
+            'initial_attachements' => ['array', 'nullable'],
+            'initial_attachements.*' => ['mimes:jpeg,png,jpg,gif,doc,docx,pdf,xlsx,csv|max:2048'],
+        ];
+
+        if ($method == 'update') {
+            $rules['meta_unit_id'] = 'nullable|exists:meta_units,id';
+            $rules['meta_incident_status_id'] = 'required|exists:meta_incident_statuses,id';
+        }
+        return Validator::make($request->all(), $rules);
     }
 }

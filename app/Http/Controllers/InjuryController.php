@@ -7,13 +7,17 @@ use App\Http\Resources\InjuryCollection;
 use App\Models\Injury;
 use App\Models\MetaBasicCause;
 use App\Models\MetaContactType;
+use App\Models\MetaDepartment;
 use App\Models\MetaImmediateCause;
 use App\Models\MetaIncidentCategory;
 use App\Models\MetaIncidentStatus;
 use App\Models\MetaInjuryCategory;
+use App\Models\MetaLocation;
 use App\Models\MetaRootCause;
 use App\Models\MetaSgflRelation;
+use App\Models\MetaUnit;
 use App\Rules\InjuryActionData;
+use App\Rules\MetaLocationValidate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
@@ -39,8 +43,9 @@ class InjuryController extends Controller
                 $data[] = [
                     'sno' => $i,
                     'date' => $injury->date,
+                    'time' => $injury->time,
                     'employee_involved' => $injury->employee_involved,
-                    'sgfl_relation' => $injury->meta_sgfl_relation_id ? $injury->msgfl_relation->sgfl_relation_title : '',
+                    // 'sgfl_relation' => $injury->meta_sgfl_relation_id ? $injury->msgfl_relation->sgfl_relation_title : '',
                     'incident_category' => $injury->incident_category->incident_category_title,
                     'injury_category' => $injury->injury_category->injury_category_title,
                     'incident_status' => $injury->incident_status->status_title,
@@ -67,7 +72,11 @@ class InjuryController extends Controller
         $basic_causes = MetaBasicCause::select('id', 'cause_title')->get();
         $root_causes = MetaRootCause::select('id', 'cause_title')->get();
         $contacts = MetaContactType::select('id', 'type_title')->get();
-        return view('injuries.create', compact('incident_categories', 'injury_categories', 'incident_statuses', 'sgfl_relations', 'immediate_causes', 'basic_causes', 'root_causes', 'contacts'));
+        $units = MetaUnit::select('id', 'unit_title')->get();
+        $locations = MetaLocation::select('id', 'meta_unit_id', 'location_title')->get();
+        $departments = MetaDepartment::select('id', 'department_title')->get();
+
+        return view('injuries.create', compact('departments', 'units', 'locations', 'incident_categories', 'injury_categories', 'incident_statuses', 'sgfl_relations', 'immediate_causes', 'basic_causes', 'root_causes', 'contacts'));
 
     }
 
@@ -99,9 +108,19 @@ class InjuryController extends Controller
         $injury->details = $request->details;
         $injury->date = $request->date;
         $injury->immediate_action = $request->immediate_action;
+        $injury->meta_unit_id = $request->meta_unit_id;
+        $injury->meta_location_id = $request->meta_location_id;
         $injury->key_finding = $request->key_finding;
         $injury->actions = $request->actions; //json
         $injury->key_finding = $request->key_finding;
+
+        $injury->other_location = $request->other_location;
+        $injury->meta_department_id = $request->meta_department_id;
+        $injury->line = $request->line;
+        $injury->injured_person = $request->injured_person;
+        $injury->time = $request->time;
+        $injury->reference = self::getNextRef();
+
         try {
             //code...
             $injury->save();
@@ -112,25 +131,23 @@ class InjuryController extends Controller
         }
 
 
-        // pivot data
-        if (!empty($request->meta_immediate_causes)) {
 
-        }
         $injury->immediate_causes()->sync($request->meta_immediate_causes);
         $injury->root_causes()->sync($request->meta_root_causes);
-        $injury->basic_causes()->sync($request->meta_basic_causes);
+        // $injury->basic_causes()->sync($request->meta_basic_causes);
         $injury->contacts()->sync($request->meta_contact_types);
 
 
         // attachements
-        if ($request->has('attachements')) {
-            (new CommonAttachementController)->syncUploadedArray($request->attachements, $injury, 'attachements');
+
+        if ($request->has('initial_attachements')) {
+            (new CommonAttachementController)->syncUploadedArray($request->initial_attachements, $injury, 'initial_attachements');
         }
 
 
-        if ($request->has('interview_attachs')) {
-            (new CommonAttachementController)->syncUploadedArray($request->interview_attachs, $injury, 'interview_attachs');
-        }
+        // if ($request->has('interview_attachs')) {
+        //     (new CommonAttachementController)->syncUploadedArray($request->interview_attachs, $injury, 'interview_attachs');
+        // }
 
 
         if ($channel === 'api') {
@@ -167,7 +184,11 @@ class InjuryController extends Controller
         $basic_causes = MetaBasicCause::select('id', 'cause_title')->get();
         $root_causes = MetaRootCause::select('id', 'cause_title')->get();
         $contacts = MetaContactType::select('id', 'type_title')->get();
-        return view('injuries.edit', compact('injury', 'incident_categories', 'injury_categories', 'incident_statuses', 'sgfl_relations', 'immediate_causes', 'basic_causes', 'root_causes', 'contacts'));
+        $units = MetaUnit::select('id', 'unit_title')->get();
+        $locations = MetaLocation::select('id', 'meta_unit_id', 'location_title')->get();
+        $departments = MetaDepartment::select('id', 'department_title')->get();
+
+        return view('injuries.edit', compact('departments', 'units', 'locations', 'injury', 'incident_categories', 'injury_categories', 'incident_statuses', 'sgfl_relations', 'immediate_causes', 'basic_causes', 'root_causes', 'contacts'));
 
     }
 
@@ -177,7 +198,7 @@ class InjuryController extends Controller
     public function update(Request $request, $injury_id, $channel = "web")
     {
 
-        $validator = $this->validateData($request);
+        $validator = $this->validateData($request, 'update');
 
         $formErrorsResponse = FormValidatitionDispatcherController::Response($validator, $channel);
         if ($formErrorsResponse) {
@@ -193,19 +214,27 @@ class InjuryController extends Controller
             return ApiResponseController::error('Injury not found', 404);
         }
 
-        $injury->meta_injury_category_id = $request->meta_injury_category_id;
-        $injury->meta_incident_category_id = $request->meta_incident_category_id;
-        $injury->meta_incident_status_id = $request->meta_incident_status_id; //pending
-        $injury->employee_involved = $request->employee_involved;
-        $injury->witness_name = $request->witness_name;
-        $injury->meta_sgfl_relation_id = $request->meta_sgfl_relation_id;
-        // $injury->sgfl_relation = $request->sgfl_relation;
-        $injury->details = $request->details;
-        $injury->date = $request->date;
-        $injury->immediate_action = $request->immediate_action;
-        $injury->key_finding = $request->key_finding;
-        $injury->actions = $request->actions; //json
-        $injury->key_finding = $request->key_finding;
+        $injury->meta_injury_category_id = $request->meta_injury_category_id ?? $injury->meta_injury_category_id;
+        $injury->meta_incident_category_id = $request->meta_incident_category_id ?? $injury->meta_incident_category_id;
+        $injury->meta_incident_status_id = $request->meta_incident_status_id ?? $injury->meta_incident_status_id;
+        $injury->employee_involved = $request->employee_involved ?? $injury->employee_involved;
+        $injury->witness_name = $request->witness_name ?? $injury->witness_name;
+        // $injury->meta_sgfl_relation_id = $request->meta_sgfl_relation_id ?? $injury->meta_sgfl_relation_id;
+        $injury->details = $request->details ?? $injury->details;
+        $injury->date = $request->date ?? $injury->date;
+        $injury->immediate_action = $request->immediate_action ?? $injury->immediate_action;
+        $injury->meta_location_id = $request->meta_location_id ?? $injury->meta_location_id;
+        $injury->meta_unit_id = $request->meta_unit_id ?? $injury->meta_unit_id;
+        $injury->key_finding = $request->key_finding ?? $injury->key_finding;
+        $injury->actions = $request->actions ?? $injury->actions; //json
+
+        $injury->other_location = $request->other_location ?? $injury->other_location;
+        $injury->meta_department_id = $request->meta_department_id ?? $injury->meta_department_id;
+        $injury->line = $request->line ?? $injury->line;
+        $injury->injured_person = $request->injured_person ?? $injury->injured_person;
+        $injury->time = $request->time ?? $injury->time;
+
+
         $injury->save();
 
         // pivot data
@@ -216,14 +245,17 @@ class InjuryController extends Controller
 
 
         // attachements
+
         if ($request->has('attachements')) {
             (new CommonAttachementController)->syncUploadedArray($request->attachements, $injury, 'attachements');
         }
-
-
-        if ($request->has('interview_attachs')) {
-            (new CommonAttachementController)->syncUploadedArray($request->interview_attachs, $injury, 'interview_attachs');
+        if ($request->has('initial_attachements')) {
+            (new CommonAttachementController)->syncUploadedArray($request->initial_attachements, $injury, 'initial_attachements');
         }
+
+        // if ($request->has('interview_attachs')) {
+        //     (new CommonAttachementController)->syncUploadedArray($request->interview_attachs, $injury, 'interview_attachs');
+        // }
 
 
         if ($channel === 'api') {
@@ -276,36 +308,59 @@ class InjuryController extends Controller
         }
     }
 
-    public function validateData(Request $request)
+    public function validateData(Request $request, $method = "store")
     {
-        return
-            Validator::make($request->all(), [
-                'meta_injury_category_id' => ['required', 'exists:meta_injury_categories,id'],
-                'meta_incident_category_id' => ['required', 'exists:meta_incident_categories,id'],
-                'meta_incident_status_id' => ['required', 'exists:meta_incident_statuses,id'],
-                'employee_involved' => ['string', 'in:yes,no,Yes,No'],
-                'meta_sgfl_relation_id' => ['required', 'exists:meta_sgfl_relations,id'],
-                'witness_name' => ['nullable', 'string'],
-                'date' => ['date'],
-                'details' => ['nullable', 'string'],
-                'immediate_action' => ['nullable', 'string'],
-                'key_finding' => ['nullable', 'string'],
-                'actions' => ['array', new InjuryActionData],
+        $rules = [
+            'meta_injury_category_id' => ['required', 'exists:meta_injury_categories,id'],
+            'meta_incident_category_id' => ['required', 'exists:meta_incident_categories,id'],
+            'meta_unit_id' => 'required|exists:meta_units,id',
+            'meta_location_id' => ['exists:meta_locations,id', new MetaLocationValidate],
+            'employee_involved' => ['string', 'in:yes,no,Yes,No'],
+            // 'meta_sgfl_relation_id' => ['required', 'exists:meta_sgfl_relations,id'],
+            'witness_name' => ['nullable', 'string'],
+            'date' => ['date'],
+            'details' => ['nullable', 'string'],
+            'immediate_action' => ['nullable', 'string'],
+            'key_finding' => ['nullable', 'string'],
+            'actions' => ['array', new InjuryActionData],
 
-                'meta_immediate_causes' => ['array'],
-                'meta_immediate_causes.*' => ['exists:meta_immediate_causes,id'],
-                'meta_root_causes' => ['array'],
-                'meta_root_causes.*' => ['exists:meta_root_causes,id'],
-                'meta_basic_causes' => ['array'],
-                'meta_basic_causes.*' => ['exists:meta_basic_causes,id'],
-                'meta_contact_types' => ['array'],
-                'meta_contact_types.*' => ['exists:meta_contact_types,id'],
+            'other_location' => ['nullable', 'string'],
+            'meta_department_id' => 'exists:meta_departments,id',
+            'line' => ['nullable', 'string'],
+            'injured_person' => ['nullable', 'string'],
+            'time' => ['nullable', 'date_format:H:i'],
 
-                'attachements' => ['array', 'nullable'],
-                'attachements.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
-                'interview_attachs' => ['array', 'nullable'],
-                'interview_attachs.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
 
-            ]);
+            'meta_immediate_causes' => ['array'],
+            'meta_immediate_causes.*' => ['exists:meta_immediate_causes,id'],
+            'meta_root_causes' => ['array'],
+            'meta_root_causes.*' => ['exists:meta_root_causes,id'],
+            // 'meta_basic_causes' => ['array'],
+            // 'meta_basic_causes.*' => ['exists:meta_basic_causes,id'],
+            'meta_contact_types' => ['array'],
+            'meta_contact_types.*' => ['exists:meta_contact_types,id'],
+
+            'attachements' => ['array', 'nullable'],
+            'attachements.*' => ['mimes:jpeg,png,jpg,gif,doc,docx,xlsx,csv,pdf|max:2048'],
+            'initial_attachements' => ['array', 'nullable'],
+            'initial_attachements.*' => ['mimes:jpeg,png,jpg,gif,doc,docx,xlsx,csv,pdf|max:2048'],
+            // 'interview_attachs' => ['array', 'nullable'],
+            // 'interview_attachs.*' => ['mimes:jpeg,png,jpg,gif|max:2048'],
+
+        ];
+
+        if ($method == 'update') {
+            $rules['meta_unit_id'] = 'nullable|exists:meta_units,id';
+            $rules['meta_incident_status_id'] = ['required', 'exists:meta_incident_statuses,id'];
+        }
+        return Validator::make($request->all(), $rules);
+    }
+
+    public static function getNextRef()
+    {
+        $count = Injury::count();
+        $month = date('n');
+        $reference = $month . str_pad($count + 1, 2, '0', STR_PAD_LEFT);
+        return $reference;
     }
 }

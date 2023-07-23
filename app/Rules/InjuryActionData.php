@@ -18,13 +18,13 @@ class InjuryActionData implements ValidationRule
         if ($value) {
             foreach ($value as $item) {
                 if (count(array_keys($item)) > 5) {
-                    $fail('only sno,action,timeline,description,status allowed');
+                    $fail('only sno,description,responsibility,timeline,status allowed');
                 }
                 if (!isset($item['sno']) or !is_numeric($item['sno'])) {
                     $fail(':attribute.sno is required and should be numeric');
                 }
-                if (!isset($item['action']) or !is_string($item['action'])) {
-                    $fail(':attribute.action is required');
+                if (!isset($item['responsibility']) or !is_string($item['responsibility'])) {
+                    $fail(':attribute.responsibility is required');
                 }
 
                 if (!isset($item['timeline']) or !is_string($item['timeline'])) {

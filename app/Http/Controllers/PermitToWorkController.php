@@ -94,11 +94,12 @@ class PermitToWorkController extends Controller
         $ptw->working_group = $request->working_group;
         $ptw->worker_name = $request->worker_name;
         $ptw->work_desc = $request->work_desc;
-        $ptw->meta_ptw_type_id = $request->meta_ptw_type_id;
+        // $ptw->meta_ptw_type_id = $request->meta_ptw_type_id;
 
         $ptw->save();
         // Synchronize the meta PTW items
-        $ptw->ptw_items()->sync($request->meta_ptw_item_id);
+        // $ptw->ptw_items()->sync($request->meta_ptw_item_id);
+        $ptw->ptw_types()->sync($request->meta_ptw_type_id);
 
         // generating pdf file
         self::generatePdfFile($ptw);
@@ -182,10 +183,11 @@ class PermitToWorkController extends Controller
         $ptw->working_group = $request->working_group;
         $ptw->worker_name = $request->worker_name;
         $ptw->work_desc = $request->work_desc;
-        $ptw->meta_ptw_type_id = $request->meta_ptw_type_id;
+        // $ptw->meta_ptw_type_id = $request->meta_ptw_type_id;
         $ptw->save();
         // Synchronize the meta PTW items
-        $ptw->ptw_items()->sync($request->meta_ptw_item_id);
+        // $ptw->ptw_items()->sync($request->meta_ptw_item_id);
+        $ptw->ptw_types()->sync($request->meta_ptw_type_id);
 
         // generating pdf file
         self::generatePdfFile($ptw);
@@ -246,11 +248,13 @@ class PermitToWorkController extends Controller
             'moc_title' => ['nullable', 'string'],
             'work_desc' => ['nullable', 'string'],
             'moc_desc' => ['nullable', 'string'],
-            'meta_ptw_type_id' => ['required', 'exists:meta_ptw_types,id'],
+            // 'meta_ptw_type_id' => ['required', 'exists:meta_ptw_types,id'],
             'working_group' => ['nullable', 'string'],
             'worker_name' => ['nullable', 'string'],
-            'meta_ptw_item_id' => 'array',
-            'meta_ptw_item_id.*' => 'exists:meta_ptw_items,id',
+            // 'meta_ptw_item_id' => 'array',
+            // 'meta_ptw_item_id.*' => 'exists:meta_ptw_items,id',
+            'meta_ptw_type_id' => 'array',
+            'meta_ptw_type_id.*' => 'exists:meta_ptw_types,id',
         ]);
     }
 

@@ -1,6 +1,6 @@
 @if ($attributes->has('displayAsCard') && $attributes['displayAsCard'] == "true")
 {{-- card starts here --}}
-<div class="card h-100">
+<div class="card h-100 d-print-none">
     @if ($attributes->has('label') && $attributes['label'] != "")
         <div class="card-header pb-0">
              <h6>{{$attributes['label']}}</h6>

@@ -18,9 +18,9 @@ class PermitToWork extends Model
     {
         return 'ptws.show'; //show route name
     }
-    public function ptw_type()
+    public function ptw_types()
     {
-        return $this->belongsTo(MetaPtwType::class, 'meta_ptw_type_id');
+        return $this->belongsToMany(MetaPtwType::class, 'meta_ptw_type_permit_to_work');
     }
 
     public function ptw_items()

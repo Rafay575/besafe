@@ -27,8 +27,15 @@ class Hazard extends Model
         return $this->belongsTo(MetaDepartmentTag::class, 'meta_department_tag_id');
     }
 
+
+    public function initial_attachements()
+    {
+        return $this->common_Attachements()->where('form_input_name', 'initial_attachements');
+    }
     public function attachements()
     {
-        return $this->hasMany(CommonAttachement::class, 'incident_id')->where('form_name', $this->getTable());
+        return $this->common_Attachements()->where('form_input_name', 'attachements');
     }
+
+
 }

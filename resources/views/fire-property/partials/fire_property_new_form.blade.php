@@ -7,11 +7,18 @@
             <div class="card">
               <div class="card-body">
                 <div class="multisteps-form__progress">
-                  <button class="multisteps-form__progress-btn js-active" type="button" title="Section 1">
+                  @isset($fire_property)
+                  
+                  <button class="multisteps-form__progress-btn {{!isset($fire_property) ? 'js-active' : ''}} " type="button" title="Section 1">
                     <span>Section 1</span>
                   </button>
-                  <button class="multisteps-form__progress-btn" type="button" title="Section 2">Section 2</button>
-                  <button class="multisteps-form__progress-btn" type="button" title="Section 3">Section 3</button>
+                  <button class="multisteps-form__progress-btn {{isset($fire_property) ? 'js-active' : ''}} " type="button" title="Section 2">Section 2</button>
+                  {{-- <button class="multisteps-form__progress-btn" type="button" title="Section 3">Section 3</button> --}}
+                    
+                  @else
+                  <button class="multisteps-form__progress-btn js-active" type="button" title="Create New Fire Property Damage">Fire or Property Damage Create</button>
+                   
+                  @endisset
                 </div>
               </div>
             </div>
@@ -28,29 +35,44 @@
           @endif
               @csrf
               <!--single form panel-->
-              <div class="card multisteps-form__panel p-3 border-radius-xl bg-white js-active" data-animation="FadeIn">
+              <div class="card multisteps-form__panel p-3 border-radius-xl bg-white {{!isset($fire_property) ? 'js-active' : ''}}" data-animation="FadeIn">
                 <h5 class="font-weight-bolder mb-0">Section 1 Fire / Property damage</h5>
                 {{-- <p class="mb-0 text-sm">Mandatory informations</p> --}}
                 <div class="multisteps-form__content">
-                  <div class="row mt-3">
+                <div class="row">
+
                    <x-forms.basic-input label="Date" name="date" type="date" placeholder="" value="{{(isset($fire_property) ? Carbon\Carbon::parse($fire_property->date)->format('Y-m-d') : '')}}" width="col-12 col-sm-6" input-class="multisteps-form__input" required></x-forms.basic-input>
-                   <x-forms.basic-input label="Reference" name="reference" type="text" placeholder="" value="{{ isset($fire_property) ? $fire_property->reference : '' }}" width="col-12 col-sm-6 mt-3 mt-sm-0" input-class="multisteps-form__input" required></x-forms.basic-input>
-                  </div>
-                  <div class="row mt-3">
+                  
+                  <x-forms.select-option name="meta_department_id" selectClass="form-control-sm" label="Department" divClass="col-12 col-sm-6">
+                    @foreach ($departments as $department)
+                    <option value="{{ $department->id }}" {{ isset($fire_property) && $fire_property->meta_department_id == $department->id ? 'selected' : '' }}>{{ $department->department_title }}</option>
+                    @endforeach
+                  </x-forms.select-option>
+                  
 
 
-                    <x-forms.select-option name="meta_unit_id" selectClass="form-control-sm" divClass="col-6" label="Unit" required>
+                    <x-forms.select-option name="meta_unit_id" selectClass="form-control-sm meta_unit_id" divClass="col-6" label="Unit" required>
                       @foreach ($units as $unit)
                         <option value="{{ $unit->id }}" {{ isset($fire_property) && $fire_property->meta_unit_id == $unit->id ? 'selected' : '' }}>{{ $unit->unit_title }}</option>
                       @endforeach
                     </x-forms.select-option>
 
 
-                   <x-forms.basic-input label="Location" name="location" type="text" placeholder="type location"  value="{{ isset($fire_property) ? $fire_property->location : '' }}" width="col-12 col-sm-6" input-class="multisteps-form__input" required></x-forms.basic-input>
-               
-               
-                  </div>
-                  <div class="row mt-3" >
+                    <div class="form-group col-12 col-sm-6">
+                      <label for="meta_location_id">Location</label>
+                      <select name="meta_location_id" id="meta_locations" class=" form-control form-control-sm" required>
+                        @if (isset($fire_property))
+                            @foreach ($fire_property->unit->locations as $location)
+                                <option value="{{$location->id}}" {{($fire_property->meta_location_id == $location->id ? 'selected' : '')}}>{{$location->location_title}}</option>
+                            @endforeach
+                        @endif
+                      </select>
+                    </div>
+
+              <x-forms.basic-input label="Other Location" name="other_location" type="text" value="{{(isset($fire_property) ? $fire_property->other_location : '')}}" width="col-6" input-class="form-control-sm form-control"></x-forms.basic-input>
+              <x-forms.basic-input label="Line" name="line" type="text" value="{{(isset($fire_property) ? $fire_property->line : '')}}" width="col-6" input-class="form-control-sm form-control"></x-forms.basic-input>
+
+              <x-forms.basic-input label="Reference" readonly name="reference" type="text" placeholder="" value="{{ isset($fire_property) ? $fire_property->reference : '' }}" width="col-12 col-sm-6 mt-3 mt-sm-0" input-class="multisteps-form__input" ></x-forms.basic-input>
                  
                   <x-forms.select-option name="meta_fire_category_id" selectClass="form-control-sm fire_categories" divClass="col-6" label="Fire Category" >
                       @foreach ($fire_categories as $fire_category)
@@ -65,33 +87,39 @@
                       @endforeach
                   </x-forms.select-option>
                  
-                 </div>
-
-                 <div class="row mt-3">
                     <x-forms.text-area label="Description" name="description"  width="col-6" text-area-class="" cols="" rows="3">
                       {{isset($fire_property) ? $fire_property->description : ''}}
                     </x-forms.text-area>
+
                     <x-forms.text-area label="Immediate Action" name="immediate_action"  width="col-6" text-area-class="" cols="" rows="3">
                       {{isset($fire_property) ? $fire_property->immediate_action : ''}}
                     </x-forms.text-area>
-                 </div>
 
-                 <div class="row mt-3">
-                  <x-forms.basic-input label="Attachments" name="attachements[]" type="file" multiple  width="col-12 col-sm-12" value="" input-class="multisteps-form__input"></x-forms.basic-input>
+                  <x-forms.basic-input label="Initial Attachments" name="initial_attachements[]" type="file" multiple  width="col-12 col-sm-6" value="" input-class="multisteps-form__input"></x-forms.basic-input>
+              
                 </div>
 
+
+                @isset($fire_property)
+                 
                  <div class="button-row d-flex mt-4">
                     <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button" title="Next">Next</button>
                   </div>
+                  @else
 
+                 <div class="button-row d-flex mt-4">
+                  <button class="btn bg-gradient-dark ms-auto mb-0 btn-ladda" type="submit" title="Send" data-style="expand-left">Send</button>
+
+                  </div>
+
+                  @endisset
                   
                   
                 </div>
               </div>
-              <!--single form panel-->
               
               <!--single form panel-->
-              <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" data-animation="FadeIn">
+              <div class="card multisteps-form__panel p-3 border-radius-xl bg-white {{isset($fire_property) ? 'js-active' : ''}}" data-animation="FadeIn">
                 <h5 class="font-weight-bolder">Section 2 Fire / Property damage</h5>
                 <div class="multisteps-form__content">
                   <div class="row mt-3">
@@ -106,20 +134,16 @@
                      </x-forms.text-area>
                 
                   </div>
+
+
                   <div class="row mt-3">
                     <x-forms.text-area label="Has similar incident happend before?" name="similar_incident_before"  width="col-6" text-area-class="multisteps-form__input" cols="2" rows="2">
                       {{isset($fire_property) ? $fire_property->similar_incident_before : ''}}
                      </x-forms.text-area>
 
-                     <x-forms.select-option name="meta_incident_status_id" selectClass="form-control-sm" label="Status" divClass="col-12 col-sm-6">
-                        @foreach ($incident_statuses as $status)
-                        <option value="{{$status->id}}" {{ isset($fire_property) && $fire_property->meta_incident_status_id == $status->id ? 'selected' : '' }}>{{$status->status_title}}</option>
-                      @endforeach
-                    </x-forms.select-option>
-
                   </div>
-                  <div class="row mt-3">
 
+                  <div class="row mt-3">
                     <table class="table table-flush  table-bordered">
                       <thead class="thead-light">
                           <x-table.tblhead heads="Title,Description,Value of Loss" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" ></x-table.tblhead>
@@ -153,71 +177,93 @@
                       </tbody>
                     </table>
 
+                    <div class="row mt-3 table-responsive">
+
+                      <x-forms.text-area label="Loss Recovery Method" name="loss_recovery_method"  width="col-6" text-area-class="multisteps-form__input" cols="2" rows="2">
+                        {{isset($fire_property) ? $fire_property->loss_recovery_method : ''}}
+                      </x-forms.text-area>
+                      <x-forms.text-area label="Preventative Measure" name="preventative_measure"  width="col-6" text-area-class="multisteps-form__input" cols="2" rows="2">
+                        {{isset($fire_property) ? $fire_property->preventative_measure : ''}}
+                      </x-forms.text-area>
+  
+                      <div class="mb-2">
+                        <span id="addRecordButton" class="btn btn-sm btn-primary">Add</span>
+                      </div>
+  
+                      <table class="table table-flush  table-bordered"  id="actionTable">
+                          <thead class="thead-light">
+                              <x-table.tblhead heads="Description,Responsibility,Timeline,Status,X" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" ></x-table.tblhead>
+                          </thead>
+                          <tbody>
+  
+                            @if (isset($fire_property) && !empty($fire_property->actions))
+                            @foreach ($fire_property->actions as $action)
+                            <tr>
+                              <td>
+                                <input type="hidden" name="actions[{{$loop->iteration}}][sno]" value="{{$loop->iteration}}" />
+                                <input type="text" class="form-control form-control-sm"     value="{{$action['description']}}" name="actions[{{$loop->iteration}}][description]"></td>
+                              <td> <input type="text" class="form-control form-control-sm" value="{{$action['responsibility']}}" name="actions[{{$loop->iteration}}][responsibility]"></td>
+                              <td> <input type="text" class="form-control form-control-sm" value="{{$action['timeline']}}"  name="actions[{{$loop->iteration}}][timeline]"></td>
+                              <td> 
+                                <select name="actions[{{$loop->iteration}}][status]"  class="form-control form-control-sm">
+                                    <option value="pending" {{$action['status'] === 'pending' ? 'selected' : ''}}>Pending</option>
+                                    <option value="completed" {{$action['status'] === 'completed' ? 'selected' : ''}}>Completed</option>
+                                    <option value="in progress" {{$action['status'] === 'in progress' ? 'selected' : ''}}>In Progress</option>
+                                    <option value="active" {{$action['status'] === 'active' ? 'selected' : ''}}>Active</option>
+                                    <option value="inactive" {{$action['status'] === 'inactive' ? 'selected' : ''}}>In Active</option>
+                                    {{-- <option value="active" {{($action['status'] === 'active') ? 'selected' : ''}}>Active</option>
+                                    <option value="inactive" {{($action['status'] != 'active') ? 'selected' : ''}}>InActive</option> --}}
+                                 </select>
+                              </td>
+                              <td> <span class="btn btn-sm btn-danger deleteActionRecord">X</span></td>
+                           </tr>
+                            @endforeach
+                          @endif
+  
+                          </tbody>
+                      </table>
+                      
+                    </div>
+
+                    <x-forms.basic-input label="Attchements" name="attachements[]" type="file" multiple  width="col-12 col-sm-6" value="" input-class="multisteps-form__input"></x-forms.basic-input>
+
+                    <x-forms.basic-input label="Investigated By" name="investigated_by" type="text" value="{{(isset($fire_property) ? $fire_property->investigated_by : '')}}" width="col-6" input-class="form-control-sm form-control"></x-forms.basic-input>
+                    <x-forms.basic-input label="Reviewed By" name="reviewed_by" type="text" value="{{(isset($fire_property) ? $fire_property->reviewed_by : '')}}" width="col-6" input-class="form-control-sm form-control"></x-forms.basic-input>
+
+
+                    <x-forms.select-option name="meta_incident_status_id" selectClass="form-control-sm" label="Status" divClass="col-12 col-sm-6">
+                      @foreach ($incident_statuses as $status)
+                      <option value="{{$status->id}}" {{ isset($fire_property) && $fire_property->meta_incident_status_id == $status->id ? 'selected' : '' }}>{{$status->status_title}}</option>
+                    @endforeach
+
+
+                  </x-forms.select-option>
+
+
+
+
 
                   </div>
                   <div class="row">
-                    <div class="button-row d-flex mt-4 col-12">
+                    <div class="button-row d-flex mt-4">
                       <button class="btn bg-gradient-light mb-0 js-btn-prev" type="button" title="Prev">Prev</button>
-                      <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button" title="Next">Next</button>
+                      <input type="hidden" name="redirect" value="{{url()->previous()}}">
+                      @canany(['fire_property_damage.create','fire_property_damage.edit'])
+                          
+                      @endcanany
+                      <button class="btn bg-gradient-dark ms-auto mb-0 btn-ladda" type="submit" title="Send" data-style="expand-left">Send</button>
                     </div>
                   </div>
                 </div>
               </div>
               <!--single form panel-->
-              <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" data-animation="FadeIn">
+              {{-- <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" data-animation="FadeIn">
                 <h5 class="font-weight-bolder">Preventive Actions / Recommendation</h5>
                 <div class="multisteps-form__content mt-3">
-                  <div class="row mt-3 table-responsive">
-
-                    <x-forms.text-area label="Loss Recovery Method" name="loss_recovery_method"  width="col-6" text-area-class="multisteps-form__input" cols="2" rows="2">
-                      {{isset($fire_property) ? $fire_property->loss_recovery_method : ''}}
-                    </x-forms.text-area>
-                    <x-forms.text-area label="Preventative Measure" name="preventative_measure"  width="col-6" text-area-class="multisteps-form__input" cols="2" rows="2">
-                      {{isset($fire_property) ? $fire_property->preventative_measure : ''}}
-                    </x-forms.text-area>
-
-                    <div class="mb-2">
-                      <span id="addRecordButton" class="btn btn-sm btn-primary">Add</span>
-                    </div>
-
-                    <table class="table table-flush  table-bordered"  id="actionTable">
-                        <thead class="thead-light">
-                            <x-table.tblhead heads="Action,Timeline,Description,Status,X" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" ></x-table.tblhead>
-                        </thead>
-                        <tbody>
-
-                          @if (isset($fire_property) && !empty($fire_property->actions))
-                          @foreach ($fire_property->actions as $action)
-                          <tr>
-                            <td>
-                              <input type="hidden" name="actions[{{$loop->iteration}}][sno]" value="{{$loop->iteration}}" />
-                              <input type="text" class="form-control form-control-sm"     value="{{$action['action']}}" name="actions[{{$loop->iteration}}][action]"></td>
-                            <td> <input type="text" class="form-control form-control-sm" value="{{$action['timeline']}}" name="actions[{{$loop->iteration}}][timeline]"></td>
-                            <td> <input type="text" class="form-control form-control-sm" value="{{$action['description']}}"  name="actions[{{$loop->iteration}}][description]"></td>
-                            <td> 
-                              <select name="actions[{{$loop->iteration}}][status]"  class="form-control form-control-sm">
-                                  <option value="pending" {{$action['status'] === 'pending' ? 'selected' : ''}}>Pending</option>
-                                  <option value="completed" {{$action['status'] === 'completed' ? 'selected' : ''}}>Completed</option>
-                                  <option value="in progress" {{$action['status'] === 'in progress' ? 'selected' : ''}}>In Progress</option>
-                                  <option value="active" {{$action['status'] === 'active' ? 'selected' : ''}}>Active</option>
-                                  <option value="inactive" {{$action['status'] === 'inactive' ? 'selected' : ''}}>In Active</option>
-                                  {{-- <option value="active" {{($action['status'] === 'active') ? 'selected' : ''}}>Active</option>
-                                  <option value="inactive" {{($action['status'] != 'active') ? 'selected' : ''}}>InActive</option> --}}
-                               </select>
-                            </td>
-                            <td> <span class="btn btn-sm btn-danger deleteActionRecord">X</span></td>
-                         </tr>
-                          @endforeach
-                        @endif
-
-                        </tbody>
-                    </table>
-                    
-                  </div>
+                  
 
                   <div class="row mt-3">
                     <x-forms.basic-input label="Invterviews" name="interview_attachs[]" type="file" multiple  width="col-12 col-sm-6" value="" input-class="multisteps-form__input"></x-forms.basic-input>
-                    <x-forms.basic-input label="Records" name="record_attachs[]" type="file" multiple  width="col-12 col-sm-6" value="" input-class="multisteps-form__input"></x-forms.basic-input>
                     <x-forms.basic-input label="Photographs" name="photograph_attachs[]" type="file" multiple  width="col-12 col-sm-6" value="" input-class="multisteps-form__input"></x-forms.basic-input>
                     <x-forms.basic-input label="Other" name="other_attachs[]" type="file" multiple  width="col-12 col-sm-6" value="" input-class="multisteps-form__input"></x-forms.basic-input>
 
@@ -233,7 +279,7 @@
                     <button class="btn bg-gradient-dark ms-auto mb-0 btn-ladda" type="submit" title="Send" data-style="expand-left">Send</button>
                   </div>
                 </div>
-              </div>
+              </div> --}}
             </form>
           </div>
         </div>

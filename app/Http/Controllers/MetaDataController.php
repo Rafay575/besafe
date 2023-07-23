@@ -25,7 +25,9 @@ use App\Models\{
     MetaUnsafeBehaviorType,
     MetaIncidentStatus,
     MetaSgflRelation,
-    MetaUnsafeBehaviorAction
+    MetaUnsafeBehaviorAction,
+    MetaLocation,
+    MetaNearMissClass
 };
 use Illuminate\Http\Request;
 
@@ -56,7 +58,9 @@ class MetaDataController extends Controller
             'Unsafe Behavior Types',
             'Incident Statuses',
             'SGFL Relations',
-            'Unsafe Behavior Actions'
+            'Unsafe Behavior Actions',
+            'Locations',
+            'Near Miss Classification'
         ];
 
         $auditHalls = MetaAuditHall::latest()->get();
@@ -82,7 +86,9 @@ class MetaDataController extends Controller
         $incidentStatuses = MetaIncidentStatus::latest()->get();
         $sgflRelations = MetaSgflRelation::latest()->get();
         $rootCauses = MetaRootCause::latest()->get();
+        $near_miss_classification = MetaNearMissClass::latest()->get();
         $unsafe_behavior_actions = MetaUnsafeBehaviorAction::latest()->get();
+        $locations = MetaLocation::with('unit')->latest()->get();
         return view(
             'meta-data.index',
             compact(
@@ -111,7 +117,9 @@ class MetaDataController extends Controller
                 'unsafeBehaviorTypes',
                 'incidentStatuses',
                 'sgflRelations',
-                'unsafe_behavior_actions'
+                'unsafe_behavior_actions',
+                'locations',
+                'near_miss_classification'
             )
         );
     }
@@ -180,6 +188,8 @@ class MetaDataController extends Controller
             'incident_statuses' => MetaIncidentStatus::class,
             'sgfl_relations' => MetaSgflRelation::class,
             'unsafe_behavior_actions' => MetaUnsafeBehaviorAction::class,
+            'locations' => MetaLocation::class,
+            'near_miss_classification' => MetaNearMissClass::class,
         ];
 
         if (array_key_exists($key, $models)) {
