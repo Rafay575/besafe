@@ -265,7 +265,7 @@ class PermitToWorkController extends Controller
         if (file_exists($file_path)) {
             File::delete($file_path);
         }
-        $file = \PDF::loadView('pdf.ptws_show', ['ptw' => $ptw])->setPaper('a4');
+        $file = \PDF::loadView('pdf.ptws_show', ['ptw' => $ptw])->setPaper('a4', 'landscape');
         $file->save($file_path);
     }
 }
