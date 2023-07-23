@@ -17,7 +17,8 @@
             </div>
         </div>
         @endif
-
+        @if (file_exists(public_path("attachements/{$attachement->form_name}/{$attachement->form_input_name}/" . $attachement->file_name)))
+            
         @if (getimagesize(public_path("attachements/{$attachement->form_name}/{$attachement->form_input_name}/" . $attachement->file_name)))
           <a test="{{ $attachement->id }}" href="{{ asset("attachements/{$attachement->form_name}/{$attachement->form_input_name}/" . $attachement->file_name) }}">
               <img class="w-100 border-radius-lg p-1 shadow-lg" src="{{ asset("attachements/{$attachement->form_name}/{$attachement->form_input_name}/" . $attachement->file_name) }}" alt="attachements">
@@ -27,6 +28,8 @@
               {{ $attachement->file_name }}
           </a>
       @endif
+      @endif
+
 
         {{-- <a test={{$attachement->id}} href="{{ asset("attachements/{$attachement->form_name}/{$attachement->form_input_name}/" . $attachement->file_name) }}">
             <img class="w-100 border-radius-lg p-1 shadow-lg" src="{{ asset("attachements/{$attachement->form_name}/{$attachement->form_input_name}/" . $attachement->file_name) }}" alt="attachements">
@@ -61,6 +64,7 @@
                     </div>
                 </div>
                 @endif
+                @if (file_exists(public_path("attachements/{$attachement->form_name}/{$attachement->form_input_name}/" . $attachement->file_name)))
 
                 @if (getimagesize(public_path("attachements/{$attachement->form_name}/{$attachement->form_input_name}/" . $attachement->file_name)))
                   <a test="{{ $attachement->id }}" href="{{ asset("attachements/{$attachement->form_name}/{$attachement->form_input_name}/" . $attachement->file_name) }}">
@@ -71,7 +75,7 @@
                       {{ $attachement->file_name }}
                   </a>
               @endif
-
+              @endif
             </div>
             @endforeach
           </div>

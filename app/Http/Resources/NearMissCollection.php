@@ -33,7 +33,7 @@ class NearMissCollection extends JsonResource
             'date' => $this->date,
             'time' => $this->time,
             'initiated_by' => $this->initiated_by,
-            'location' => $this->location,
+            // 'location' => $this->location,
             'description' => $this->description,
             'immediate_action' => $this->immediate_action,
             'immediate_cause' => $this->immediate_cause,

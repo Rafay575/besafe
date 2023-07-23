@@ -34,6 +34,7 @@ class HazardCollection extends JsonResource
             "meta_department_id" => $this->meta_department_id ?? null,
             "department_title" => $this->department ? $this->department->department_title : null,
             "line" => $this->line,
+            "other_location" => $this->other_location,
             "meta_unit_id" => $this->meta_unit_id ?? null,
             "unit_title" => $this->unit ? $this->unit->unit_title : null,
             "meta_location_id" => $this->meta_location_id ?? null,

@@ -98,18 +98,18 @@
                     </tr>
                       <tr>
                         <th>Direct Loss</th>
-                        <td>{{$fire_property->loss_calculation['direct_loss']['description'] }}</td>
-                        <td>{{$fire_property->loss_calculation['direct_loss']['value'] }}</td>
+                        <td>{{$fire_property->loss_calculation['direct_loss']['description'] ?? '' }}</td>
+                        <td>{{$fire_property->loss_calculation['direct_loss']['value'] ?? '' }}</td>
                       </tr>
                       <tr>
                         <th>Indirect Loss</th>
-                        <td>{{$fire_property->loss_calculation['indirect_loss']['description'] }}</td>
-                        <td>{{$fire_property->loss_calculation['indirect_loss']['value'] }}</td>
+                        <td>{{$fire_property->loss_calculation['indirect_loss']['description'] ?? '' }}</td>
+                        <td>{{$fire_property->loss_calculation['indirect_loss']['value'] ?? '' }}</td>
                       </tr>
                       <tr>
                         <td></td>
                         <th>Total Loss</th>
-                        <td>{{$fire_property->loss_calculation['total_loss'] }}</td>
+                        <td>{{$fire_property->loss_calculation['total_loss'] ?? ''}}</td>
                       </tr>
                     </table>
                   </td>
@@ -175,8 +175,8 @@
 
     {{-- left side --}}
     <div class="col-4">
-        <x-others.common-attach-view label="Initial_Attachments" :attachements="$fire_property->initial_attachements" shouldDelete="false"></x-others.common-attach-view>
-        <x-others.common-attach-view label="Attachments" :attachements="$fire_property->attachements" shouldDelete="false"></x-others.common-attach-view>
+        <x-others.common-attach-view label="Initial_Attachments" :attachements="$fire_property->initial_attachements" shouldDelete="false" shouldNotCollapse="true"></x-others.common-attach-view>
+        <x-others.common-attach-view label="Attachments" :attachements="$fire_property->attachements" shouldDelete="false" shouldNotCollapse="true"></x-others.common-attach-view>
         {{-- <x-others.common-attach-view label="Interview" :attachements="$fire_property->interview_attachs" shouldDelete="false"></x-others.common-attach-view> --}}
         {{-- <x-others.common-attach-view label="Records" :attachements="$fire_property->record_attachs" shouldDelete="false"></x-others.common-attach-view> --}}
         {{-- <x-others.common-attach-view label="Photographs" :attachements="$fire_property->photograph_attachs" shouldDelete="false"></x-others.common-attach-view> --}}

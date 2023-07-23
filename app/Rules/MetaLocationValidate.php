@@ -27,7 +27,6 @@ class MetaLocationValidate implements ValidationRule
         $location = MetaLocation::where('id', $meta_location_id)->first();
         if (!$location) {
             $fail("The location is not valid.");
-
             return;
         }
         if (!$unit) {

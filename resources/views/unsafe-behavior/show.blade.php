@@ -78,6 +78,7 @@
 
         {{-- left side --}}
         <div class="col-5">
+            <x-others.common-attach-view label="Initial_Attachments" :attachements="$unsafe_behavior->initial_attachements" shouldNotCollapse="true"></x-others.common-attach-view>
             <x-others.common-attach-view label="Attachments" :attachements="$unsafe_behavior->attachements" shouldNotCollapse="true"></x-others.common-attach-view>
         </div>
     </div>
