@@ -33,8 +33,9 @@ class MetaLocationValidate implements ValidationRule
         }
         $unit_location = MetaLocation::where('id', $meta_location_id)->where('meta_unit_id', $meta_unit_id)->first();
         if (!$unit_location) {
-
-            $fail("The location {@$location->location_title} is not associated with {@$unit->unit_title}.");
+            $location = $location->location_title ?? '';
+            $unit = $unit->unit_title ?? '';
+            $fail("The location {$location} is not associated with {$unit}.");
         }
 
     }
