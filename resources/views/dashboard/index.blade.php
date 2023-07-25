@@ -18,7 +18,10 @@
 
   @include('dashboard.partials.top_stats')
   <div class="row mb-3">
-    <div class="col-8">
+    <div class="col-4">
+
+    </div>
+    <div class="col-4">
     <input class="form-control datepicker" placeholder="Please select date" type="text" onfocus="focused(this)" onfocusout="defocused(this)">
       
     </div>
