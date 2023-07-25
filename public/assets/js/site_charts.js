@@ -159,63 +159,70 @@ function piChart(chartId,data,labels,colors,chartName){
   
 
 
-// Bar chart horizontal
-function barChart(chartId,chartName,barType,labels,data,color = '#3A416F'){
-    let ctx6 = document.getElementById(chartId).getContext("2d");
-    
-    new Chart(ctx6, {
-      type: "bar",
-      data: {
-        labels: labels,
-        datasets: [{
-          label: chartName,
-          weight: 5,
-          borderWidth: 0,
-          borderRadius: 4,
-          backgroundColor: color,
-          data: data,
-          fill: false
-        }],
+function barChart(chartId, chartName, barType, labels, data, color = '#3A416F') {
+  let ctx6 = document.getElementById(chartId).getContext("2d");
+
+  // Check if the chart with the given chartId already exists
+  let existingChart = Chart.getChart(chartId);
+
+  // If the existing chart exists, destroy it before creating a new chart
+  if (existingChart) {
+    existingChart.destroy();
+  }
+
+  new Chart(ctx6, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: chartName,
+        weight: 5,
+        borderWidth: 0,
+        borderRadius: 4,
+        backgroundColor: color,
+        data: data,
+        fill: false
+      }],
+    },
+    options: {
+      indexAxis: barType,
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: true,
+          position: 'bottom'
+        }
       },
-      options: {
-        indexAxis: barType,
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
+      scales: {
+        y: {
+          grid: {
+            drawBorder: false,
             display: true,
-            position: 'bottom'
+            drawOnChartArea: true,
+            drawTicks: false,
+            borderDash: [5, 5]
+          },
+          ticks: {
+            display: true,
+            padding: 10,
+            color: '#9ca2b7'
           }
         },
-        scales: {
-          y: {
-            grid: {
-              drawBorder: false,
-              display: true,
-              drawOnChartArea: true,
-              drawTicks: false,
-              borderDash: [5, 5]
-            },
-            ticks: {
-              display: true,
-              padding: 10,
-              color: '#9ca2b7'
-            }
+        x: {
+          grid: {
+            drawBorder: false,
+            display: false,
+            drawOnChartArea: true,
+            drawTicks: true,
           },
-          x: {
-            grid: {
-              drawBorder: false,
-              display: false,
-              drawOnChartArea: true,
-              drawTicks: true,
-            },
-            ticks: {
-              display: true,
-              color: '#9ca2b7',
-              padding: 10
-            }
-          },
+          ticks: {
+            display: true,
+            color: '#9ca2b7',
+            padding: 10
+          }
         },
       },
-    });
-    }
+    },
+  });
+}

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\BarChartController;
 use App\Http\Controllers\CardChartController;
 use App\Http\Controllers\CommonAttachementController;
 use App\Http\Controllers\DashboardController;
@@ -91,6 +92,7 @@ Route::middleware('auth')->group(function () {
 
     // charts
     Route::get('/card_chart/all_timelines', [CardChartController::class, 'prepareForPiChart'])->name('pi_chart');
+    Route::get('/bar_chart/all_timelines', [BarChartController::class, 'prepareForBarChart'])->name('bar_chart');
     Route::get('/line_chart/all_timelines', [LineChartController::class, 'prepareForLineChart'])->name('line_chart');
 
 });

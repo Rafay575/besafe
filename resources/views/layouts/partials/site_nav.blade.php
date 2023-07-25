@@ -55,6 +55,20 @@
         </li>
        @endcan 
 
+       
+
+       @can('hazard.index')
+            
+       <li class="nav-item">
+         <a class="nav-link {{ (request()->is('hazards')) ? 'active' : '' }}" href="{{route('hazards.index')}}">
+           <div class="icon icon-shape icon-sm text-center  me-2 d-flex align-items-center justify-content-center">
+             <img src="{{asset('website/nav_icons/Unsafe-Behaviour.ico')}}" alt="" width="18">
+           </div>
+           <span class="nav-link-text ms-1">Hazards</span>
+         </a>
+       </li>
+       @endcan
+       
 
        @can('unsafe_behavior.index')
            
@@ -68,18 +82,6 @@
         </li>
         @endcan
 
-
-        @can('hazard.index')
-            
-        <li class="nav-item">
-          <a class="nav-link {{ (request()->is('hazards')) ? 'active' : '' }}" href="{{route('hazards.index')}}">
-            <div class="icon icon-shape icon-sm text-center  me-2 d-flex align-items-center justify-content-center">
-              <img src="{{asset('website/nav_icons/Unsafe-Behaviour.ico')}}" alt="" width="18">
-            </div>
-            <span class="nav-link-text ms-1">Hazards</span>
-          </a>
-        </li>
-        @endcan
 
 
 

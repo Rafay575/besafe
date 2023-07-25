@@ -18,7 +18,10 @@
 
   @include('dashboard.partials.top_stats')
   <div class="row mb-3">
-    <div class="col-8"></div>
+    <div class="col-8">
+    <input class="form-control datepicker" placeholder="Please select date" type="text" onfocus="focused(this)" onfocusout="defocused(this)">
+      
+    </div>
     <div class="nav-wrapper position-relative end-0 col-4" style="cursor: pointer">
       <ul class="nav nav-pills nav-fill p-1" role="tablist">
          <li class="nav-item">
@@ -56,7 +59,7 @@
     </div>
 
     {{-- Permit to Work line chart --}}
-    <div class="col-12 col-sm-6 mb-4 mb-lg-0 mt-2">
+    <div class="col-12 col-sm-6 col-lg-6 mb-4 mb-lg-0 mt-2">
       <div class="card z-index-2 h-100">
         <div class="card-header pb-0 pt-3 bg-transparent">
           <h6 class="text-capitalize">Permit To Work</h6>
@@ -70,7 +73,7 @@
     </div>
 
     {{-- IE Audit --}}
-    <div class="col-12 col-sm-6 mb-4 mb-lg-0 mt-2">
+    <div class="col-12 col-sm-6 col-lg-6 mb-4 mb-lg-0 mt-2">
       <div class="card z-index-2 h-100">
         <div class="card-header pb-0 pt-3 bg-transparent">
           <h6 class="text-capitalize">IE Audit</h6>
@@ -78,6 +81,115 @@
         <div class="card-body p-3">
           <div class="chart">
             <canvas id="ie_audit_line_chart" class="chart-canvas" height="300"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {{-- ptw_type_wise --}}
+
+    
+    <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0 mt-2">
+      <div class="card z-index-2 h-100">
+        <div class="card-header pb-0 pt-3 bg-transparent">
+          <h6 class="text-capitalize">Permit To Work Type Wise</h6>
+        </div>
+        <div class="card-body p-3">
+          <div class="chart">
+            <canvas id="ptw_type_wise" class="chart-canvas" height="300"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+    <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0 mt-2">
+      <div class="card z-index-2 h-100">
+        <div class="card-header pb-0 pt-3 bg-transparent">
+          <h6 class="text-capitalize">Fire and Property Damages Category Wise</h6>
+        </div>
+        <div class="card-body p-3">
+          <div class="chart">
+            <canvas id="fpd_category_wise" class="chart-canvas" height="300"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0 mt-2">
+      <div class="card z-index-2 h-100">
+        <div class="card-header pb-0 pt-3 bg-transparent">
+          <h6 class="text-capitalize">Injury Category Wise</h6>
+        </div>
+        <div class="card-body p-3">
+          <div class="chart">
+            <canvas id="injury_category_wise" class="chart-canvas" height="300"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0 mt-2">
+      <div class="card z-index-2 h-100">
+        <div class="card-header pb-0 pt-3 bg-transparent">
+          <h6 class="text-capitalize">Injury Incident Category wise</h6>
+        </div>
+        <div class="card-body p-3">
+          <div class="chart">
+            <canvas id="injury_incident_cat_wise" class="chart-canvas" height="300"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0 mt-2">
+      <div class="card z-index-2 h-100">
+        <div class="card-header pb-0 pt-3 bg-transparent">
+          <h6 class="text-capitalize">Injuries Investigation Report</h6>
+        </div>
+        <div class="card-body p-3">
+          <div class="chart">
+            <canvas id="injury_investigation" class="chart-canvas" height="300"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0 mt-2">
+      <div class="card z-index-2 h-100">
+        <div class="card-header pb-0 pt-3 bg-transparent">
+          <h6 class="text-capitalize">Hazard Risk level wise</h6>
+        </div>
+        <div class="card-body p-3">
+          <div class="chart">
+            <canvas id="hazard_risk_wise" class="chart-canvas" height="300"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0 mt-2">
+      <div class="card z-index-2 h-100">
+        <div class="card-header pb-0 pt-3 bg-transparent">
+          <h6 class="text-capitalize">Hazards Department Wise</h6>
+        </div>
+        <div class="card-body p-3">
+          <div class="chart">
+            <canvas id="hazard_department_wise" class="chart-canvas" height="300"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0 mt-2">
+      <div class="card z-index-2 h-100">
+        <div class="card-header pb-0 pt-3 bg-transparent">
+          <h6 class="text-capitalize">Hazard Incident Status wise</h6>
+        </div>
+        <div class="card-body p-3">
+          <div class="chart">
+            <canvas id="hazard_status_wise" class="chart-canvas" height="300"></canvas>
           </div>
         </div>
       </div>
@@ -92,24 +204,53 @@
 @endcan
 
 @section('script')
-<script src="{{asset('assets/js/site_charts.js?v3')}}"></script>
+<script src="{{asset('assets/js/site_charts.js?v4')}}"></script>
+<script src="{{asset('assets/js/plugins/flatpickr.min.js')}}"></script>
 <script>
+
+// date picker
+if (document.querySelector('.datepicker')) {
+        flatpickr('.datepicker', {
+          mode: "range",
+          dateFormat: 'd-m-Y', // Set the desired date format
+          onChange: function(selectedDates, dateStr, instance) {
+                let fromDate;
+                let toDate;
+                 if (selectedDates.length === 2) {
+                    fromDate = instance.formatDate(selectedDates[0], 'd-m-Y');
+                    toDate = instance.formatDate(selectedDates[1], 'd-m-Y');
+                    // Do something with the formatted from and to dates...
+                  }else{
+                    fromDate = instance.formatDate(selectedDates[0], 'd-m-Y');
+                    toDate = instance.formatDate(selectedDates[0], 'd-m-Y');
+                  }
+                  // loading charts
+                  loadLineCharts(data_by,fromDate);
+                  loadBarChart(fromDate,toDate);
+            },
+        }); // flatpickr
+      }
+
+
+
 var data_by = "daily";
 loadLineCharts(data_by);
+loadBarChart();
 $('body').on('click','a#data_by',function(){
   data_by = $(this).attr('data-data_by');
   loadLineCharts(data_by);
 })
 
 
-function loadLineCharts(data_by){
+function loadLineCharts(data_by,date = ""){
   $.ajax({
   url: "{{ route('line_chart')}}",
   type: "get",
   dataType: "json",
   data: {
     _token: token,
-    data_by:data_by
+    data_by:data_by,
+    date:date,
   },
   success: function(response) {
     // Handle the success response
@@ -190,11 +331,77 @@ function incidentPiChart(){
   piChart("chart-line",data,labels,colors,chartName);
 }
 
-function incidentBarChart(){
-  let labels = ['16-20', '21-25', '26-30', '31-36', '36-42', '42+'];
-  let data  = [15, 20, 12, 60, 20, 15];
-  let chartName = "Incidents";
-  barChart("chart-line",chartName,'x',labels,data,'green');
+function loadBarChart(fromDate,toDate){
+  $.ajax({
+  url: "{{ route('bar_chart')}}",
+  type: "get",
+  dataType: "json",
+  data: {
+    _token: token,
+    data_by:data_by,
+    from_date: fromDate,
+    to_date: toDate
+  },
+  success: function(response){
+    let ptw_type_wise = {
+      labels: response['ptw_type_wise']['labels'],
+      data: response['ptw_type_wise']['data'],
+      chartName: 'Permit to Work Type Wise',
+    }
+
+    let fpd_category_wise = {
+      labels: response['fpd_category_wise']['labels'],
+      data: response['fpd_category_wise']['data'],
+      chartName: 'Fire and Property Damages Category Wise',
+    }
+
+    let injury_category_wise = {
+      labels: response['injury_category_wise']['labels'],
+      data: response['injury_category_wise']['data'],
+      chartName: 'Injuries Category wise',
+    }
+    let injury_incident_cat_wise = {
+      labels: response['injury_incident_cat_wise']['labels'],
+      data: response['injury_incident_cat_wise']['data'],
+      chartName: 'Injury Incident Category wise',
+    }
+    let injury_investigation = {
+      labels: response['injury_investigation']['labels'],
+      data: response['injury_investigation']['data'],
+      chartName: 'Injury Investigation Report',
+    }
+    let hazard_risk_wise = {
+      labels: response['hazard_risk_wise']['labels'],
+      data: response['hazard_risk_wise']['data'],
+      chartName: 'Hazard Risk Wise',
+    }
+    let hazard_department_wise = {
+      labels: response['hazard_department_wise']['labels'],
+      data: response['hazard_department_wise']['data'],
+      chartName: 'Hazard Department Wise',
+    }
+    let hazard_status_wise = {
+      labels: response['hazard_status_wise']['labels'],
+      data: response['hazard_status_wise']['data'],
+      chartName: 'Hazard Status Wise',
+    }
+
+    barChart("ptw_type_wise",ptw_type_wise.chartName,'y',ptw_type_wise.labels,ptw_type_wise.data,'green');
+    barChart("fpd_category_wise",fpd_category_wise.chartName,'y',fpd_category_wise.labels,fpd_category_wise.data,'orange');
+    barChart("injury_category_wise",injury_category_wise.chartName,'x',injury_category_wise.labels,injury_category_wise.data,'red');
+    barChart("injury_incident_cat_wise",injury_incident_cat_wise.chartName,'x',injury_incident_cat_wise.labels,injury_incident_cat_wise.data,'red');
+    barChart("injury_investigation",injury_investigation.chartName,'y',injury_investigation.labels,injury_investigation.data,'red');
+    barChart("hazard_risk_wise",hazard_risk_wise.chartName,'x',hazard_risk_wise.labels,hazard_risk_wise.data,'purple');
+    barChart("hazard_department_wise",hazard_department_wise.chartName,'x',hazard_department_wise.labels,hazard_department_wise.data,'purple');
+    barChart("hazard_status_wise",hazard_status_wise.chartName,'y',hazard_status_wise.labels,hazard_status_wise.data,'purple');
+
+  }
+
+  });
+  // let labels = ['16-20', '21-25', '26-30', '31-36', '36-42', '42+'];
+  // let data  = [15, 20, 12, 60, 20, 15];
+  // let chartName = "Incidents";
+  // barChart("chart-line",chartName,'x',labels,data,'green');
 }
 
 
