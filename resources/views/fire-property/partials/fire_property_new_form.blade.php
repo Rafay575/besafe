@@ -152,26 +152,26 @@
                         <tr>
                           <td><i class="badge badge-dark">Direct Loss</i></td>
                           <td>
-                           <x-forms.basic-input label="" name="loss_calculation[direct_loss][description]" type="text" placeholder="description"  value="{{(isset($fire_property)) ? $fire_property->loss_calculation['direct_loss']['description'] : ''}}" width="col-12" input-class="multisteps-form__input" ></x-forms.basic-input>
+                           <x-forms.basic-input label="" name="loss_calculation[direct_loss][description]" type="text" placeholder="description"  value="{{(isset($fire_property)) ? @$fire_property->loss_calculation['direct_loss']['description'] : ''}}" width="col-12" input-class="multisteps-form__input" ></x-forms.basic-input>
                           </td>
                           <td>
-                           <x-forms.basic-input label="" name="loss_calculation[direct_loss][value]" type="number" placeholder="00"  value="{{(isset($fire_property)) ? $fire_property->loss_calculation['direct_loss']['value'] : ''}}" width="col-12 " input-class="multisteps-form__input direct_loss" ></x-forms.basic-input>
+                           <x-forms.basic-input label="" name="loss_calculation[direct_loss][value]" type="number" placeholder="00"  value="{{(isset($fire_property)) ? @$fire_property->loss_calculation['direct_loss']['value'] : ''}}" width="col-12 " input-class="multisteps-form__input direct_loss" ></x-forms.basic-input>
                           </td>
                         </tr>
                         <tr>
                           <td><i class="badge badge-dark">InDirect Loss</i></td>
                           <td>
-                           <x-forms.basic-input label="" name="loss_calculation[indirect_loss][description]" type="text" placeholder="description"  value="{{(isset($fire_property)) ? $fire_property->loss_calculation['indirect_loss']['description'] : ''}}" width="col-12" input-class="multisteps-form__input" ></x-forms.basic-input>
+                           <x-forms.basic-input label="" name="loss_calculation[indirect_loss][description]" type="text" placeholder="description"  value="{{(isset($fire_property)) ? @$fire_property->loss_calculation['indirect_loss']['description'] : ''}}" width="col-12" input-class="multisteps-form__input" ></x-forms.basic-input>
                           </td>
                           <td>
-                           <x-forms.basic-input label="" name="loss_calculation[indirect_loss][value]" value="{{(isset($fire_property)) ? $fire_property->loss_calculation['indirect_loss']['value'] : ''}}" type="number" placeholder="00"   width="col-12 " input-class="multisteps-form__input indirect_loss" ></x-forms.basic-input>
+                           <x-forms.basic-input label="" name="loss_calculation[indirect_loss][value]" value="{{(isset($fire_property)) ? @$fire_property->loss_calculation['indirect_loss']['value'] : ''}}" type="number" placeholder="00"   width="col-12 " input-class="multisteps-form__input indirect_loss" ></x-forms.basic-input>
                           </td>
                         </tr>
 
                         <tr>
                           <td><i class="badge badge-dark">Total Loss</i></td>
                           <td>
-                           <x-forms.basic-input label="" readonly name="loss_calculation[total_loss]" value="{{(isset($fire_property)) ? $fire_property->loss_calculation['total_loss'] : ''}}" type="number" placeholder="00"   width="col-12 " input-class="multisteps-form__input total_loss" ></x-forms.basic-input>
+                           <x-forms.basic-input label="" readonly name="loss_calculation[total_loss]" value="{{(isset($fire_property)) ? @$fire_property->loss_calculation['total_loss'] : ''}}" type="number" placeholder="00"   width="col-12 " input-class="multisteps-form__input total_loss" ></x-forms.basic-input>
                           </td>
                         </tr>
                       </tbody>
@@ -207,10 +207,7 @@
                               <td> 
                                 <select name="actions[{{$loop->iteration}}][status]"  class="form-control form-control-sm">
                                     <option value="pending" {{$action['status'] === 'pending' ? 'selected' : ''}}>Pending</option>
-                                    <option value="completed" {{$action['status'] === 'completed' ? 'selected' : ''}}>Completed</option>
-                                    <option value="in progress" {{$action['status'] === 'in progress' ? 'selected' : ''}}>In Progress</option>
-                                    <option value="active" {{$action['status'] === 'active' ? 'selected' : ''}}>Active</option>
-                                    <option value="inactive" {{$action['status'] === 'inactive' ? 'selected' : ''}}>In Active</option>
+                                    <option value="closed" {{$action['status'] === 'closed' ? 'selected' : ''}}>Closed</option>
                                     {{-- <option value="active" {{($action['status'] === 'active') ? 'selected' : ''}}>Active</option>
                                     <option value="inactive" {{($action['status'] != 'active') ? 'selected' : ''}}>InActive</option> --}}
                                  </select>

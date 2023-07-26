@@ -156,7 +156,7 @@ class FirePropertyDamageController extends Controller
     public function edit(Request $request, FirePropertyDamage $fire_property)
     {
         RolesPermissionController::canEditIncident($fire_property, 'fire_property_damage');
-        $incident_statuses = MetaIncidentStatus::select('id', 'status_title')->get();
+        $incident_statuses = MetaIncidentStatus::select('status_code', 'status_title', 'id')->whereNot('status_code', 0)->get();
         $units = MetaUnit::select('id', 'unit_title')->get();
         $locations = MetaLocation::select('id', 'meta_unit_id', 'location_title')->get();
         $fire_categories = MetaFireCategory::select('id', 'fire_category_title')->get();

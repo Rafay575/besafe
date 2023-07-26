@@ -141,7 +141,7 @@ class NearMissController extends Controller
     public function edit(NearMiss $near_miss)
     {
         RolesPermissionController::can(['near_miss.edit']);
-        $incident_statuses = MetaIncidentStatus::select('id', 'status_title')->get();
+        $incident_statuses = MetaIncidentStatus::select('status_code', 'status_title', 'id')->whereNot('status_code', 0)->get();
         $units = MetaUnit::select('id', 'unit_title')->get();
         $locations = MetaLocation::select('id', 'meta_unit_id', 'location_title')->get();
         $departments = MetaDepartment::select('id', 'department_title')->get();

@@ -86,7 +86,9 @@ class IncidentController extends Controller
             return $results;
         }
 
+
         $incidents = $results->with('initiator', 'incident_status')->get();
+        $incident = $incidents->first();
         // return $incidents = $results->with('initiator', 'incident_status')->first()->assignedUsersAll->where('form_name', 'unsafe_behaviors')->first();
         if ($request->ajax()) {
             $data = [];

@@ -31,7 +31,7 @@
           $('<td>').html('<input type="hidden" name="actions['+nextRowNo+'][sno]" value="'+nextRowNo+'"><input type="text" class="form-control form-control-sm" name="actions['+nextRowNo+'][description]">'),
           $('<td>').html('<input type="text" class="form-control form-control-sm" name="actions['+nextRowNo+'][responsibility]">'),
           $('<td>').html('<input type="text" class="form-control form-control-sm" name="actions['+nextRowNo+'][timeline]">'),
-          $('<td>').html('<select name="actions['+nextRowNo+'][status]" class="form-control form-control-sm"><option value="active">Active</option><option value="inactive">InActive</option></select>'),
+          $('<td>').html('<select name="actions['+nextRowNo+'][status]" class="form-control form-control-sm"><option value="pending">Pending</option><option value="closed">Closed</option></select>'),
           $('<td>').html('<span class="btn btn-sm btn-danger deleteActionRecord">X</span>')
         );
         

@@ -18,14 +18,14 @@
 
   @include('dashboard.partials.top_stats')
   <div class="row mb-3">
-    <div class="col-4">
+    <div class="col-1 col-sm-4">
 
     </div>
-    <div class="col-4">
+    <div class="col-sm-4 col-5">
     <input class="form-control datepicker" placeholder="Please select date" type="text" onfocus="focused(this)" onfocusout="defocused(this)">
       
     </div>
-    <div class="nav-wrapper position-relative end-0 col-4" style="cursor: pointer">
+    <div class="nav-wrapper position-relative end-0 col-6 col-sm-4" style="cursor: pointer">
       <ul class="nav nav-pills nav-fill p-1" role="tablist">
          <li class="nav-item">
             <a class="nav-link mb-0 px-0 py-1 active" id="data_by" data-data_by="daily" data-bs-toggle="tab"  role="tab" aria-controls="daily" aria-selected="true">
@@ -92,7 +92,7 @@
     {{-- ptw_type_wise --}}
 
     
-    <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0 mt-2">
+    <div class="col-12 col-sm-6  mb-4 mb-lg-0 mt-2">
       <div class="card z-index-2 h-100">
         <div class="card-header pb-0 pt-3 bg-transparent">
           <h6 class="text-capitalize">Permit To Work Type Wise</h6>
@@ -106,7 +106,7 @@
     </div>
     
 
-    <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0 mt-2">
+    <div class="col-12 col-sm-6  mb-4 mb-lg-0 mt-2">
       <div class="card z-index-2 h-100">
         <div class="card-header pb-0 pt-3 bg-transparent">
           <h6 class="text-capitalize">Fire and Property Damages Category Wise</h6>
@@ -119,7 +119,7 @@
       </div>
     </div>
     
-    <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0 mt-2">
+    <div class="col-12 col-sm-6  mb-4 mb-lg-0 mt-2">
       <div class="card z-index-2 h-100">
         <div class="card-header pb-0 pt-3 bg-transparent">
           <h6 class="text-capitalize">Injury Category Wise</h6>
@@ -132,10 +132,10 @@
       </div>
     </div>
     
-    <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0 mt-2">
+    <div class="col-12 col-sm-6  mb-4 mb-lg-0 mt-2">
       <div class="card z-index-2 h-100">
         <div class="card-header pb-0 pt-3 bg-transparent">
-          <h6 class="text-capitalize">Injury Incident Category wise</h6>
+          <h6 class="text-capitalize">Injury Incident Machine Wise</h6>
         </div>
         <div class="card-body p-3">
           <div class="chart">
@@ -145,7 +145,7 @@
       </div>
     </div>
     
-    <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0 mt-2">
+    <div class="col-12 col-sm-6  mb-4 mb-lg-0 mt-2">
       <div class="card z-index-2 h-100">
         <div class="card-header pb-0 pt-3 bg-transparent">
           <h6 class="text-capitalize">Injuries Investigation Report</h6>
@@ -158,7 +158,7 @@
       </div>
     </div>
     
-    <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0 mt-2">
+    <div class="col-12 col-sm-6  mb-4 mb-lg-0 mt-2">
       <div class="card z-index-2 h-100">
         <div class="card-header pb-0 pt-3 bg-transparent">
           <h6 class="text-capitalize">Hazard Risk level wise</h6>
@@ -171,7 +171,7 @@
       </div>
     </div>
     
-    <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0 mt-2">
+    <div class="col-12 col-sm-6  mb-4 mb-lg-0 mt-2">
       <div class="card z-index-2 h-100">
         <div class="card-header pb-0 pt-3 bg-transparent">
           <h6 class="text-capitalize">Hazards Department Wise</h6>
@@ -185,7 +185,7 @@
     </div>
 
     
-    <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0 mt-2">
+    <div class="col-12 col-sm-6  mb-4 mb-lg-0 mt-2">
       <div class="card z-index-2 h-100">
         <div class="card-header pb-0 pt-3 bg-transparent">
           <h6 class="text-capitalize">Hazard Incident Status wise</h6>
@@ -366,7 +366,7 @@ function loadBarChart(fromDate,toDate){
     let injury_incident_cat_wise = {
       labels: response['injury_incident_cat_wise']['labels'],
       data: response['injury_incident_cat_wise']['data'],
-      chartName: 'Injury Incident Category wise',
+      chartName: 'Injury Incident Machine Wise',
     }
     let injury_investigation = {
       labels: response['injury_investigation']['labels'],
@@ -389,14 +389,14 @@ function loadBarChart(fromDate,toDate){
       chartName: 'Hazard Status Wise',
     }
 
-    barChart("ptw_type_wise",ptw_type_wise.chartName,'y',ptw_type_wise.labels,ptw_type_wise.data,'green');
-    barChart("fpd_category_wise",fpd_category_wise.chartName,'y',fpd_category_wise.labels,fpd_category_wise.data,'orange');
+    barChart("ptw_type_wise",ptw_type_wise.chartName,'x',ptw_type_wise.labels,ptw_type_wise.data,'green');
+    barChart("fpd_category_wise",fpd_category_wise.chartName,'x',fpd_category_wise.labels,fpd_category_wise.data,'orange');
     barChart("injury_category_wise",injury_category_wise.chartName,'x',injury_category_wise.labels,injury_category_wise.data,'red');
     barChart("injury_incident_cat_wise",injury_incident_cat_wise.chartName,'x',injury_incident_cat_wise.labels,injury_incident_cat_wise.data,'red');
-    barChart("injury_investigation",injury_investigation.chartName,'y',injury_investigation.labels,injury_investigation.data,'red');
+    barChart("injury_investigation",injury_investigation.chartName,'x',injury_investigation.labels,injury_investigation.data,'red');
     barChart("hazard_risk_wise",hazard_risk_wise.chartName,'x',hazard_risk_wise.labels,hazard_risk_wise.data,'purple');
     barChart("hazard_department_wise",hazard_department_wise.chartName,'x',hazard_department_wise.labels,hazard_department_wise.data,'purple');
-    barChart("hazard_status_wise",hazard_status_wise.chartName,'y',hazard_status_wise.labels,hazard_status_wise.data,'purple');
+    barChart("hazard_status_wise",hazard_status_wise.chartName,'x',hazard_status_wise.labels,hazard_status_wise.data,'purple');
 
   }
 

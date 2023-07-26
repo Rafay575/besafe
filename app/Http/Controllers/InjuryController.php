@@ -178,7 +178,7 @@ class InjuryController extends Controller
     {
         $incident_categories = MetaIncidentCategory::select('id', 'incident_category_title')->get();
         $injury_categories = MetaInjuryCategory::select('id', 'injury_category_title')->get();
-        $incident_statuses = MetaIncidentStatus::select('status_code', 'status_title', 'id')->get();
+        $incident_statuses = MetaIncidentStatus::select('status_code', 'status_title', 'id')->whereNot('status_code', 0)->get();
         $sgfl_relations = MetaSgflRelation::select('id', 'sgfl_relation_title')->get();
         $immediate_causes = MetaImmediateCause::select('id', 'cause_title')->get();
         $basic_causes = MetaBasicCause::select('id', 'cause_title')->get();

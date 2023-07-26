@@ -131,7 +131,7 @@ class UnsafeBehaviorController extends Controller
         $departments = MetaDepartment::select('id', 'department_title')->get();
         $lines = MetaLine::select('id', 'line_title')->get();
         $ub_types = MetaUnsafeBehaviorType::select('id', 'unsafe_behavior_type_title')->get();
-        $incident_statuses = MetaIncidentStatus::select('status_code', 'status_title', 'id')->get();
+        $incident_statuses = MetaIncidentStatus::select('status_code', 'status_title', 'id')->whereNot('status_code', 0)->get();
         $unsafe_behavior_actions = MetaUnsafeBehaviorAction::select('action_title', 'id')->get();
         $locations = MetaLocation::select('id', 'meta_unit_id', 'location_title')->get();
         $risk_levels = MetaRiskLevel::select('id', 'risk_level_title')->get();

@@ -218,12 +218,7 @@
                           <td> 
                             <select name="actions[{{$loop->iteration}}][status]"  class="form-control form-control-sm">
                                 <option value="pending" {{$action['status'] === 'pending' ? 'selected' : ''}}>Pending</option>
-                                <option value="completed" {{$action['status'] === 'completed' ? 'selected' : ''}}>Completed</option>
-                                <option value="in progress" {{$action['status'] === 'in progress' ? 'selected' : ''}}>In Progress</option>
-                                <option value="active" {{$action['status'] === 'active' ? 'selected' : ''}}>Active</option>
-                                <option value="inactive" {{$action['status'] === 'inactive' ? 'selected' : ''}}>In Active</option>
-                                {{-- <option value="active" {{($action['status'] === 'active') ? 'selected' : ''}}>Active</option>
-                                <option value="inactive" {{($action['status'] != 'active') ? 'selected' : ''}}>InActive</option> --}}
+                                <option value="closed" {{$action['status'] === 'closed' ? 'selected' : ''}}>Closed</option>
                              </select>
                           </td>
                           <td> <span class="btn btn-sm btn-danger deleteActionRecord">X</span></td>

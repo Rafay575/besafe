@@ -75,7 +75,7 @@ class BarChartController extends Controller
                 $query->where('fire_category_title', $label);
             })->count();
         }
-        $labels[] = 'total';
+        $labels[] = 'Total';
         $data[] = array_sum($data);
         return [
             "labels" => $labels,

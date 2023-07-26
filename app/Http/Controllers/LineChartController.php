@@ -129,9 +129,9 @@ class LineChartController extends Controller
         }
 
         return [
-            'label' => array_reverse($datesInMonth),
-            'label2' => array_reverse($daysNamesInMonth),
-            'value' => array_reverse($results)
+            'label' => $datesInMonth,
+            'label2' => $daysNamesInMonth,
+            'value' => $results
         ];
     }
 
@@ -161,8 +161,8 @@ class LineChartController extends Controller
         }
 
         return [
-            'label' => array_reverse($monthsArray),
-            'value' => array_reverse($results)
+            'label' => $monthsArray,
+            'value' => $results
         ];
     }
 
@@ -186,8 +186,8 @@ class LineChartController extends Controller
         }
 
         return [
-            'label' => array_reverse($previousYears),
-            'value' => array_reverse($results)
+            'label' => $previousYears,
+            'value' => $results
         ];
     }
 
