@@ -153,8 +153,8 @@ class BarChartController extends Controller
         })->count(); //not pending injures
 
         $data[] = self::countJson(Injury::whereBetween('created_at', [$from_date, $to_date])->get()); //total actions taken
-        $data[] = self::countJson(Injury::whereBetween('created_at', [$from_date, $to_date])->get(), ['where' => ['column' => 'status', 'value' => 'inactive']]); //action closed
-        $data[] = self::countJson(Injury::whereBetween('created_at', [$from_date, $to_date])->get(), ['where' => ['column' => 'status', 'value' => 'active']]); //action pending
+        $data[] = self::countJson(Injury::whereBetween('created_at', [$from_date, $to_date])->get(), ['where' => ['column' => 'status', 'value' => 'closed']]); //action closed
+        $data[] = self::countJson(Injury::whereBetween('created_at', [$from_date, $to_date])->get(), ['where' => ['column' => 'status', 'value' => 'pending']]); //action pending
 
 
 

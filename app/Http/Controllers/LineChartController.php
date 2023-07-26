@@ -141,12 +141,11 @@ class LineChartController extends Controller
         $monthsArray = ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'August', 'Sept', 'October', 'November', 'December'];
 
         if ($request->has('year')) {
-            $year = $request->year;
+            $year = Carbon::parse($request->year)->year;
         } else {
             $year = Carbon::now()->year;
 
         }
-
         for ($i = 1; $i <= 12; $i++) {
             $firstDateOfMonth = Carbon::parse("{$year}-{$i}-01");
             if ($request->has('chart_of') && $request->chart_of == 'incidents') {
