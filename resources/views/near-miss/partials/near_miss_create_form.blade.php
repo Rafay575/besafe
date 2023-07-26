@@ -163,7 +163,7 @@
 
                <div class="button-row d-flex mt-4">
                 @canany(['near_miss.create','near_miss.edit'])
-                  <button class="btn bg-gradient-dark ms-auto mb-0 btn-ladda" id="submit-button" type="submit" title="Send" data-style="expand-left">Send</button>
+                  <button class="btn bg-gradient-dark ms-auto mb-0 btn-ladda" id="submit-button" type="submit" title="Send" data-style="expand-left">Submit</button>
                   @endcanany
                 </div>
                 
@@ -249,7 +249,7 @@
                   <button class="btn bg-gradient-light mb-0 js-btn-prev" type="button" title="Prev">Prev</button>
                   <input type="hidden" name="redirect" value="{{url()->previous()}}">
                   @canany(['near_miss.create','near_miss.edit'])
-                  <button class="btn bg-gradient-dark ms-auto mb-0 btn-ladda" id="submit-button" type="submit" title="Send" data-style="expand-left">Send</button>
+                  <button class="btn bg-gradient-dark ms-auto mb-0 btn-ladda" id="submit-button" type="submit" title="Send" data-style="expand-left">Submit</button>
                   @endcanany
                 </div>
               </div>

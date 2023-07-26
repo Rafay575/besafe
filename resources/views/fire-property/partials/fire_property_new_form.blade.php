@@ -108,7 +108,7 @@
                   @else
 
                  <div class="button-row d-flex mt-4">
-                  <button class="btn bg-gradient-dark ms-auto mb-0 btn-ladda" type="submit" title="Send" data-style="expand-left">Send</button>
+                  <button class="btn bg-gradient-dark ms-auto mb-0 btn-ladda" type="submit" title="Send" data-style="expand-left">Submit</button>
 
                   </div>
 
@@ -248,7 +248,7 @@
                       @canany(['fire_property_damage.create','fire_property_damage.edit'])
                           
                       @endcanany
-                      <button class="btn bg-gradient-dark ms-auto mb-0 btn-ladda" type="submit" title="Send" data-style="expand-left">Send</button>
+                      <button class="btn bg-gradient-dark ms-auto mb-0 btn-ladda" type="submit" title="Send" data-style="expand-left">Submit</button>
                     </div>
                   </div>
                 </div>
