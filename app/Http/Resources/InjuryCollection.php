@@ -61,6 +61,7 @@ class InjuryCollection extends JsonResource
 
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'actions' => $this->actions,
         ];
         if ($this->withAttachs) {
             $data['attachements'] = CommonAttachsCollection::collection($this->attachements);

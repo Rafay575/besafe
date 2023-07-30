@@ -37,6 +37,8 @@ class UnsafeBehaviorCollection extends JsonResource
             "unit_title" => $this->unit ? $this->unit->unit_title : null,
             "meta_location_id" => $this->meta_location_id ?? null,
             "location_title" => $this->meta_location ? $this->meta_location->location_title : null,
+            'meta_risk_level_id' => $this->meta_risk_level_id ?? null,
+            'risk_level_title' => $this->risk_level ? $this->risk_level->risk_level_title : null,
             "line" => $this->line,
             "other_location" => $this->other_location,
             // "meta_line_id" => $this->meta_line_id ?? null,
@@ -48,6 +50,7 @@ class UnsafeBehaviorCollection extends JsonResource
             'details' => $this->details,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'action' => $this->action,
             'unsafe_behavior_types' => MetaUnsafeBehaviorTypesCollection::collection($this->unsafe_behavior_types),
         ];
         if ($this->withAttachs) {

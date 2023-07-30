@@ -49,6 +49,7 @@ class HazardCollection extends JsonResource
             'description' => $this->description,
             'date' => $this->date,
             'action_cost' => $this->action_cost,
+            'action' => $this->action,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

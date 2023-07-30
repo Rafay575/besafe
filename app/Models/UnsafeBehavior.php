@@ -37,4 +37,8 @@ class UnsafeBehavior extends Model
     {
         return $this->common_Attachements()->where('form_input_name', 'attachements');
     }
+    public function risk_level()
+    {
+        return $this->belongsTo(MetaRiskLevel::class, 'meta_risk_level_id');
+    }
 }
