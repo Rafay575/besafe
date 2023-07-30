@@ -75,9 +75,7 @@ class NotificationController extends Controller
                         // if action is update
                         if ($changes->has('old')) {
                             $oldValue = $changes['old'][$attribute];
-                            if (is_array($oldValue)) {
-                                return "Some <strong>{$attribute}</strong> were changed</strong>" . "<br>";
-                            }
+
                             return "The <strong>{$attribute}</strong> was changed from <strong>{$oldValue}</strong> to <strong>{$newValue}</strong>" . "<br>";
                         } else {
                             // if action is created
@@ -95,6 +93,9 @@ class NotificationController extends Controller
                             return "Some <strong>{$attribute}</strong> were changed <br>";
                         }
                         if ($attribute === 'loss_calculation') {
+                            return "Some <strong>{$attribute}</strong> were changed <br>";
+                        }
+                        if ($attribute === 'persons') {
                             return "Some <strong>{$attribute}</strong> were changed <br>";
                         }
 
