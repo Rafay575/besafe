@@ -167,18 +167,18 @@ class UserController extends Controller
             $user->password = Hash::make($request->password);
         }
         $user->mobile = $request->mobile;
-        $user->status = $request->status ?: 0;
-        $user->ein = $request->ein;
-        $user->gender = $request->gender;
-        $user->dob = $request->dob;
+        $user->status = $request->status ?? $user->status;
+        $user->ein = $request->ein ?? $user->ein;
+        $user->gender = $request->gender ?? $user->gender;
+        $user->dob = $request->dob ?? $user->dob;
         $user->res_address = $request->res_address;
         $user->perm_address = $request->perm_address;
         $user->id_type = $request->id_type;
         $user->id_no = $request->id_no;
-        $user->meta_department_id = $request->meta_department_id ?? null;
-        $user->meta_line_id = $request->meta_line_id ?? null;
-        $user->meta_designation_id = $request->meta_designation_id ?? null;
-        $user->meta_unit_id = $request->meta_unit_id ?? null;
+        $user->meta_department_id = $request->meta_department_id ?? $user->meta_department_id;
+        $user->meta_line_id = $request->meta_line_id ?? $user->meta_line_id;
+        $user->meta_designation_id = $request->meta_designation_id ?? $user->meta_designation_id;
+        $user->meta_unit_id = $request->meta_unit_id ?? $user->meta_unit_id;
 
         if ($request->hasFile('image')) {
             $imageName = time() . '.' . $request->image->getClientOriginalExtension();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\BarChartController;
 use App\Http\Controllers\CardChartController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\LineChartController;
@@ -34,6 +35,11 @@ class ChartApiController extends Controller
         } else {
             return ApiResponseController::error('Please provide data_by');
         }
+    }
+    public function barCharts(Request $request)
+    {
+        return (new BarChartController)->prepareForBarChart($request, 'api');
+
     }
 
 
