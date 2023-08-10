@@ -44,6 +44,10 @@
                         <td>{{ $unsafe_behavior->unsafe_behavior_action->action_title ?? '' }}</td>
                     </tr>
                     <tr>
+                        <th>Action</th>
+                        <td>{{ $unsafe_behavior->action ?? '' }}</td>
+                    </tr>
+                    <tr>
                         <th>Line</th>
                         <td>{{ $unsafe_behavior->line}}</td>
                     </tr>
@@ -54,6 +58,10 @@
                     <tr>
                         <th>Location</th>
                         <td>{{ $unsafe_behavior->meta_location ? $unsafe_behavior->meta_location->location_title : ''}}</td>
+                    </tr>
+                    <tr>
+                        <th>Risk Level</th>
+                        <td>{{ $unsafe_behavior->risk_level ? $unsafe_behavior->risk_level->risk_level_title : ''}}</td>
                     </tr>
                     <tr>
                         <th>Status</th>

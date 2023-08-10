@@ -65,6 +65,10 @@
                   <td>{{ $near_miss->department ? $near_miss->department->department_title : '' }}</td>
                 </tr>
                 <tr>
+                  <th>Unit</th>
+                  <td>{{ $near_miss->unit ? $near_miss->unit->unit_title : '' }}</td>
+                </tr>
+                <tr>
                   <th>Near Miss Classification</th>
                   <td>{{ $near_miss->near_miss_class ? $near_miss->near_miss_class->class_title : '' }}</td>
                 </tr>
