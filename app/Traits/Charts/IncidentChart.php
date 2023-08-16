@@ -51,18 +51,18 @@ trait IncidentChart
             if ($request->has('data_by')) {
                 switch ($request->data_by) {
                     case 'monthly':
-                        $incident = $incident->whereMonth('created_at', $date->month)->whereYear('created_at', $date->year);
+                        $incident = $incident->whereMonth('date', $date->month)->whereYear('date', $date->year);
                         break;
                     case 'yearly':
-                        $incident = $incident->whereYear('created_at', $date->year);
+                        $incident = $incident->whereYear('date', $date->year);
                         break;
 
                     default:
-                        $incident = $incident->whereDate('created_at', $date);
+                        $incident = $incident->whereDate('date', $date);
                         break;
                 }
             } else {
-                $incident = $incident->whereDate('created_at', $date);
+                $incident = $incident->whereDate('date', $date);
             }
             if ($request->has('incident_status')) {
                 $incident = $incident->where('meta_incident_status_id', $request->incident_status);
@@ -96,34 +96,34 @@ trait IncidentChart
         $acceptableDataBy = ['monthly', 'daily', 'yearly'];
         if ($request->has('data_by') && in_array($request->data_by, $acceptableDataBy)) {
             if ($request->data_by == "daily") {
-                $fpdemages = $fpdemages->whereDate('created_at', $date);
-                $injuries = $injuries->whereDate('created_at', $date);
-                $unsafe_behaviors = $unsafe_behaviors->whereDate('created_at', $date);
-                $nearMisses = $nearMisses->whereDate('created_at', $date);
-                $hazards = $hazards->whereDate('created_at', $date);
+                $fpdemages = $fpdemages->whereDate('date', $date);
+                $injuries = $injuries->whereDate('date', $date);
+                $unsafe_behaviors = $unsafe_behaviors->whereDate('date', $date);
+                $nearMisses = $nearMisses->whereDate('date', $date);
+                $hazards = $hazards->whereDate('date', $date);
             }
 
             if ($request->data_by == "monthly") {
-                $fpdemages = $fpdemages->whereMonth('created_at', $date->month)->whereYear('created_at', $date->year);
-                $injuries = $injuries->whereMonth('created_at', $date->month)->whereYear('created_at', $date->year);
-                $unsafe_behaviors = $unsafe_behaviors->whereMonth('created_at', $date->month)->whereYear('created_at', $date->year);
-                $nearMisses = $nearMisses->whereMonth('created_at', $date->month)->whereYear('created_at', $date->year);
-                $hazards = $hazards->whereMonth('created_at', $date->month)->whereYear('created_at', $date->year);
+                $fpdemages = $fpdemages->whereMonth('date', $date->month)->whereYear('date', $date->year);
+                $injuries = $injuries->whereMonth('date', $date->month)->whereYear('date', $date->year);
+                $unsafe_behaviors = $unsafe_behaviors->whereMonth('date', $date->month)->whereYear('date', $date->year);
+                $nearMisses = $nearMisses->whereMonth('date', $date->month)->whereYear('date', $date->year);
+                $hazards = $hazards->whereMonth('date', $date->month)->whereYear('date', $date->year);
             }
             if ($request->data_by == "yearly") {
-                $fpdemages = $fpdemages->whereYear('created_at', $date->year);
-                $injuries = $injuries->whereYear('created_at', $date->year);
-                $unsafe_behaviors = $unsafe_behaviors->whereYear('created_at', $date->year);
-                $nearMisses = $nearMisses->whereYear('created_at', $date->year);
-                $hazards = $hazards->whereYear('created_at', $date->year);
+                $fpdemages = $fpdemages->whereYear('date', $date->year);
+                $injuries = $injuries->whereYear('date', $date->year);
+                $unsafe_behaviors = $unsafe_behaviors->whereYear('date', $date->year);
+                $nearMisses = $nearMisses->whereYear('date', $date->year);
+                $hazards = $hazards->whereYear('date', $date->year);
             }
         } else {
 
-            $fpdemages = $fpdemages->whereDate('created_at', $date);
-            $injuries = $injuries->whereDate('created_at', $date);
-            $unsafe_behaviors = $unsafe_behaviors->whereDate('created_at', $date);
-            $nearMisses = $nearMisses->whereDate('created_at', $date);
-            $hazards = $hazards->whereDate('created_at', $date);
+            $fpdemages = $fpdemages->whereDate('date', $date);
+            $injuries = $injuries->whereDate('date', $date);
+            $unsafe_behaviors = $unsafe_behaviors->whereDate('date', $date);
+            $nearMisses = $nearMisses->whereDate('date', $date);
+            $hazards = $hazards->whereDate('date', $date);
         }
 
         // filters
@@ -286,7 +286,7 @@ trait IncidentChart
 
             // if date range is requested
             if ($request->has('from_date') && $request->has('to_date')) {
-                $incident = $incident->whereBetween('created_at', [$request->from_date, $request->to_date]);
+                $incident = $incident->whereBetween('date', [$request->from_date, $request->to_date]);
             }
 
             if ($request->has('incident_status')) {
@@ -356,11 +356,11 @@ trait IncidentChart
 
         // if date range is requested
         if ($request->has('from_date') && $request->has('to_date')) {
-            $fpdemages = $fpdemages->whereBetween('created_at', [$request->from_date, $request->to_date]);
-            $injuries = $injuries->whereBetween('created_at', [$request->from_date, $request->to_date]);
-            $unsafe_behaviors = $unsafe_behaviors->whereBetween('created_at', [$request->from_date, $request->to_date]);
-            $nearMisses = $nearMisses->whereBetween('created_at', [$request->from_date, $request->to_date]);
-            $hazards = $hazards->whereBetween('created_at', [$request->from_date, $request->to_date]);
+            $fpdemages = $fpdemages->whereBetween('date', [$request->from_date, $request->to_date]);
+            $injuries = $injuries->whereBetween('date', [$request->from_date, $request->to_date]);
+            $unsafe_behaviors = $unsafe_behaviors->whereBetween('date', [$request->from_date, $request->to_date]);
+            $nearMisses = $nearMisses->whereBetween('date', [$request->from_date, $request->to_date]);
+            $hazards = $hazards->whereBetween('date', [$request->from_date, $request->to_date]);
         }
 
         // filters

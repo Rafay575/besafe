@@ -159,13 +159,14 @@
 
                   <x-forms.basic-input label="Immediate Action" name="immediate_action" type="text" placeholder=""  value="{{(isset($injury) ? $injury->immediate_action : '')}}" width="col-12 col-sm-6" input-class="multisteps-form__input" ></x-forms.basic-input>
 
+                  <x-forms.text-area label="Root Cause" name="root_cause"  width="col-6" text-area-class="multisteps-form__input" cols="2" rows="2">{{(isset($injury) ? $injury->root_cause : '')}}</x-forms.text-area>
 
                      
-                  <x-forms.select-option name="meta_root_causes[]" multiple selectClass="form-control-sm multisteps-form__input" label="Root Cause" divClass="col-12 col-sm-6">
+                  {{-- <x-forms.select-option name="meta_root_causes[]" multiple selectClass="form-control-sm multisteps-form__input" label="Root Cause" divClass="col-12 col-sm-6">
                     @foreach ($root_causes as $cause)
                     <option value="{{ $cause->id }}" {{ isset($injury) && in_array($cause->id,$injury->root_causes->pluck('id')->toArray()) ? 'selected' : '' }}>{{ $cause->cause_title }}</option>
                     @endforeach
-                  </x-forms.select-option>
+                  </x-forms.select-option> --}}
 
                   <x-forms.select-option name="meta_incident_status_id" selectClass="form-control-sm" label="Status" divClass="col-12 col-sm-6">
                     @foreach ($incident_statuses as $status)

@@ -115,15 +115,19 @@
                     <th>Immediate Causes</th>
                     <td>{{ $injury->immediate_causes ? $injury->immediate_causes->pluck('cause_title')->implode(', ') : '' }}</td>
                   </tr>
-                  <tr>
+                  {{-- <tr>
                     <th>Root Causes</th>
                     <td>{{ $injury->root_causes ? $injury->root_causes->pluck('cause_title')->implode(', ') : '' }}</td>
-                  </tr>
+                  </tr> --}}
                   {{-- <tr>
                     <th>Basic Causes</th>
                     <td>{{ $injury->basic_causes ? $injury->basic_causes->pluck('cause_title')->implode(', ') : '' }}</td>
                   </tr> --}}
 
+                  <tr>
+                    <th>Root Cause</th>
+                    <td>{{$injury->root_cause}}</td>
+                  </tr>
                   <tr>
                     <th>Contact Types</th>
                     <td>{{ $injury->contacts ? $injury->contacts->pluck('type_title')->implode(', ') : '' }}</td>

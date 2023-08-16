@@ -59,10 +59,10 @@ class Injury extends Model
         return $this->belongsToMany(MetaImmediateCause::class, 'meta_immediate_cuase_injury');
     }
 
-    public function root_causes()
-    {
-        return $this->belongsToMany(MetaRootCause::class, 'meta_root_cause_injury');
-    }
+    // public function root_causes()
+    // {
+    //     return $this->belongsToMany(MetaRootCause::class, 'meta_root_cause_injury');
+    // }
 
     public function basic_causes()
     {

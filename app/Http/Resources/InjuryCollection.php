@@ -54,8 +54,9 @@ class InjuryCollection extends JsonResource
             'initiated_by' => $this->initiated_by,
             'date' => $this->date,
             'time' => $this->time,
+            'root_cause' => $this->root_cause,
             "meta_immediate_causes" => InjuryCausesCollection::collection($this->immediate_causes),
-            "meta_root_causes" => InjuryCausesCollection::collection($this->root_causes),
+            // "meta_root_causes" => InjuryCausesCollection::collection($this->root_causes),
             // "meta_basic_causes" => InjuryCausesCollection::collection($this->basic_causes),
             "meta_contact_types" => InjuryContactsCollection::collection($this->contacts),
 

@@ -45,6 +45,7 @@ class InjuryController extends Controller
                     'date' => $injury->date,
                     'time' => $injury->time,
                     'employee_involved' => $injury->employee_involved,
+                    'injured_person' => $injury->injured_person,
                     // 'sgfl_relation' => $injury->meta_sgfl_relation_id ? $injury->msgfl_relation->sgfl_relation_title : '',
                     'incident_category' => $injury->incident_category->incident_category_title,
                     'injury_category' => $injury->injury_category->injury_category_title,
@@ -101,7 +102,7 @@ class InjuryController extends Controller
         $injury->meta_injury_category_id = $request->meta_injury_category_id;
         $injury->meta_incident_category_id = $request->meta_incident_category_id;
         $injury->meta_incident_status_id = MetaIncidentStatus::where('status_code', 0)->first()->id; //pending
-        // $injury->employee_involved = $request->employee_involved;
+        $injury->employee_involved = $request->employee_involved;
         $injury->meta_sgfl_relation_id = $request->meta_sgfl_relation_id;
         $injury->witness_name = $request->witness_name;
         $injury->sgfl_relation = $request->sgfl_relation;
@@ -119,6 +120,7 @@ class InjuryController extends Controller
         $injury->line = $request->line;
         $injury->injured_person = $request->injured_person;
         $injury->time = $request->time;
+        $injury->root_cause = $request->root_cause ?? $injury->root_cause;
         $injury->reference = self::getNextRef();
 
         try {
@@ -133,7 +135,7 @@ class InjuryController extends Controller
 
 
         $injury->immediate_causes()->sync($request->meta_immediate_causes);
-        $injury->root_causes()->sync($request->meta_root_causes);
+        // $injury->root_causes()->sync($request->meta_root_causes);
         // $injury->basic_causes()->sync($request->meta_basic_causes);
         $injury->contacts()->sync($request->meta_contact_types);
 
@@ -233,13 +235,14 @@ class InjuryController extends Controller
         $injury->line = $request->line ?? $injury->line;
         $injury->injured_person = $request->injured_person ?? $injury->injured_person;
         $injury->time = $request->time ?? $injury->time;
+        $injury->root_cause = $request->root_cause ?? $injury->root_cause;
 
 
         $injury->save();
 
         // pivot data
         $injury->immediate_causes()->sync($request->meta_immediate_causes);
-        $injury->root_causes()->sync($request->meta_root_causes);
+        // $injury->root_causes()->sync($request->meta_root_causes);
         $injury->basic_causes()->sync($request->meta_basic_causes);
         $injury->contacts()->sync($request->meta_contact_types);
 
@@ -320,6 +323,7 @@ class InjuryController extends Controller
             'witness_name' => ['nullable', 'string'],
             'date' => ['date'],
             'details' => ['nullable', 'string'],
+            'root_cause' => ['required', 'string'],
             'immediate_action' => ['nullable', 'string'],
             'key_finding' => ['nullable', 'string'],
             'actions' => ['array', new InjuryActionData],
@@ -333,8 +337,8 @@ class InjuryController extends Controller
 
             'meta_immediate_causes' => ['array'],
             'meta_immediate_causes.*' => ['exists:meta_immediate_causes,id'],
-            'meta_root_causes' => ['array'],
-            'meta_root_causes.*' => ['exists:meta_root_causes,id'],
+            // 'meta_root_causes' => ['array'],
+            // 'meta_root_causes.*' => ['exists:meta_root_causes,id'],
             // 'meta_basic_causes' => ['array'],
             // 'meta_basic_causes.*' => ['exists:meta_basic_causes,id'],
             'meta_contact_types' => ['array'],

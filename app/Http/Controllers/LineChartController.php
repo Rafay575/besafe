@@ -185,8 +185,8 @@ class LineChartController extends Controller
         }
 
         return [
-            'label' => $previousYears,
-            'value' => $results
+            'label' => array_reverse($previousYears),
+            'value' => array_reverse($results)
         ];
     }
 

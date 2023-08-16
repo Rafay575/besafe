@@ -17,7 +17,7 @@
         <div class="table-responsive">
             <table class="table table-flush" id="incidents-table" data-source="{{route('incidents.index')}}">
               <thead class="thead-light">
-                <x-table.tblhead heads="S.No,Incident Name, Initiated By, Incident Status, Created at, Updated at,Action"></x-table.tblhead>
+                <x-table.tblhead heads="S.No,Incident Date,Incident Name, Initiated By, Incident Status, Created at, Updated at,Action"></x-table.tblhead>
               </thead>
               <tbody>
                 
@@ -71,6 +71,7 @@ $(document).ready(function() {
     columns: [
       
         {data: 'sno', name: 'sno'},
+        {data: 'incident_date', name: 'incident_date'},
         {data: 'incident_name', name: 'incident_name'},
         {data: 'initiated_by', name: 'initiated_by'},
         {data: 'incident_status', name: 'incident_status'},

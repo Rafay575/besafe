@@ -56,7 +56,7 @@ class DataStatsController extends Controller
         $completed = @MetaIncidentStatus::where('status_code', 3)->first()->id;
         $rejected = @MetaIncidentStatus::where('status_code', 4)->first()->id;
 
-        $commonColumns = ['id', 'initiated_by', 'created_at', 'updated_at', 'meta_incident_status_id'];
+        $commonColumns = ['id', 'initiated_by', 'created_at', 'date', 'updated_at', 'meta_incident_status_id'];
         $hazards = Hazard::select($commonColumns);
         $nearMisses = NearMiss::select($commonColumns);
         $unsafe_behaviors = UnsafeBehavior::select($commonColumns);
@@ -170,7 +170,7 @@ class DataStatsController extends Controller
                     if ($request->has('from_date') && $request->has('to_date')) {
                         $start = Carbon::parse($request->from_date)->startOfDay();
                         $end = Carbon::parse($request->to_date)->endOfDay();
-                        $query->whereBetween('created_at', [$start, $end]);
+                        $query->whereBetween('date', [$start, $end]);
                     }
                     $data[$incidentModelClassKey] = $query->count() ?? 0;
                     $total = (array_key_exists('total', $data)) ? $data['total'] : 0;

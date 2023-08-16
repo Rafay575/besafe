@@ -8,6 +8,7 @@ use App\Models\Hazard;
 use App\Models\Injury;
 use App\Models\NearMiss;
 use App\Models\UnsafeBehavior;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -15,7 +16,7 @@ class IncidentController extends Controller
 {
     public function index(Request $request, $channel = "web")
     {
-        $commonColumns = ['id', 'initiated_by', 'created_at', 'updated_at', 'meta_incident_status_id'];
+        $commonColumns = ['id', 'initiated_by', 'created_at', 'date', 'updated_at', 'meta_incident_status_id'];
         $hazards = Hazard::select($commonColumns)
             ->selectRaw("'hazards' AS incident_name")
             ->selectRaw("'hazards' AS form_name")
@@ -98,6 +99,7 @@ class IncidentController extends Controller
                 $data[] = [
                     'sno' => $i,
                     'incident_id' => $incident->id,
+                    'incident_date' => Carbon::parse($incident->date)->format('d-m-Y'),
                     'created_at' => $incident->created_at->format('d-m-Y'),
                     'updated_at' => $incident->updated_at->format('d-m-Y'),
                     'incident_name' => $incident->incident_name,
