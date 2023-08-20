@@ -323,7 +323,7 @@ class InjuryController extends Controller
             'witness_name' => ['nullable', 'string'],
             'date' => ['date'],
             'details' => ['nullable', 'string'],
-            'root_cause' => ['required', 'string'],
+            'root_cause' => ['nullable', 'string'],
             'immediate_action' => ['nullable', 'string'],
             'key_finding' => ['nullable', 'string'],
             'actions' => ['array', new InjuryActionData],
