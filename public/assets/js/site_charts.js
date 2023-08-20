@@ -184,11 +184,16 @@ function barChart(chartId, chartName, barType, labels, data, color = '#3A416F') 
         fill: false
       }],
     },
+    
     options: {
       indexAxis: barType,
       responsive: true,
       maintainAspectRatio: false,
+      showTooltips: true,     
       plugins: {
+        tooltip: {
+          enabled: true, // <-- this option disables tooltips
+        },
         legend: {
           display: true,
           position: 'bottom'

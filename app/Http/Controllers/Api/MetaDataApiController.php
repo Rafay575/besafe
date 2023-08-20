@@ -13,6 +13,7 @@ use App\Models\MetaDesignation;
 use App\Models\MetaFireCategory;
 use App\Models\MetaImmediateCause;
 use App\Models\MetaIncidentCategory;
+use App\Models\MetaIncidentStatus;
 use App\Models\MetaInjuryCategory;
 use App\Models\MetaInternalExternalAuditQuestion;
 use App\Models\MetaLine;
@@ -74,6 +75,7 @@ class MetaDataApiController extends Controller
             'sgfl_relations' => MetaSgflRelation::class,
             'locations' => MetaLocation::class,
             'near_miss_classes' => MetaNearMissClass::class,
+            'incident_statuses' => MetaIncidentStatus::class,
         ];
     }
 }

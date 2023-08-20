@@ -207,7 +207,7 @@
 @endcan
 
 @section('script')
-<script src="{{asset('assets/js/site_charts.js?v4')}}"></script>
+<script src="{{asset('assets/js/site_charts.js?v5')}}"></script>
 <script src="{{asset('assets/js/plugins/flatpickr.min.js')}}"></script>
 <script>
 
