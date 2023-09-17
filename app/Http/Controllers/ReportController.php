@@ -10,6 +10,15 @@ use App\Models\FirePropertyDamage;
 use App\Models\Hazard;
 use App\Models\Injury;
 use App\Models\InternalExternalAuditClause;
+use App\Models\MetaDepartment;
+use App\Models\MetaFireCategory;
+use App\Models\MetaIncidentStatus;
+use App\Models\MetaInjuryCategory;
+use App\Models\MetaLine;
+use App\Models\MetaLocation;
+use App\Models\MetaPropertyDamage;
+use App\Models\MetaRiskLevel;
+use App\Models\MetaUnit;
 use App\Models\NearMiss;
 use App\Models\PermitToWork;
 use App\Models\Report;
@@ -27,7 +36,6 @@ class ReportController extends Controller
 
     public function index(Request $request, $channel = "web")
     {
-
 
         $limit = 10;
         $reports = Report::query();
@@ -239,6 +247,20 @@ class ReportController extends Controller
         return $keys[$model_key];
     }
 
+    public function metaData()
+    {
+        $data = [];
+        $data['locations'] = MetaLocation::select('id', 'location_title as title')->get();
+        $data['departments'] = MetaDepartment::select('id', 'department_title as title')->get();
+        $data['incident_statuses'] = MetaIncidentStatus::select('id', 'status_title as title')->get();
+        $data['risk_levels'] = MetaRiskLevel::select('id', 'risk_level_title as title')->get();
+        $data['units'] = MetaUnit::select('id', 'unit_title as title')->get();
+        $data['injury_categories'] = MetaInjuryCategory::select('id', 'injury_category_title as title')->get();
+        $data['lines'] = MetaLine::select('id', 'line_title as title')->get();
+        $data['property_types'] = MetaPropertyDamage::select('id', 'property_damage_title as title')->get();
+        $data['fire_categories'] = MetaFireCategory::select('id', 'fire_category_title as title')->get();
+        return $data;
+    }
 
     public function destroy($report_id, $channel = 'web')
     {

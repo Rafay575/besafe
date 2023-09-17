@@ -62,6 +62,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('ie_audits', InternalExternalAuditClauseController::class);
     Route::resource('audit_init', IEAuditBulkResponseController::class);
     Route::resource('roles', RolesPermissionController::class);
+    Route::get('pdfreports/metadata', [ReportController::class, 'metadata'])->name('pdfreports.metadata');
     Route::resource('pdfreports', ReportController::class);
 
     // about
