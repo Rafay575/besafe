@@ -170,7 +170,7 @@ class LineChartController extends Controller
         $currentYear = Carbon::now()->year;
         $previousYears = [];
         $results = [];
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 3; $i++) {
             $previousYears[] = $year = $currentYear - $i;
             $firstDateOfYear = Carbon::parse("{$year}-01-01");
             if ($request->has('chart_of') && $request->chart_of == 'incidents') {
