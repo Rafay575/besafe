@@ -59,8 +59,8 @@ class ReportController extends Controller
                 $data[] = [
                     'sno' => $i,
                     'report_of' => ucfirst($report->report_of),
-                    'from_date' => $report->from_date,
-                    'to_date' => $report->to_date,
+                    'from_date' => formatDate($report->from_date),
+                    'to_date' => formatDate($report->to_date),
                     "file" => asset('reports/' . $report->file_name),
                     'generated_by' => $report->user->first_name,
                     'created_at' => $report->created_at->format('d-m-Y'),
@@ -84,6 +84,7 @@ class ReportController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'report_of' => 'required|in:hazards,near_misses,unsafe_behaviors,injuries,fpdamages,ptws,ie_audits',
+            // 'availble_reports' => 'required|min:5|string',
         ]);
 
         $formErrorsResponse = FormValidatitionDispatcherController::Response($validator, $channel);
@@ -91,7 +92,7 @@ class ReportController extends Controller
             return $formErrorsResponse;
         }
 
-        $filters = $request->except('report_of', 'to_date', 'from_date');
+        $filters = $request->except('report_of', 'to_date', 'from_date', 'availble_reports', 'redirect', 'month_selector', '_token');
         if ($request->has('report_of') && $request->report_of != "") {
             $model = $this->getIncidentModelViaKeys($request->report_of);
             if ($model) {
@@ -101,12 +102,16 @@ class ReportController extends Controller
                 }
 
                 // filters
-                if (!empty($filters)) {
+                if (!empty($filters) && $filters != "Select") {
+                    $valuesToIgnore = ['Select'];
                     foreach ($filters as $filter_key => $filter_value) {
-                        // checking if filter is availble
-                        $filterExist = $this->availbleFilters($filter_key, $request->report_of);
-                        if ($filterExist) {
-                            $data = $data->where($filter_key, $filter_value);
+                        if (!in_array($filter_value, $valuesToIgnore)) {
+
+                            // checking if filter is availble
+                            $filterExist = $this->availbleFilters($filter_key, $request->report_of);
+                            if ($filterExist) {
+                                $data = $data->where($filter_key, $filter_value);
+                            }
                         }
                     }
                 }
@@ -155,19 +160,19 @@ class ReportController extends Controller
 
     public function availbleFilters($filter_name, $model_key)
     {
+
         $keys = [
-            'hazards' => ['meta_incident_status_id', 'meta_department_id', 'meta_line_id', 'meta_unit_id', 'initiated_by'],
-            'near_misses' => ['meta_incident_status_id', 'initiated_by'],
-            'unsafe_behaviors' => ['meta_incident_status_id', 'initiated_by', 'meta_department_id', 'meta_line_id', 'meta_unit_id'],
-            'injuries' => ['meta_incident_status_id', 'initiated_by', 'meta_injury_category_id', 'meta_incident_category_id'],
-            'fpdamages' => ['meta_incident_status_id', 'initiated_by', 'meta_fire_category_id', 'meta_unit_id', 'meta_property_damage_id'],
+            'hazards' => ['meta_incident_status_id', 'meta_department_id', 'meta_line_id', 'meta_unit_id', 'initiated_by', 'meta_location_id', 'meta_risk_level_id'],
+            'near_misses' => ['meta_incident_status_id', 'initiated_by', 'meta_location_id', 'meta_department_id'],
+            'unsafe_behaviors' => ['meta_incident_status_id', 'initiated_by', 'meta_department_id', 'meta_line_id', 'meta_unit_id', 'meta_location_id', 'meta_risk_level_id'],
+            'injuries' => ['meta_incident_status_id', 'initiated_by', 'meta_injury_category_id', 'meta_incident_category_id', 'meta_location_id', 'meta_risk_level_id', 'meta_line_id', 'witness_name', 'time'],
+            'fpdamages' => ['meta_incident_status_id', 'initiated_by', 'meta_fire_category_id', 'meta_unit_id', 'meta_property_damage_id', 'reviewed_by', 'investigated_by', 'meta_location_id'],
             'ptws' => ['initiated_by', 'meta_ptw_type_id', 'meta_ptw_item_id'],
             'ie_audits' => ['initiated_by', 'meta_audit_type_id', 'meta_audit_hall_id'],
         ];
 
 
-        return array_key_exists($filter_name, $keys[$model_key]);
-        // return $keys[$model_key][$filter_name];
+        return in_array($filter_name, $keys[$model_key]);
     }
 
     public function generatePdfReport($request, $data)
@@ -179,7 +184,10 @@ class ReportController extends Controller
         }
         $file_name = $file_name . $now->getTimestamp();
         $file_name = \Str::slug($file_name) . ".pdf";
-        $view = $this->getViewForReport($request->report_of);
+        $view = $this->getViewForReport($request->availble_reports);
+        if ($view == "") {
+            $view = $this->getViewForReport($request->report_of . "_" . "list");
+        }
         try {
             $file = \PDF::loadView($view, ['data' => $data])->setPaper('a4');
             $file->save(public_path('reports/' . $file_name));
@@ -235,13 +243,13 @@ class ReportController extends Controller
 
 
         $keys = [
-            'hazards' => 'pdf.hazards_list',
-            'near_misses' => 'pdf.near_misses_list',
-            'unsafe_behaviors' => 'pdf.unsafe_behaviors_list',
-            'injuries' => 'pdf.injuries_list',
-            'fpdamages' => 'pdf.fpdamages_list',
-            'ptws' => 'pdf.ptws_list',
-            'ie_audits' => 'pdf.ie_audits_list',
+            'hazards_list' => 'pdf.hazards_list',
+            'near_misses_list' => 'pdf.near_misses_list',
+            'unsafe_behaviors_list' => 'pdf.unsafe_behaviors_list',
+            'injuries_list' => 'pdf.injuries_list',
+            'fpdamages_list' => 'pdf.fpdamages_list',
+            'ptws_list' => 'pdf.ptws_list',
+            'ie_audits_list' => 'pdf.ie_audits_list',
         ];
 
         return $keys[$model_key];

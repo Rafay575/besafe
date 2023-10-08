@@ -22,7 +22,7 @@
         <div class="table-responsive">
             <table class="table table-flush" id="unsafe-behavior-table" data-source="{{route('unsafe-behaviors.index')}}">
               <thead class="thead-light">
-                <x-table.tblhead heads="S.No,Unit,Department,Line,Date,Status,Action"></x-table.tblhead>
+                <x-table.tblhead heads="S.No,Unit,Date,Department,Location,Line,Type of Unsafe Behavior,Status,Action"></x-table.tblhead>
               </thead>
               <tbody>
                 
@@ -52,12 +52,15 @@ $(document).ready(function() {
       url: DataSource,
       type: 'GET',
     },
+
     columns: [
       { data: 'sno', name: 'sno' },
       { data: 'unit', name: 'unit' },
-      { data: 'department', name: 'department' },
-      { data: 'line', name: 'line' },
       { data: 'date', name: 'date' },
+      { data: 'department', name: 'department' },
+      { data: 'location', name: 'location' },
+      { data: 'line', name: 'line' },
+      { data: 'unsafe_behavior_types', name: 'unsafe_behavior_types' },
       { data: 'incident_status', name: 'incident_status' },
       { data: 'action', name: 'action', orderable: false, searchable: false },
     ],

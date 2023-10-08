@@ -8,7 +8,7 @@
                 <th>{{$ieAuditClause->audit_hall->hall_title}}</th>
                 <th>{{$ieAuditClause->audit_type->audit_title}}</th>
                 <th>{{$ieAuditClause->initiator->first_name}}</th>
-                <th>{{$ieAuditClause->audit_date}}</th>
+                <th>{{formatDate($ieAuditClause->audit_date)}}</th>
                 <th>{{$ieAuditClause->audit_score}}%</th>
             </tr>
         </tbody>

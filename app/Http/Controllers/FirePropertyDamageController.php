@@ -39,10 +39,12 @@ class FirePropertyDamageController extends Controller
                 $i++;
                 $data[] = [
                     'sno' => $i,
-                    'date' => $fpdamage->date,
+                    'date' => formatDate($fpdamage->date),
+                    'time' => $fpdamage->created_at->format('h:i:s'),
                     'reference' => $fpdamage->reference,
                     'unit' => $fpdamage->unit->unit_title,
                     'location' => $fpdamage->meta_location ? $fpdamage->meta_location->location_title : '',
+                    'fire_category' => $fpdamage->fire_category ? $fpdamage->fire_category->fire_category_title : '',
                     'incident_status' => $fpdamage->incident_status->status_title,
                     'action' => view('fire-property.partials.action-buttons', ['fpdamage' => $fpdamage])->render()
                 ];

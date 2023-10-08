@@ -25,7 +25,7 @@
                 <tbody>
                     <tr>
                         <th>Date</th>
-                        <td>{{ $unsafe_behavior->date }}</td>
+                        <td>{{ formatDate($unsafe_behavior->date) }}</td>
                     </tr>
                     <tr>
                         <th>Initiated By</th>

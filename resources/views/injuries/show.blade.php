@@ -37,7 +37,7 @@
                   </tr>
                  <tr>
                     <th>Date</th>
-                    <td>{{ $injury->date }}</td>
+                    <td>{{ formatDate($injury->date) }}</td>
                   </tr>
                   <tr>
                     <th>Initiated By</th>
@@ -108,7 +108,7 @@
                   </tr>
                   <tr>
                     <th>Created At</th>
-                    <td>{{ $injury->created_at }}</td>
+                    <td>{{ formatDate($injury->created_at) }}</td>
                   </tr>
 
                   <tr>
@@ -135,7 +135,7 @@
 
                   <tr>
                     <th>Updated At</th>
-                    <td>{{ $injury->updated_at }}</td>
+                    <td>{{ formatDate($injury->updated_at) }}</td>
                   </tr>
               
                 <tr>

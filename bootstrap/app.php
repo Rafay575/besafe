@@ -52,4 +52,7 @@ $app->singleton(
 |
 */
 
+// include custom helper functions
+include_once __DIR__ . '/../app/helpers.php';
+
 return $app;

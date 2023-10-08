@@ -25,7 +25,7 @@
             <tbody>
                 <tr>
                   <th>Date</th>
-                  <td>{{ $fire_property->date }}</td>
+                  <td>{{ formatDate($fire_property->date) }}</td>
                 </tr>
                 <tr>
                   <th>Initiated By</th>

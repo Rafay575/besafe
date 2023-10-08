@@ -42,11 +42,12 @@ class InjuryController extends Controller
                 $i++;
                 $data[] = [
                     'sno' => $i,
-                    'date' => $injury->date,
+                    'date' => formatDate($injury->date),
                     'time' => $injury->time,
                     'employee_involved' => $injury->employee_involved,
                     'injured_person' => $injury->injured_person,
-                    // 'sgfl_relation' => $injury->meta_sgfl_relation_id ? $injury->msgfl_relation->sgfl_relation_title : '',
+                    'unit' => $injury->unit ? $injury->unit->unit_title : '',
+                    'location' => $injury->meta_location ? $injury->meta_location->location_title : '',
                     'incident_category' => $injury->incident_category->incident_category_title,
                     'injury_category' => $injury->injury_category->injury_category_title,
                     'incident_status' => $injury->incident_status->status_title,

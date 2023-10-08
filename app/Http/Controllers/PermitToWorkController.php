@@ -39,10 +39,12 @@ class PermitToWorkController extends Controller
                 $data[] = [
                     'sno' => $i,
                     'start_time' => $ptw->start_time,
+                    'date' => formatDate($ptw->date),
                     'end_time' => $ptw->end_time,
                     'work_area' => $ptw->work_area,
                     'moc_title' => $ptw->moc_title,
                     'worker_name' => $ptw->worker_name,
+                    'ptw_types' => implode(", ", $ptw->ptw_types->pluck('ptw_type_title')->toArray()),
                     'action' => view('ptws.partials.action-buttons', ['ptw' => $ptw])->render()
                 ];
             }

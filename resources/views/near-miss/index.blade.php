@@ -22,7 +22,7 @@
       <div class="table-responsive">
           <table class="table table-flush" id="near-miss-table" data-source="{{route('near-miss.index')}}">
             <thead class="thead-light">
-              <x-table.tblhead heads="S.No,Date,Time,Immediate Action,Location,Status,Action "></x-table.tblhead>
+              <x-table.tblhead heads="S.No,Date,Employee Name,Near Miss Classification,Time,Unit,Location,Status,Action"></x-table.tblhead>
             </thead>
             <tbody>
             </tbody>
@@ -46,11 +46,14 @@ $(document).ready(function() {
       url: DataSource,
       type: 'GET',
     },
+
     columns: [
       { data: 'sno', name: 'sno' },
       { data: 'date', name: 'date' },
+      { data: 'employee_name', name: 'employee_name'},
+      { data: 'near_miss_class', name: 'near_miss_class' },
       { data: 'time', name: 'time' },
-      { data: 'immediate_action', name: 'immediate_action' },
+      { data: 'unit', name: 'unit' },
       { data: 'location', name: 'location' },
       { data: 'incident_status', name: 'incident_status' },
       { data: 'action', name: 'action', orderable: false, searchable: false },

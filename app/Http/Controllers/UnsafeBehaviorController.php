@@ -37,13 +37,16 @@ class UnsafeBehaviorController extends Controller
             $i = 0;
             foreach ($unsafe_behavior->get() as $unsafe_behavior) {
                 $i++;
+                $types = $unsafe_behavior->unsafe_behavior_types ? $unsafe_behavior->unsafe_behavior_types->pluck('unsafe_behavior_type_title')->toArray() : [];
+                $types = implode(', ', $types);
                 $data[] = [
                     'sno' => $i,
                     'unit' => $unsafe_behavior->unit->unit_title,
                     'department' => $unsafe_behavior->department->department_title,
                     'line' => $unsafe_behavior->line,
-                    'location' => $unsafe_behavior->location,
-                    'date' => $unsafe_behavior->date,
+                    'unsafe_behavior_types' => $types,
+                    'location' => $unsafe_behavior->meta_location ? $unsafe_behavior->meta_location->location_title : '',
+                    'date' => formatDate($unsafe_behavior->date),
                     'incident_status' => $unsafe_behavior->incident_status->status_title,
                     'action' => view('unsafe-behavior.partials.action-buttons', ['unsafe_behavior' => $unsafe_behavior])->render()
                 ];

@@ -21,7 +21,7 @@
             <img alt="Image placeholder" class="avatar rounded-circle timeline-step" src="{{($user->image != "") ? asset('images/profile/' . $user->image) : asset('images/profile/User.ico') }}">
             <div class="timeline-content">
                 <h6 class="text-dark text-sm font-weight-bold mb-0">Assigned to {{$incident->assignedUsers->first()->assignBy->first_name}} by System and the status is Pending</h6>
-                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">{{$incident->created_at}}</p>
+                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">{{formatDateTime($incident->created_at)}}</p>
             </div>
             </div>                          
         </div>
@@ -35,7 +35,7 @@
                <img alt="Image placeholder" class="avatar rounded-circle timeline-step" src="{{($user->image != "") ? asset('images/profile/' . $user->image) : asset('images/profile/User.ico') }}">
                 <div class="timeline-content">
                     <h6 class="text-dark text-sm font-weight-bold mb-0">Assigned to {{$usersAssigned->assignTo->first_name}} by {{$usersAssigned->assignBy->first_name}} and the status is Assigned as of now</h6>
-                    <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">{{$usersAssigned->updated_at}}</p>
+                    <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">{{formatDateTime($usersAssigned->updated_at)}}</p>
                 </div>
                 </div>                          
             </div>
@@ -49,7 +49,7 @@
              <img alt="Image placeholder" class="avatar rounded-circle timeline-step" src="{{($user->image != "") ? asset('images/profile/' . $user->image) : asset('images/profile/User.ico') }}">
             <div class="timeline-content">
                 <h6 class="text-dark text-sm font-weight-bold mb-0">{{$user->first_name}} is working on and the status is {{$incident->incident_status->status_title}}</h6>
-                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">{{$incident->updated_at}}</p>
+                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">{{formatDateTime($incident->updated_at)}}</p>
             </div>
             </div>                          
         </div>
@@ -61,7 +61,7 @@
         <img alt="Image placeholder" class="avatar rounded-circle timeline-step" src="{{asset('website/img/logo-mini.png') }}">
         <div class="timeline-content">
           <h6 class="text-dark text-sm font-weight-bold mb-0">Pending With Admin</h6>
-          <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">{{$incident->updated_at}}</p>
+          <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">{{formatDateTime($incident->updated_at)}}</p>
         </div>
       </div>                          
     </div>

@@ -136,7 +136,7 @@ const availableReports = {
   hazards: [
     {
       title: "Hazard Logs",
-      slug: "hazard_list_year_to_date",
+      slug: "hazards_list",
       filters: [
         
           {
@@ -171,7 +171,7 @@ const availableReports = {
   near_misses: [
     {
       title: "Near Miss Logs",
-      slug: "near_misses_list_year_to_date",
+      slug: "near_misses_list",
       filters: [
         
           {
@@ -201,7 +201,7 @@ const availableReports = {
   ptws: [
     {
       title: "Permit to Work Logs",
-      slug: "ptws_list_year_to_date",
+      slug: "ptws_list",
       filters: []
     },
 
@@ -209,7 +209,7 @@ const availableReports = {
   unsafe_behaviors: [
     {
       title: "Unsafe Behavior Logs",
-      slug: "unsafe_behaviors_list_year_to_date",
+      slug: "unsafe_behaviors_list",
       filters: [
         
           {
@@ -245,7 +245,7 @@ const availableReports = {
   injuries: [
     {
       title: "Injuries Logs",
-      slug: "injuries_list_year_to_date",
+      slug: "injuries_list",
       filters: [
         
           {
@@ -264,7 +264,7 @@ const availableReports = {
             type: 'select',
             title: "Select Injury Category",
             value: res.injury_categories,
-            name: "meta_unit_id"
+            name: "meta_injury_category_id"
           },
           {
             type: 'select',
@@ -593,7 +593,7 @@ const availableReports = {
   fpdamages: [
     {
       title: "Fire Property Damages Logs",
-      slug: "fpdamages_list_year_to_date",
+      slug: "fpdamages_list",
       filters: [
      
           {

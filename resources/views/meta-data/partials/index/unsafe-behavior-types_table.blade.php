@@ -26,7 +26,7 @@ $heads = "S.No,unsaef behavior type ID,unsaef behavior type title,Group,Date Cre
             <td>{{$meta_data->id}}</td>
             <td>{{$meta_data->$title_field}}</td>
             <td>{{$meta_data->group_name}}</td>
-            <td>{{$meta_data->created_at}}</td>
+            <td>{{formatDate($meta_data->created_at)}}</td>
             <td class="text-sm">
               @include('meta-data.partials.index.meta_action_btn')
           </td>

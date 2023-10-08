@@ -26,7 +26,7 @@
             <tbody>
                 <tr>
                   <th>Date</th>
-                  <td>{{ $near_miss->date }}</td>
+                  <td>{{ formatDate($near_miss->date) }}</td>
                 </tr>
                 <tr>
                   <th>Time</th>
@@ -168,11 +168,11 @@
                 </tr>
                 <tr>
                   <th>Created At</th>
-                  <td>{{ $near_miss->created_at }}</td>
+                  <td>{{ formatDate($near_miss->created_at) }}</td>
                 </tr>
                 <tr>
                   <th>Updated At</th>
-                  <td>{{ $near_miss->updated_at }}</td>
+                  <td>{{ formatDate($near_miss->updated_at) }}</td>
                 </tr>
               </tbody>
         </table>

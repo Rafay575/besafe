@@ -23,7 +23,7 @@
         <div class="table-responsive">
             <table class="table table-flush" id="injuries-table" data-source="{{route('injuries.index')}}">
               <thead class="thead-light">
-                <x-table.tblhead heads="    S.No,Date,Time,Incident Category,Injury Category,Employee Involved,Employee Name,Status,Action"></x-table.tblhead>
+                <x-table.tblhead heads="S.No,Date,Time,Incident Category,Injury Category,Unit,Location,Employee Involved,Employee Name,Status,Action"></x-table.tblhead>
               </thead>
               <tbody>
               </tbody>
@@ -52,6 +52,8 @@ $(document).ready(function() {
       { data: 'time', name: 'time' },
       { data: 'incident_category', name: 'incident_category' },
       { data: 'injury_category', name: 'injury_category' },
+      { data: 'unit', name: 'unit' },
+      { data: 'location', name: 'location' },
       { data: 'employee_involved', name: 'employee_involved' },
       { data: 'injured_person', name: 'injured_person' },
       { data: 'incident_status', name: 'incident_status' },

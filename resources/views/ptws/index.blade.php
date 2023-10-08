@@ -24,7 +24,7 @@
         <div class="table-responsive">
             <table class="table table-flush" id="ptws-table" data-source="{{route('ptws.index')}}">
               <thead class="thead-light">
-                <x-table.tblhead heads="S.No,Start Time,End Time,Work Area,Moc Title,Worker Name,Action"></x-table.tblhead>
+                <x-table.tblhead heads="S.No,Date,Start Time,End Time,Work Area,Moc Title,Worker Name,Type of PTW,Action"></x-table.tblhead>
               </thead>
               <tbody>
               </tbody>
@@ -46,13 +46,16 @@ $(document).ready(function() {
       url: DataSource,
       type: 'GET',
     },
+    
     columns: [
       { data: 'sno', name: 'sno' },
+      { data: 'date', name: 'date' },
       { data: 'start_time', name: 'start_time' },
       { data: 'end_time', name: 'end_time' },
       { data: 'work_area', name: 'work_area' },
       { data: 'moc_title', name: 'moc_title' },
       { data: 'worker_name', name: 'worker_name' },
+      { data: 'ptw_types', name: 'ptw_types' },
       { data: 'action', name: 'action', orderable: false, searchable: false },
     ],
     

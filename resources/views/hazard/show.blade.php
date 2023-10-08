@@ -66,7 +66,7 @@
                 </tr>
                 <tr>
                   <th>Date</th>
-                  <td>{{ $hazard->date }}</td>
+                  <td>{{ formatDate($hazard->date) }}</td>
                 </tr>
                 <tr>
                   <th>Action Cost</th>
@@ -78,11 +78,11 @@
                 </tr>
                 <tr>
                   <th>Created At</th>
-                  <td>{{ $hazard->created_at }}</td>
+                  <td>{{ formatDate($hazard->created_at) }}</td>
                 </tr>
                 <tr>
                   <th>Updated At</th>
-                  <td>{{ $hazard->updated_at }}</td>
+                  <td>{{ formatDate($hazard->updated_at) }}</td>
                 </tr>
               </tbody>
         </table>

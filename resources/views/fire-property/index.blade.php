@@ -22,7 +22,7 @@
         <div class="table-responsive">
             <table class="table table-flush" id="fire-property-damage-table" data-source ="{{route('fire-property.index')}}">
               <thead class="thead-light">
-                <x-table.tblhead heads="S.No,Date,Reference,Unit,Location,Status,Action"></x-table.tblhead>
+                <x-table.tblhead heads="S.No,Date,Reference,fire category,time,Unit,Location,Status,Action"></x-table.tblhead>
               </thead>
               <tbody>
               </tbody>
@@ -49,6 +49,8 @@ $(document).ready(function() {
       { data: 'sno', name: 'sno' },
       { data: 'date', name: 'date' },
       { data: 'reference', name: 'reference' },
+      { data: 'fire_category', name: 'fire_category' },
+      { data: 'time', name: 'time' },
       { data: 'unit', name: 'unit' },
       { data: 'location', name: 'location' },
       { data: 'incident_status', name: 'incident_status' },

@@ -16,7 +16,7 @@ class IncidentController extends Controller
 {
     public function index(Request $request, $channel = "web")
     {
-        $commonColumns = ['id', 'initiated_by', 'created_at', 'date', 'updated_at', 'meta_incident_status_id'];
+        $commonColumns = ['id', 'initiated_by', 'created_at', 'date', 'updated_at', 'meta_incident_status_id', 'meta_location_id', 'meta_unit_id'];
         $hazards = Hazard::select($commonColumns)
             ->selectRaw("'hazards' AS incident_name")
             ->selectRaw("'hazards' AS form_name")
@@ -88,7 +88,7 @@ class IncidentController extends Controller
         }
 
 
-        $incidents = $results->with('initiator', 'incident_status')->get();
+        $incidents = $results->with('initiator', 'incident_status', 'meta_location', 'unit')->get();
         $incident = $incidents->first();
         // return $incidents = $results->with('initiator', 'incident_status')->first()->assignedUsersAll->where('form_name', 'unsafe_behaviors')->first();
         if ($request->ajax()) {
@@ -99,11 +99,13 @@ class IncidentController extends Controller
                 $data[] = [
                     'sno' => $i,
                     'incident_id' => $incident->id,
-                    'incident_date' => Carbon::parse($incident->date)->format('d-m-Y'),
-                    'created_at' => $incident->created_at->format('d-m-Y'),
-                    'updated_at' => $incident->updated_at->format('d-m-Y'),
+                    'incident_date' => formatDate($incident->date),
+                    'created_at' => formatDate($incident->created_at),
+                    'updated_at' => formatDate($incident->updated_at),
                     'incident_name' => $incident->incident_name,
                     'incident_status' => $incident->incident_status->status_title,
+                    'location' => $incident->meta_location ? $incident->meta_location->location_title : '',
+                    'unit' => $incident->unit ? $incident->unit->unit_title : '',
                     'initiator_department_id' => $incident->initiator->meta_department_id,
                     'initiated_by' => $incident->initiator->first_name . " " . $incident->initiator->last_name,
                     'action' => view('incidents.partials.action-buttons', ['incident' => $incident])->render()

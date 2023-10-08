@@ -38,10 +38,13 @@ class NearMissController extends Controller
                 $i++;
                 $data[] = [
                     'sno' => $i,
-                    'date' => $near_miss->date,
+                    'date' => formatDate($near_miss->date),
                     'time' => $near_miss->time,
                     'immediate_action' => $near_miss->immediate_action,
+                    'employee_name' => implode(", ", collect($near_miss->persons)->pluck('name')->toArray()),
                     'location' => $near_miss->meta_location ? $near_miss->meta_location->location_title : '',
+                    'unit' => $near_miss->unit ? $near_miss->unit->unit_title : '',
+                    'near_miss_class' => $near_miss->near_miss_class ? $near_miss->near_miss_class->class_title : '',
                     'incident_status' => $near_miss->incident_status->status_title,
                     'action' => view('near-miss.partials.action-buttons', ['near_miss' => $near_miss])->render()
                 ];

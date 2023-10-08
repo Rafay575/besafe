@@ -38,12 +38,12 @@ class HazardController extends Controller
                 $data[] = [
                     'sno' => $i,
                     'unit' => $hazard->unit->unit_title,
-                    'date' => $hazard->date,
+                    'date' => formatDate($hazard->date),
                     'department' => $hazard->department->department_title,
                     'line' => $hazard->line,
                     'risk_level' => $hazard->risk_level->risk_level_title,
                     'incident_status' => $hazard->incident_status->status_title,
-
+                    'location' => $hazard->meta_location ? $hazard->meta_location->location_title : '',
                     // 'department_tag' => $hazard->department_tag->department_tag_title,
                     'action' => view('hazard.partials.action-buttons', ['hazard' => $hazard])->render()
                 ];

@@ -90,11 +90,11 @@
              
                 <tr>
                     <th>Created At</th>
-                    <td>{{ $ptw->created_at }}</td>
+                    <td>{{ formatDate($ptw->created_at) }}</td>
                 </tr>
                 <tr>
                     <th>Updated At</th>
-                    <td>{{ $ptw->updated_at }}</td>
+                    <td>{{ formatDate($ptw->updated_at) }}</td>
                 </tr>
             </tbody>
     

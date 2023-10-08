@@ -56,7 +56,7 @@
                   </tr>
                   <tr>
                     <th>Email Verified At</th>
-                    <td>{{$user->email_verified_at}}</td>
+                    <td>{{formatDate($user->email_verified_at)}}</td>
                   </tr>
                   <tr>
                     <th>Residential Address</th>
@@ -68,11 +68,11 @@
                   </tr>
                   <tr>
                     <th>Created At</th>
-                    <td>{{$user->created_at}}</td>
+                    <td>{{formatDate($user->created_at)}}</td>
                   </tr>
                   <tr>
                     <th>Updated At</th>
-                    <td>{{$user->updated_at}}</td>
+                    <td>{{formatDate($user->updated_at)}}</td>
                   </tr>
                   <tr>
                     <th>Unit</th>
