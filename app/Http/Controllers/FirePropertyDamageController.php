@@ -14,6 +14,7 @@ use App\Models\MetaUnit;
 use App\Rules\FirePropertyActionData;
 use App\Rules\MetaLocationValidate;
 use App\Rules\TotalLossCalculation;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
@@ -87,7 +88,7 @@ class FirePropertyDamageController extends Controller
         $fpdamage = new FirePropertyDamage();
         $fpdamage->date = $request->date;
         $fpdamage->initiated_by = auth()->user()->id;
-        $fpdamage->reference = self::getNextRef();
+        $fpdamage->reference = self::getNextRef($request->date);
         $fpdamage->meta_unit_id = $request->meta_unit_id;
         $fpdamage->meta_location_id = $request->meta_location_id;
         $fpdamage->meta_fire_category_id = $request->meta_fire_category_id ?? null;
@@ -379,10 +380,11 @@ class FirePropertyDamageController extends Controller
     }
 
 
-    public static function getNextRef()
+    public static function getNextRef($date)
     {
         $count = FirePropertyDamage::count();
-        $month = date('n');
+        // $month = date('n');
+        $month = Carbon::parse($date)->format('n');
         $reference = $month . str_pad($count + 1, 2, '0', STR_PAD_LEFT);
         return $reference;
 

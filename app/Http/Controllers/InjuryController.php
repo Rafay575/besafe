@@ -120,6 +120,7 @@ class InjuryController extends Controller
         $injury->meta_department_id = $request->meta_department_id;
         $injury->line = $request->line;
         $injury->injured_person = $request->injured_person;
+        $injury->employee_id = $request->employee_id;
         $injury->time = $request->time;
         $injury->root_cause = $request->root_cause ?? $injury->root_cause;
         $injury->reference = self::getNextRef();
@@ -235,6 +236,7 @@ class InjuryController extends Controller
         $injury->meta_department_id = $request->meta_department_id ?? $injury->meta_department_id;
         $injury->line = $request->line ?? $injury->line;
         $injury->injured_person = $request->injured_person ?? $injury->injured_person;
+        $injury->employee_id = $request->employee_id ?? $injury->employee_id;
         $injury->time = $request->time ?? $injury->time;
         $injury->root_cause = $request->root_cause ?? $injury->root_cause;
 
@@ -322,6 +324,7 @@ class InjuryController extends Controller
             'employee_involved' => ['string', 'in:yes,no,Yes,No'],
             // 'meta_sgfl_relation_id' => ['required', 'exists:meta_sgfl_relations,id'],
             'witness_name' => ['nullable', 'string'],
+            'employee_id' => ['nullable', 'string'],
             'date' => ['date'],
             'details' => ['nullable', 'string'],
             'root_cause' => ['nullable', 'string'],

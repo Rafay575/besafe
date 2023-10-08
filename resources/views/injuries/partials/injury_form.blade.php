@@ -90,13 +90,14 @@
                     </x-forms.select-option>
 
 
-                  <x-forms.radio-and-check-box-div name="employee_involved" label="Employee Involved" div-class="col-12 col-sm-4">
+                  <x-forms.radio-and-check-box-div name="employee_involved" label="Employee Involved" div-class="col-12 col-sm-2">
                     <x-forms.radio-box width="col-2" radio-box-class="" name="employee_involved" checked="{{ isset($injury) && $injury->employee_involved == 'yes' ? 'true' : 'false' }}" label="Yes" value="yes"></x-forms.radio-box>
                     <x-forms.radio-box width="col-2" radio-box-class="" name="employee_involved" checked="{{ isset($injury) && $injury->employee_involved == 'no' ? 'true' : 'false' }}" label="No" value="no"></x-forms.radio-box>
                 </x-forms.radio-and-check-box-div>
 
 
               <x-forms.basic-input label="Injured Person Name" name="injured_person" type="text" value="{{(isset($injury) ? $injury->injured_person : '')}}" width="col-12 col-sm-4" input-class="form-control-sm form-control"></x-forms.basic-input>
+              <x-forms.basic-input label="Employee ID" name="employee_id" type="text" value="{{(isset($injury) ? $injury->employee_id : '')}}" width="col-12 col-sm-2" input-class="form-control-sm form-control"></x-forms.basic-input>
 
               <x-forms.basic-input label="Witness Name" name="witness_name" type="text" placeholder="Witness name"  value="{{(isset($injury) ? $injury->witness_name : '')}}" width="col-12 col-sm-4" input-class="multisteps-form__input" ></x-forms.basic-input>
 
