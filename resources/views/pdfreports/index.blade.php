@@ -34,7 +34,7 @@
               </h5>
               <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionRental" style="">
                 <div class="accordion-body text-sm opacity-8">
-                <form action="{{route('pdfreports.store')}}" method="post" class="ajax-form row" enctype="multipart/form-data">
+                <form action="{{route('pdfreports.store')}}" method="post" class="ajax-forms row" enctype="multipart/form-data">
                   @csrf
                   <div class="form-group col-4">
                       <label for="report_of">Report Of</label>

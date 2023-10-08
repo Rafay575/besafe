@@ -28,11 +28,11 @@
           <tbody>
             @foreach ($data as $fire_property)
                 <tr>
-                <td>{{ $fire_property->date }}</td>
+                <td>{{ formatDate($fire_property->date) }}</td>
                 <td>{{ $fire_property->initiator->first_name }}</td>
                 <td>{{ $fire_property->reference }}</td>
                 <td>{{ $fire_property->unit->unit_title }}</td>
-                <td>{{ $fire_property->location }}</td>
+                <td>{{ $fire_property->meta_location ? $fire_property->meta_location->location_title : '' }}</td>
                 <td>{{ $fire_property->fire_category->fire_category_title ?? '' }}</td>
                 <td>{{ $fire_property->property_damage->property_damage_title ?? '' }}</td>
                 <td>{{ $fire_property->incident_status->status_title }}</td>
@@ -43,7 +43,7 @@
                 <td>{{ $fire_property->similar_incident_before }}</td>
                 <td>{{ $fire_property->loss_recovery_method }}</td>
                 <td>{{ $fire_property->preventative_measure }}</td>
-                <td>{{ $fire_property->created_at->format('m-d-Y') }}</td>
+                <td>{{ formatDate($fire_property->created_at)}}</td>
                 </tr>
             @endforeach
           </tbody>
