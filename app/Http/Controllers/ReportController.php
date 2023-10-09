@@ -100,10 +100,9 @@ class ReportController extends Controller
                 if ($request->has('from_date') && $request->has('to_date')) {
                     $data = $data->whereBetween('created_at', [$request->from_date, $request->to_date]);
                 }
-
                 // filters
                 if (!empty($filters) && $filters != "Select") {
-                    $valuesToIgnore = ['Select'];
+                    $valuesToIgnore = ['Select', '', 'null'];
                     foreach ($filters as $filter_key => $filter_value) {
                         if (!in_array($filter_value, $valuesToIgnore)) {
 
@@ -122,7 +121,8 @@ class ReportController extends Controller
                     if ($request->report_file_format == 'excel') {
                         $report = $this->generateExcelReport($request, $data);
                     } else {
-                        return $report = $this->generatePdfReport($request, $data);
+                        // return $report = $this->generatePdfReport($request, $data);
+                        $report = $this->generatePdfReport($request, $data);
                     }
                     if (@$report->user_id && $channel == 'api') {
                         return ApiResponseController::successWithData('Report has been generated', new ReportCollection($report));
@@ -188,7 +188,7 @@ class ReportController extends Controller
         if ($view == "") {
             $view = $this->getViewForReport($request->report_of . "_" . "list");
         }
-        return view($view, ['data' => $data]);
+        // return view($view, ['data' => $data]);
         try {
             $file = \PDF::loadView($view, ['data' => $data])->setPaper('a4');
             $file->save(public_path('reports/' . $file_name));
