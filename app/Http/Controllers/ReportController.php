@@ -190,7 +190,12 @@ class ReportController extends Controller
         }
         // return view($view, ['data' => $data]);
         try {
-            $file = \PDF::loadView($view, ['data' => $data])->setPaper('a4');
+            $file = \PDF::loadView($view, ['data' => $data])
+                ->setPaper('a4')
+                ->setOption('margin-left', 3)
+                ->setOption('margin-right', 3)
+                ->setOption('margin-top', 3)
+                ->setOrientation('landscape');
             $file->save(public_path('reports/' . $file_name));
             return $this->saveReport($request, $file_name);
         } catch (\Exception $e) {

@@ -157,10 +157,10 @@
                           @foreach ($injury->actions as $action)
                           <tr>
                               {{-- <td>{{$action['sno']}}</td> --}}
-                              <td>{{$action['description']}}</td>
-                              <td>{{$action['responsibility']}}</td>
-                              <td>{{$action['timeline']}}</td>
-                              <td>{{$action['status']}}</td>
+                              <td>{{@$action['description']}}</td>
+                              <td>{{@$action['responsibility']}}</td>
+                              <td>{{@$action['timeline']}}</td>
+                              <td>{{@$action['status']}}</td>
                           </tr>
                           @endforeach
                           @endif
@@ -169,7 +169,8 @@
                   </td>
                 </tr>
               </tbody>
-        </table>
+        
+            </table>
 
         <div class="activites col-12 mt-3">
             <x-others.incident-assigned-activities label="Activities" :incident="$injury" displayAsCard="true"></x-others.incident-assigned-activities>

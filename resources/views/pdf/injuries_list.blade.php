@@ -4,62 +4,110 @@
 
 @include('pdf.layout.header')
 
-    <table class="table">
-        <thead>
-            <tr>
+@foreach ($data as $injury)
+<table class="table">
+  <tbody>
+          <tr>
+              <th>S.NO</th>
+              <td>{{ $loop->iteration }}</td>
               <th>ID</th>
-              <th>Initiated By</th>
-              <th>Unit</th>
-              <th>Department</th>
-              <th>Line</th>
-              <th>Location</th>
-              <th>Meta Injury Category</th>
-              <th>Meta Incident Category</th>
-              <th>Meta Incident Status</th>
-              <th>Employee Involved</th>
-              <th>Injured Person</th>
-              <th>Witness Name</th>
-              <th>SGFL Relation</th>
-              <th>Details</th>
-              <th>Immediate Action</th>
-              <th>Key Finding</th>
-              <th>Immediate Causes</th>
-              <th>Root Causes</th>
-              <th>Basic Causes</th>
-              <th>Contact Types</th>
+              <td>{{ $injury->id }}</td>
+              <th>Reference</th>
+              <td>{{ $injury->reference }}</td>
               <th>Time</th>
+              <td>{{ $injury->time }}</td>
+              <th>Date</th>
+              <td>{{ formatDate($injury->date) }}</td>
+              <th>Initiated By</th>
+              <td>{{ $injury->initiator->first_name }}</td>
+          </tr>
+
+          <tr>
+              <th>Unit</th>
+              <td>{{ $injury->unit ? $injury->unit->unit_title : '' }}</td>
+              <th>Department</th>
+              <td>{{ $injury->department ? $injury->department->department_title : '' }}</td>
+              <th>Location</th>
+              <td>{{ $injury->meta_location ? $injury->meta_location->location_title : '' }}</td>
+              <th>Other Location</th>
+              <td>{{ $injury->other_location }}</td>
+          </tr>
+
+          <tr>
+              <th>Line</th>
+              <td>{{ $injury->line }}</td>
+              <th>Meta Injury Category</th>
+              <td>{{ $injury->injury_category ? $injury->injury_category->injury_category_title : '' }}</td>
+              <th>Meta Incident Category</th>
+              <td>{{ $injury->incident_category ? $injury->incident_category->incident_category_title : '' }}</td>
+          </tr>
+
+          <tr>
+              <th>Meta Incident Status</th>
+              <td>{{ $injury->incident_status->status_title }}</td>
+              <th>Employee Involved</th>
+              <td>{{ $injury->employee_involved }}</td>
+              <th>Injured Person</th>
+              <td>{{ $injury->injured_person }}</td>
+          </tr>
+
+          <tr>
+              <th>Witness Name</th>
+              <td>{{ $injury->witness_name }}</td>
+              <th>Details</th>
+              <td>{{ $injury->details }}</td>
+              <th>Immediate Action</th>
+              <td>{{ $injury->immediate_action }}</td>
+          </tr>
+
+          <tr>
+              <th>Key Finding</th>
+              <td>{{ $injury->key_finding }}</td>
               <th>Created At</th>
-            </tr>
-          </thead>
-          <tbody>
-            @foreach ($data as $injury)
-                <tr>
-                <td>{{ $injury->id }}</td>
-                <td>{{ $injury->initiator->first_name }}</td>
-                <td>{{ $injury->unit->unit_title ?? "" }}</td>
-                <td>{{ $injury->department->department_title ?? "" }}</td>
-                <td>{{ $injury->line}}</td>
-                <td>{{ $injury->meta_location->location_title ?? "" }}</td>
-                <td>{{ $injury->injury_category->injury_category_title }}</td>
-                <td>{{ $injury->incident_category->incident_category_title }}</td>
-                <td>{{ $injury->incident_status->status_title }}</td>
-                <td>{{ $injury->employee_involved }}</td>
-                <td>{{ $injury->injured_person }}</td>
-                <td>{{ $injury->witness_name }}</td>
-                <td>{{$injury->meta_sgfl_relation_id ?  $injury->msgfl_relation->sgfl_relation_title : '' }}</td>
-                <td>{{ $injury->details }}</td>
-                <td>{{ $injury->immediate_action }}</td>
-                <td>{{ $injury->key_finding }}</td>
-                <td>{{ $injury->immediate_causes ? $injury->immediate_causes->pluck('cause_title')->implode(', ') : '' }}</td>
-                <td>{{ $injury->root_causes ? $injury->root_causes->pluck('cause_title')->implode(', ') : '' }}</td>
-                <td>{{ $injury->basic_causes ? $injury->basic_causes->pluck('cause_title')->implode(', ') : '' }}</td>
-                <td>{{ $injury->contacts ? $injury->contacts->pluck('type_title')->implode(', ') : '' }}</td>
-                <td>{{ $injury->time }}</td>
-                <td>{{ formatDate($injury->created_at)}}</td>
-            </tr>
-            @endforeach
-          </tbody>
+              <td>{{ formatDate($injury->created_at) }}</td>
+              <th>Immediate Causes</th>
+              <td>{{ $injury->immediate_causes ? $injury->immediate_causes->pluck('cause_title')->implode(', ') : '' }}</td>
+          </tr>
+
+          <tr>
+              <th>Root Cause</th>
+              <td>{{ $injury->root_cause }}</td>
+              <th>Contact Types</th>
+              <td>{{ $injury->contacts ? $injury->contacts->pluck('type_title')->implode(', ') : '' }}</td>
+              <th>Updated At</th>
+              <td>{{ formatDate($injury->updated_at) }}</td>
+          </tr>
+
+          <tr>
+              <th>Actions</th>
+              <td colspan="14">
+                  <table class="table text-xxs table-sm table-responsive table-bordered">
+                      <thead>
+                          <tr>
+                              <th>Description</th>
+                              <th>Responsibility</th>
+                              <th>Timeline</th>
+                              <th>Status</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          @if ($injury->actions)
+                              @foreach ($injury->actions as $action)
+                                  <tr>
+                                      <td>{{ $action['description'] }}</td>
+                                      <td>{{ $action['responsibility'] }}</td>
+                                      <td>{{ $action['timeline'] }}</td>
+                                      <td>{{ $action['status'] }}</td>
+                                  </tr>
+                              @endforeach
+                          @endif
+                      </tbody>
+                  </table>
+              </td>
+          </tr>
+        </tbody>
       </table>
-    
-    
-  @include('pdf.layout.footer')
+      @endforeach
+
+
+@include('pdf.layout.footer')

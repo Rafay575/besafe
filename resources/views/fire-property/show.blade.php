@@ -149,10 +149,10 @@
                           @foreach ($fire_property->actions as $action)
                           <tr>
                               {{-- <td>{{$action['sno']}}</td> --}}
-                              <td>{{$action['description']}}</td>
-                              <td>{{$action['responsibility']}}</td>
-                              <td>{{$action['timeline']}}</td>
-                              <td>{{$action['status']}}</td>
+                              <td>{{@$action['description']}}</td>
+                              <td>{{@$action['responsibility']}}</td>
+                              <td>{{@$action['timeline']}}</td>
+                              <td>{{@$action['status']}}</td>
                           </tr>
                           @endforeach
                           @endif

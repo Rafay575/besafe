@@ -312,282 +312,282 @@ const availableReports = {
         
       ]
     },
-    {
-      title: "Type of Injury Report",
-      slug: "injury_category_report",
-      filters: [
+    // {
+    //   title: "Type of Injury Report",
+    //   slug: "injury_category_report",
+    //   filters: [
         
-          {
-            type: 'select',
-            title: "Select Location",
-            value: res.locations,
-            name: "meta_location_id"
-          },
-          {
-            type: 'select',
-            title: "Select Unit",
-            value: res.units,
-            name: "meta_unit_id"
-          },
-          {
-            type: 'select',
-            title: "Select Injury Category",
-            value: res.injury_categories,
-            name: "meta_unit_id"
-          },
-          {
-            type: 'select',
-            title: "Select Department",
-            value: res.departments,
-            name: "meta_department_id"
-          },
-          {
-            type: 'select',
-            title: "Select Status",
-            value: res.incident_statuses,
-            name: "meta_incident_status_id"
-          },
-          {
-            type: 'select',
-            title: "Select Risk Level",
-            value: res.risk_levels,
-            name: "meta_risk_level_id"
-          },
-          {
-            type: 'select',
-            title: "Select Line",
-            value: res.lines,
-            name: "meta_line_id"
-          },
-          {
-            type: 'text',
-            title: "Reported By",
-            value: "",
-            name: "initiated_by"
-          },
-          {
-            type: 'text',
-            title: "Witness",
-            value: "",
-            name: "witness_name"
-          },
-          {
-            type: 'time',
-            title: "Time",
-            value: "",
-            name: "time"
-          },
+    //       {
+    //         type: 'select',
+    //         title: "Select Location",
+    //         value: res.locations,
+    //         name: "meta_location_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Unit",
+    //         value: res.units,
+    //         name: "meta_unit_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Injury Category",
+    //         value: res.injury_categories,
+    //         name: "meta_unit_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Department",
+    //         value: res.departments,
+    //         name: "meta_department_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Status",
+    //         value: res.incident_statuses,
+    //         name: "meta_incident_status_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Risk Level",
+    //         value: res.risk_levels,
+    //         name: "meta_risk_level_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Line",
+    //         value: res.lines,
+    //         name: "meta_line_id"
+    //       },
+    //       {
+    //         type: 'text',
+    //         title: "Reported By",
+    //         value: "",
+    //         name: "initiated_by"
+    //       },
+    //       {
+    //         type: 'text',
+    //         title: "Witness",
+    //         value: "",
+    //         name: "witness_name"
+    //       },
+    //       {
+    //         type: 'time',
+    //         title: "Time",
+    //         value: "",
+    //         name: "time"
+    //       },
          
         
-      ]
-    },
-    {
-      title: "Action List of Injuries",
-      slug: "actions_list_of_injuries_report",
-      filters: [
+    //   ]
+    // },
+    // {
+    //   title: "Action List of Injuries",
+    //   slug: "actions_list_of_injuries_report",
+    //   filters: [
         
-          {
-            type: 'select',
-            title: "Select Location",
-            value: res.locations,
-            name: "meta_location_id"
-          },
-          {
-            type: 'select',
-            title: "Select Unit",
-            value: res.units,
-            name: "meta_unit_id"
-          },
-          {
-            type: 'select',
-            title: "Select Injury Category",
-            value: res.injury_categories,
-            name: "meta_unit_id"
-          },
-          {
-            type: 'select',
-            title: "Select Department",
-            value: res.departments,
-            name: "meta_department_id"
-          },
-          {
-            type: 'select',
-            title: "Select Status",
-            value: res.incident_statuses,
-            name: "meta_incident_status_id"
-          },
-          {
-            type: 'select',
-            title: "Select Risk Level",
-            value: res.risk_levels,
-            name: "meta_risk_level_id"
-          },
-          {
-            type: 'select',
-            title: "Select Line",
-            value: res.lines,
-            name: "meta_line_id"
-          },
-          {
-            type: 'text',
-            title: "Reported By",
-            value: "",
-            name: "initiated_by"
-          },
-          {
-            type: 'text',
-            title: "Witness",
-            value: "",
-            name: "witness_name"
-          },
-          {
-            type: 'time',
-            title: "Time",
-            value: "",
-            name: "time"
-          },
+    //       {
+    //         type: 'select',
+    //         title: "Select Location",
+    //         value: res.locations,
+    //         name: "meta_location_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Unit",
+    //         value: res.units,
+    //         name: "meta_unit_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Injury Category",
+    //         value: res.injury_categories,
+    //         name: "meta_unit_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Department",
+    //         value: res.departments,
+    //         name: "meta_department_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Status",
+    //         value: res.incident_statuses,
+    //         name: "meta_incident_status_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Risk Level",
+    //         value: res.risk_levels,
+    //         name: "meta_risk_level_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Line",
+    //         value: res.lines,
+    //         name: "meta_line_id"
+    //       },
+    //       {
+    //         type: 'text',
+    //         title: "Reported By",
+    //         value: "",
+    //         name: "initiated_by"
+    //       },
+    //       {
+    //         type: 'text',
+    //         title: "Witness",
+    //         value: "",
+    //         name: "witness_name"
+    //       },
+    //       {
+    //         type: 'time',
+    //         title: "Time",
+    //         value: "",
+    //         name: "time"
+    //       },
          
         
-      ]
-    },
-    {
-      title: "Open Action Report",
-      slug: "injuries_open_action_report",
-      filters: [
+    //   ]
+    // },
+    // {
+    //   title: "Open Action Report",
+    //   slug: "injuries_open_action_report",
+    //   filters: [
         
-          {
-            type: 'select',
-            title: "Select Location",
-            value: res.locations,
-            name: "meta_location_id"
-          },
-          {
-            type: 'select',
-            title: "Select Unit",
-            value: res.units,
-            name: "meta_unit_id"
-          },
-          {
-            type: 'select',
-            title: "Select Injury Category",
-            value: res.injury_categories,
-            name: "meta_unit_id"
-          },
-          {
-            type: 'select',
-            title: "Select Department",
-            value: res.departments,
-            name: "meta_department_id"
-          },
-          {
-            type: 'select',
-            title: "Select Status",
-            value: res.incident_statuses,
-            name: "meta_incident_status_id"
-          },
-          {
-            type: 'select',
-            title: "Select Risk Level",
-            value: res.risk_levels,
-            name: "meta_risk_level_id"
-          },
-          {
-            type: 'select',
-            title: "Select Line",
-            value: res.lines,
-            name: "meta_line_id"
-          },
-          {
-            type: 'text',
-            title: "Reported By",
-            value: "",
-            name: "initiated_by"
-          },
-          {
-            type: 'text',
-            title: "Witness",
-            value: "",
-            name: "witness_name"
-          },
-          {
-            type: 'time',
-            title: "Time",
-            value: "",
-            name: "time"
-          },
+    //       {
+    //         type: 'select',
+    //         title: "Select Location",
+    //         value: res.locations,
+    //         name: "meta_location_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Unit",
+    //         value: res.units,
+    //         name: "meta_unit_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Injury Category",
+    //         value: res.injury_categories,
+    //         name: "meta_unit_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Department",
+    //         value: res.departments,
+    //         name: "meta_department_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Status",
+    //         value: res.incident_statuses,
+    //         name: "meta_incident_status_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Risk Level",
+    //         value: res.risk_levels,
+    //         name: "meta_risk_level_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Line",
+    //         value: res.lines,
+    //         name: "meta_line_id"
+    //       },
+    //       {
+    //         type: 'text',
+    //         title: "Reported By",
+    //         value: "",
+    //         name: "initiated_by"
+    //       },
+    //       {
+    //         type: 'text',
+    //         title: "Witness",
+    //         value: "",
+    //         name: "witness_name"
+    //       },
+    //       {
+    //         type: 'time',
+    //         title: "Time",
+    //         value: "",
+    //         name: "time"
+    //       },
          
         
-      ]
-    },
-    {
-      title: "Incident closure % report",
-      slug: "injuries_closer_report",
-      filters: [
+    //   ]
+    // },
+    // {
+    //   title: "Incident closure % report",
+    //   slug: "injuries_closer_report",
+    //   filters: [
         
-          {
-            type: 'select',
-            title: "Select Location",
-            value: res.locations,
-            name: "meta_location_id"
-          },
-          {
-            type: 'select',
-            title: "Select Unit",
-            value: res.units,
-            name: "meta_unit_id"
-          },
-          {
-            type: 'select',
-            title: "Select Injury Category",
-            value: res.injury_categories,
-            name: "meta_unit_id"
-          },
-          {
-            type: 'select',
-            title: "Select Department",
-            value: res.departments,
-            name: "meta_department_id"
-          },
-          {
-            type: 'select',
-            title: "Select Status",
-            value: res.incident_statuses,
-            name: "meta_incident_status_id"
-          },
-          {
-            type: 'select',
-            title: "Select Risk Level",
-            value: res.risk_levels,
-            name: "meta_risk_level_id"
-          },
-          {
-            type: 'select',
-            title: "Select Line",
-            value: res.lines,
-            name: "meta_line_id"
-          },
-          {
-            type: 'text',
-            title: "Reported By",
-            value: "",
-            name: "initiated_by"
-          },
-          {
-            type: 'text',
-            title: "Witness",
-            value: "",
-            name: "witness_name"
-          },
-          {
-            type: 'time',
-            title: "Time",
-            value: "",
-            name: "time"
-          },
+    //       {
+    //         type: 'select',
+    //         title: "Select Location",
+    //         value: res.locations,
+    //         name: "meta_location_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Unit",
+    //         value: res.units,
+    //         name: "meta_unit_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Injury Category",
+    //         value: res.injury_categories,
+    //         name: "meta_unit_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Department",
+    //         value: res.departments,
+    //         name: "meta_department_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Status",
+    //         value: res.incident_statuses,
+    //         name: "meta_incident_status_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Risk Level",
+    //         value: res.risk_levels,
+    //         name: "meta_risk_level_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Line",
+    //         value: res.lines,
+    //         name: "meta_line_id"
+    //       },
+    //       {
+    //         type: 'text',
+    //         title: "Reported By",
+    //         value: "",
+    //         name: "initiated_by"
+    //       },
+    //       {
+    //         type: 'text',
+    //         title: "Witness",
+    //         value: "",
+    //         name: "witness_name"
+    //       },
+    //       {
+    //         type: 'time',
+    //         title: "Time",
+    //         value: "",
+    //         name: "time"
+    //       },
          
         
-      ]
-    },
+    //   ]
+    // },
 
   ],
   fpdamages: [
@@ -659,207 +659,207 @@ const availableReports = {
       ]
     },
     
-    {
-      title: "Action List of Fire Accidents",
-      slug: "actions_list_of_fpdamages_report",
-      filters: [
+    // {
+    //   title: "Action List of Fire Accidents",
+    //   slug: "actions_list_of_fpdamages_report",
+    //   filters: [
      
-          {
-            type: 'select',
-            title: "Select Property Type",
-            value: res.property_types,
-            name: "meta_property_damage_id"
-          },
-          {
-            type: 'text',
-            title: "Reviewed By",
-            value: "",
-            name: "reviewed_by"
-          },
-          {
-            type: 'text',
-            title: "Investigated By",
-            value: "",
-            name: "investigated_by"
-          },
-          {
-            type: 'select',
-            title: "Select Fire Category",
-            value: res.fire_categories,
-            name: "meta_fire_category_id"
-          },
+    //       {
+    //         type: 'select',
+    //         title: "Select Property Type",
+    //         value: res.property_types,
+    //         name: "meta_property_damage_id"
+    //       },
+    //       {
+    //         type: 'text',
+    //         title: "Reviewed By",
+    //         value: "",
+    //         name: "reviewed_by"
+    //       },
+    //       {
+    //         type: 'text',
+    //         title: "Investigated By",
+    //         value: "",
+    //         name: "investigated_by"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Fire Category",
+    //         value: res.fire_categories,
+    //         name: "meta_fire_category_id"
+    //       },
 
-          {
-            type: 'select',
-            title: "Select Location",
-            value: res.locations,
-            name: "meta_location_id"
-          },
-          {
-            type: 'select',
-            title: "Select Unit",
-            value: res.units,
-            name: "meta_unit_id"
-          },
+    //       {
+    //         type: 'select',
+    //         title: "Select Location",
+    //         value: res.locations,
+    //         name: "meta_location_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Unit",
+    //         value: res.units,
+    //         name: "meta_unit_id"
+    //       },
           
-          {
-            type: 'select',
-            title: "Select Department",
-            value: res.departments,
-            name: "meta_department_id"
-          },
-          {
-            type: 'select',
-            title: "Select Status",
-            value: res.incident_statuses,
-            name: "meta_incident_status_id"
-          },
+    //       {
+    //         type: 'select',
+    //         title: "Select Department",
+    //         value: res.departments,
+    //         name: "meta_department_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Status",
+    //         value: res.incident_statuses,
+    //         name: "meta_incident_status_id"
+    //       },
           
-          {
-            type: 'select',
-            title: "Select Line",
-            value: res.lines,
-            name: "meta_line_id"
-          },
+    //       {
+    //         type: 'select',
+    //         title: "Select Line",
+    //         value: res.lines,
+    //         name: "meta_line_id"
+    //       },
           
          
         
-      ]
-    },
-    {
-      title: "Open Action Report",
-      slug: "fpdamages_open_action_report",
-      filters: [
+    //   ]
+    // },
+    // {
+    //   title: "Open Action Report",
+    //   slug: "fpdamages_open_action_report",
+    //   filters: [
      
-          {
-            type: 'select',
-            title: "Select Property Type",
-            value: res.property_types,
-            name: "meta_property_damage_id"
-          },
-          {
-            type: 'text',
-            title: "Reviewed By",
-            value: "",
-            name: "reviewed_by"
-          },
-          {
-            type: 'text',
-            title: "Investigated By",
-            value: "",
-            name: "investigated_by"
-          },
-          {
-            type: 'select',
-            title: "Select Fire Category",
-            value: res.fire_categories,
-            name: "meta_fire_category_id"
-          },
+    //       {
+    //         type: 'select',
+    //         title: "Select Property Type",
+    //         value: res.property_types,
+    //         name: "meta_property_damage_id"
+    //       },
+    //       {
+    //         type: 'text',
+    //         title: "Reviewed By",
+    //         value: "",
+    //         name: "reviewed_by"
+    //       },
+    //       {
+    //         type: 'text',
+    //         title: "Investigated By",
+    //         value: "",
+    //         name: "investigated_by"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Fire Category",
+    //         value: res.fire_categories,
+    //         name: "meta_fire_category_id"
+    //       },
 
-          {
-            type: 'select',
-            title: "Select Location",
-            value: res.locations,
-            name: "meta_location_id"
-          },
-          {
-            type: 'select',
-            title: "Select Unit",
-            value: res.units,
-            name: "meta_unit_id"
-          },
+    //       {
+    //         type: 'select',
+    //         title: "Select Location",
+    //         value: res.locations,
+    //         name: "meta_location_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Unit",
+    //         value: res.units,
+    //         name: "meta_unit_id"
+    //       },
           
-          {
-            type: 'select',
-            title: "Select Department",
-            value: res.departments,
-            name: "meta_department_id"
-          },
-          {
-            type: 'select',
-            title: "Select Status",
-            value: res.incident_statuses,
-            name: "meta_incident_status_id"
-          },
+    //       {
+    //         type: 'select',
+    //         title: "Select Department",
+    //         value: res.departments,
+    //         name: "meta_department_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Status",
+    //         value: res.incident_statuses,
+    //         name: "meta_incident_status_id"
+    //       },
           
-          {
-            type: 'select',
-            title: "Select Line",
-            value: res.lines,
-            name: "meta_line_id"
-          },
+    //       {
+    //         type: 'select',
+    //         title: "Select Line",
+    //         value: res.lines,
+    //         name: "meta_line_id"
+    //       },
           
          
         
-      ]
-    },
-    {
-      title: "Incident closure % report",
-      slug: "fpdamages_closer_report",
-      filters: [
+    //   ]
+    // },
+    // {
+    //   title: "Incident closure % report",
+    //   slug: "fpdamages_closer_report",
+    //   filters: [
      
-          {
-            type: 'select',
-            title: "Select Property Type",
-            value: res.property_types,
-            name: "meta_property_damage_id"
-          },
-          {
-            type: 'text',
-            title: "Reviewed By",
-            value: "",
-            name: "reviewed_by"
-          },
-          {
-            type: 'text',
-            title: "Investigated By",
-            value: "",
-            name: "investigated_by"
-          },
-          {
-            type: 'select',
-            title: "Select Fire Category",
-            value: res.fire_categories,
-            name: "meta_fire_category_id"
-          },
+    //       {
+    //         type: 'select',
+    //         title: "Select Property Type",
+    //         value: res.property_types,
+    //         name: "meta_property_damage_id"
+    //       },
+    //       {
+    //         type: 'text',
+    //         title: "Reviewed By",
+    //         value: "",
+    //         name: "reviewed_by"
+    //       },
+    //       {
+    //         type: 'text',
+    //         title: "Investigated By",
+    //         value: "",
+    //         name: "investigated_by"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Fire Category",
+    //         value: res.fire_categories,
+    //         name: "meta_fire_category_id"
+    //       },
 
-          {
-            type: 'select',
-            title: "Select Location",
-            value: res.locations,
-            name: "meta_location_id"
-          },
-          {
-            type: 'select',
-            title: "Select Unit",
-            value: res.units,
-            name: "meta_unit_id"
-          },
+    //       {
+    //         type: 'select',
+    //         title: "Select Location",
+    //         value: res.locations,
+    //         name: "meta_location_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Unit",
+    //         value: res.units,
+    //         name: "meta_unit_id"
+    //       },
           
-          {
-            type: 'select',
-            title: "Select Department",
-            value: res.departments,
-            name: "meta_department_id"
-          },
-          {
-            type: 'select',
-            title: "Select Status",
-            value: res.incident_statuses,
-            name: "meta_incident_status_id"
-          },
+    //       {
+    //         type: 'select',
+    //         title: "Select Department",
+    //         value: res.departments,
+    //         name: "meta_department_id"
+    //       },
+    //       {
+    //         type: 'select',
+    //         title: "Select Status",
+    //         value: res.incident_statuses,
+    //         name: "meta_incident_status_id"
+    //       },
           
-          {
-            type: 'select',
-            title: "Select Line",
-            value: res.lines,
-            name: "meta_line_id"
-          },
+    //       {
+    //         type: 'select',
+    //         title: "Select Line",
+    //         value: res.lines,
+    //         name: "meta_line_id"
+    //       },
           
          
         
-      ]
-    },
+    //   ]
+    // },
 
   ],
  

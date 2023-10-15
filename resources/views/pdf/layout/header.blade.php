@@ -7,10 +7,8 @@
     <title>{{$reportTitle}} Report</title>
 </head>
 <style>
-
     body{
         font-family: sans-serif;
-        
     }
     /* Table Styles */
     .table {
@@ -18,11 +16,12 @@
       width: 100%;
       font-size: 10px;
       border: 0.1px groove;
+      margin-bottom: 20px;
     }
     
     .table th,
     .table td {
-      padding: 8px;
+      padding: 5px;
       text-align: left;
       border-bottom: 1px solid #ddd;
       border: 0.1px groove;
@@ -30,7 +29,7 @@
     }
     
     .table th {
-      background-color: #f2f2f2;
+      background-color: #fbfafa;
     }
     .table tr {
     page-break-inside: avoid;
@@ -40,10 +39,11 @@
    /* Header Styles */
    .header {
     height: 100px;
-    background-color: #f2f2f2;
+    background-color: #f1f1f1;
     padding: 10px;
     display: flex;
     align-items: center;
+    margin-bottom: 10px;
   }
 
   .logo {
