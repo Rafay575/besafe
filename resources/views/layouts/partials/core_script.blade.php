@@ -97,7 +97,7 @@
     }
 
     fetchNotification();
-    let url = '/notifications'
+    let url = '/notifications/fetch'
 
     $('body').on('click','a#notification_toggle_view',function(e){
       let notificationDetaisl = "<strong>" +$(this).attr('data-notification_description') + "</strong><br><br>";
