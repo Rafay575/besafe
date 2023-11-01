@@ -97,7 +97,6 @@
     }
 
     fetchNotification();
-    let url = '/notifications/fetch'
 
     $('body').on('click','a#notification_toggle_view',function(e){
       let notificationDetaisl = "<strong>" +$(this).attr('data-notification_description') + "</strong><br><br>";
@@ -134,24 +133,6 @@
       });
     }
 
-    // updating notification real time
-    setInterval(() => {
-      $.ajax({
-        url: url,
-        type: "POST",
-        dataType: "json",
-        data: {
-          _token: token
-        },
-        success: function(response) {
-          // Handle the success response
-         
-        },
-        error: function(xhr, status, error) {
-          alert(error)
-         
-        }
-      });
-    }, 200);
+   
     
   </script>
