@@ -5,12 +5,12 @@
 @endsection
 
 @section('content')
-  <x-templates.basic-page-temp page-title="Roles List" page-desc="List of Roles">
+  <x-templates.basic-page-temp page-title="Roles List" page-desc="List of Roles" >
     {{-- x-slot:pageheader referes to the second slot in one componenet --}}
       <x-slot:pageHeader>
-        <div class="ms-auto my-auto mt-lg-0 mt-4">
+        <div class="ms-auto my-auto mt-lg-0 mt-4"> 
           <div class="ms-auto my-auto">
-            {{-- <a href="{{route('roles.create')}}" class="btn bg-gradient-primary btn-sm mb-0" >+&nbsp; New Role</a> --}}
+            <a href="{{route('roles.create')}}" class="btn bg-purple btn-sm mb-0" >+&nbsp; New Role</a>
           </div>
         </div>
       </x-slot>
@@ -18,7 +18,7 @@
 
       {{-- default slot starts here --}}
         <div class="table-responsive">
-            <table class="table table-flush" id="roles-table" data-source="{{route('roles.index')}}">
+            <table class="table table-flush table-striped" id="roles-table" data-source="{{route('roles.index')}}">
               <thead class="thead-light">
                 <x-table.tblhead heads="S.No,Role Name,Action"></x-table.tblhead>
               </thead>

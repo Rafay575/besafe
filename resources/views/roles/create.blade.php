@@ -18,7 +18,7 @@
       {{-- x slot page header ends here --}}
 
       {{-- default slot starts here --}}
-      <div class="card-body">
+      <div class="card-body ">
         <form action="{{route('roles.store')}}" method="post" class="ajax-form">
         <div class="d-flex mb-3  bg-secondary text-light p-2 rounded">
             <span class="mt-2 ml-2 text-sm" style="width:100px"><strong>Role Name</strong></span>
@@ -26,7 +26,7 @@
         </div>
     <h5>Permission</h5>
         @csrf
-      <table class="table table-sm table-bordered ">
+      <table class="table table-sm table-bordered table-striped">
         <tbody>
             <thead>
                 <tr>

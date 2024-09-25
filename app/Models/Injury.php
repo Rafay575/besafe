@@ -75,6 +75,11 @@ class Injury extends Model
         return $this->belongsToMany(MetaContactType::class, 'meta_contact_type_injury');
     }
 
-
+    public static function getHighestRefForYear($year)
+    {
+        return self::whereYear('date', $year)
+                    ->selectRaw('MAX(SUBSTRING_INDEX(reference, "-", -1)) AS highest_ref')
+                    ->first()->highest_ref;
+    }
 
 }

@@ -1,7 +1,10 @@
 <x-guest-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
-
+    <img src="{{ asset('website/img/logo.png') }}" alt="HRPSP Logo" class="mb-4 mx-auto" style="width: 150px;">
+    <div class=" mb-5">
+        <h2 class="fw-bold " style="font-size:26px">Login using <span class="text-primary">username.</span></h2>
+    </div>
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
@@ -25,23 +28,23 @@
         </div>
 
         <!-- Remember Me -->
-        <div class="block mt-4">
+        <div class=" mt-4 flex justify-between">
             <label for="remember_me" class="inline-flex items-center">
                 <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
                 <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
             </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
             @if (Route::has('password.request'))
                 <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
                     {{ __('Forgot your password?') }}
                 </a>
             @endif
-
-            <x-primary-button class="ml-3">
-                {{ __('Log in') }}
-            </x-primary-button>
         </div>
+
+        <div class="flex items-center justify-end mt-4">
+            <button class=" py-2 w-full text-white rounded-full text-center" style="background-color:#0A3AA9">
+                {{ __('Log in') }}
+            </button>
+        </div>
+       
     </form>
 </x-guest-layout>

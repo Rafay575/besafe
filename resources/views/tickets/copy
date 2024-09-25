@@ -1,0 +1,226 @@
+@extends('layouts.main')
+@section('breadcrumb')
+<nav aria-label="breadcrumb">
+	<ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+		<li class="breadcrumb-item text-sm">
+			<a class="text-white" href="javascript:;">
+				<i class="ni ni-box-2"></i>
+			</a>
+		</li>
+		<li class="breadcrumb-item text-sm text-white active"><a class="opacity-5 text-white" href="javascript:;">View
+				Ticket</a></li>
+	</ol>
+	<h6 class="font-weight-bolder mb-0 text-white">View Ticket</h6>
+</nav>
+@endsection
+
+@section('content')
+
+<div class="row">
+	<div class="col-12">
+		<div class="card">
+
+			<div class="card-header pb-0">
+				<div class="d-lg-flex">
+					<div>
+						<h5 class="mb-0">Ticket View</h5>
+						<p class="text-sm mb-0">
+							Assigned Ticket View
+						</p>
+					</div>
+					<div class="ms-auto my-auto mt-lg-0 mt-4">
+						<!-- add new button -->
+					</div>
+				</div>
+			</div>
+
+			<div class="card-body">
+				<div class="row border-bottom">
+					<div class="col-md-8">
+						<div class="row">
+							<div class="col-md-12">
+								<h4>Ticket Description</h4>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								{{$ticket->description}}
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4 ">
+						<div class="row">
+							<div class="col-md-12 text-center">
+								<h4>Status and Info</h4>
+							</div>
+						</div>
+						<div class="row">
+							<table class="table">
+								<tbody>
+									<tr>
+										<th>Ticket Type</th>
+										<td>{{$ticket->tickettype->name}}</td>
+									</tr>
+									<tr>
+										<th>Ticket Sub Type</th>
+										<td>{{$ticket->ticketsubtype->name}}</td>
+									</tr>
+									<tr>
+										<th>Ticket Creator</th>
+										<td>{{$ticket->requestedby->name}}</td>
+									</tr>
+									<tr>
+										<th>Status</th>
+										<td>{{$ticket->status}}</td>
+									</tr>
+									<tr>
+										<th>Ticket Created</th>
+										<td>{{$ticket->created_at}}</td>
+									</tr>
+									@if($ticket->status == "Open")
+
+									@if($ticket->tickettype->name == "HRPSP POC")
+									@if($ticket->current_level > 1)
+									<tr>
+										<th>Ticket Reassign</th>
+										<td><a href="{{route('tickets.reassign', $ticket->id)}}" class="mx-2"
+												data-bs-toggle="tooltip" data-bs-placement="top" title="Reasign ticket"
+												data-container="body" data-animation="true"
+												data-bs-original-title="Reasign ticket">
+												<i class="fas fa-repeat text-primary"></i>
+											</a></td>
+									</tr>
+									@endif
+									@else
+									<tr>
+										<th>Ticket Reassign</th>
+										<td><a href="{{route('tickets.reassign', $ticket->id)}}" class="mx-2"
+												data-bs-toggle="tooltip" data-bs-placement="top" title="Reasign ticket"
+												data-container="body" data-animation="true"
+												data-bs-original-title="Reasign ticket">
+												<i class="fas fa-repeat text-primary"></i>
+											</a></td>
+									</tr>
+									@endif
+									@endif
+									@if($ticket->ticket_attachment)
+									<tr>
+										<th>Ticket Attachment</th>
+										<td><a href="{{route('ticket.attachment.download', $ticket->id)}}"
+												target="_blank">Download file</a></td>
+									</tr>
+									@endif
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
+				@foreach($ticket->comments as $comment)
+				<div class="row border-bottom pt-4 pb-4">
+					<div class="col-md-8">
+						<div class="row">
+							<div class="col-md-12">
+								{{$comment->description}}
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="row">
+							<table class="table">
+								<tbody>
+									<tr>
+										<th>Commenter</th>
+										<td>{{$comment->commenter_user->name}}</td>
+									</tr>
+									<tr>
+										<th>Comment Added</th>
+										<td>{{$comment->created_at}}</td>
+									</tr>
+									@if($comment->comment_attachment)
+									<tr>
+										<th>Comment Attachment</th>
+										<td><a href="{{route('comment.attachment.download', $comment->id)}}"
+												target="_blank">Download file</a></td>
+									</tr>
+									@endif
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				@endforeach
+
+				@if($ticket->status == "Open")
+				<div class="row border-bottom">
+					<form action="{{ route('comment.add') }}" method="POST" enctype="multipart/form-data">
+						@csrf
+						<input type="hidden" name="ticket_id" value="{{$ticket->id}}">
+						<input type="hidden" name="commenter" value="{{auth()->user()->id}}">
+						<div class="row pt-4">
+							<div class="form-group col-md-8">
+								<label for="name">Description</label>
+								<textarea name="description" class="form-control" id="description"></textarea>
+							</div>
+
+							<div class="form-group col-md-4 @error('comment_attachment') is-invalid @enderror">
+								<label for="comment_attachment">Attachment</label>
+								<input type="file" name="comment_attachment" class="form-control"
+									id="comment_attachment">
+								@error('comment_attachment')
+								<div class="alert alert-danger">{{ $message }}</div>
+								@enderror
+							</div>
+							<div class="form-group col-md-2">
+								<button type="submit" class="btn btn-primary w-100 ">Add Comment</button>
+							</div>
+						</div>
+					</form>
+					<div class="col-md-10">
+					</div>
+					<div class="col-md-2">
+						@if(auth()->user()->id == $ticket->assigned_to)
+						<form action="{{route('ticket.close', $ticket->id)}}" method="post" style="float:right;">
+							@csrf
+							<button id="btnDelete" onclick="return confirm('You want to close this ticket?')"
+								class="btn shadow-none" style="padding: 0px 0px;"><i
+									class="fas fa-trash text-danger"></i> Close this ticket</button>
+						</form>
+						@endif
+					</div>
+				</div>
+				@endif
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+
+
+@endsection
+
+@section('style')
+
+<link href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap.css" rel="stylesheet" />
+
+@endsection
+
+
+@section('script')
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap.js"></script>
+
+<script>
+
+	$(document).ready(function () {
+		new DataTable('#tickets-table');
+	});
+
+
+</script>
+
+@endsection

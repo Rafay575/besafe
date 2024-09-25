@@ -48,7 +48,7 @@ class RolesPermissionController extends Controller
     }
     public function create()
     {
-        self::can(['role.create', 'role.delete']);
+        // self::can(['role.create', 'role.delete']);
         $modules = $this->getSubModules();
         return view('roles.create', compact('modules'));
     }
@@ -61,19 +61,29 @@ class RolesPermissionController extends Controller
             "permissions" => ['required'],
             "permissions.*" => ['string', 'required'],
         ]);
+
         if ($validator->fails()) {
             $error = $validator->errors()->first();
             return ['error', $error];
         }
+
         if ($request->has('role_id')) {
             $message = "Role has been updated";
             $role = Role::where('id', $request->role_id)->first();
-            // $role->name = $request->role_name;
+            $role->name = $request->role_name;
             $role->save();
         } else {
             $message = "Role has been created";
-            // $role = Role::create(['name' => $request->role_name]);
+            $role = Role::create(['name' => $request->role_name]);
         }
+
+        foreach ($request->permissions as $key => $newpermission) {
+            $permission = Permission::where('name', $newpermission)->first();
+            if ($permission)
+                continue;
+            Permission::create(['name' => $newpermission]);
+        }
+
         $role->syncPermissions($request->permissions);
         return ['success', $message, $request->redirect];
         // return $role->with('permissions');
@@ -168,35 +178,38 @@ class RolesPermissionController extends Controller
             ['name' => 'User', 'slug' => 'user'],
             ['name' => 'Role', 'slug' => 'role'],
             ['name' => 'Permission', 'slug' => 'permission'],
-            ['name' => 'Unsafe Behavior', 'slug' => 'unsafe_behavior'],
-            ['name' => 'Hazard', 'slug' => 'hazard'],
-            ['name' => 'Near Miss', 'slug' => 'near_miss'],
-            ['name' => 'Fire and Property Damage', 'slug' => 'fire_property_damage'],
-            ['name' => 'Injury', 'slug' => 'injury'],
-            ['name' => 'Permit To Work', 'slug' => 'ptw'],
-            ['name' => 'IE Audit Clause', 'slug' => 'ie_audit_cluase'],
-            ['name' => 'Reports', 'slug' => 'report'],
-            ['name' => 'Meta Data', 'slug' => 'meta_data'],
-            ['name' => 'Site Settings', 'slug' => 'setting'],
-            ['name' => 'IE Audit Questions', 'slug' => 'ie_audit_question', 'meta' => true],
-            ['name' => 'IE Audit Type', 'slug' => 'ie_audit_type', 'meta' => true],
-            ['name' => 'Designations', 'slug' => 'designation', 'meta' => true],
-            ['name' => 'Lines', 'slug' => 'line', 'meta' => true],
-            ['name' => 'Departments', 'slug' => 'department', 'meta' => true],
-            ['name' => 'Risk Levels', 'slug' => 'risk_level', 'meta' => true],
-            ['name' => 'Incident Status', 'slug' => 'incident_status', 'meta' => true],
-            ['name' => 'Unsafe Behavior Type', 'slug' => 'unsafe_behavior_type', 'meta' => true],
-            ['name' => 'Incident Categories', 'slug' => 'incident_category', 'meta' => true],
-            ['name' => 'Injury Categories', 'slug' => 'injury_category', 'meta' => true],
-            ['name' => 'Permit To Work Types', 'slug' => 'ptw_type', 'meta' => true],
-            ['name' => 'Permit To Work Items', 'slug' => 'ptw_item', 'meta' => true],
-            ['name' => 'Property Damaged', 'slug' => 'property_damage', 'meta' => true],
-            ['name' => 'Audit Halls', 'slug' => 'audit_hall', 'meta' => true],
-            ['name' => 'Audit Types', 'slug' => 'audit_type', 'meta' => true],
-            ['name' => 'Immediate Causes', 'slug' => 'immediate_cause', 'meta' => true],
-            ['name' => 'Basic Causes', 'slug' => 'basic_cuase', 'meta' => true],
-            ['name' => 'Root Causes', 'slug' => 'root_cause', 'meta' => true],
-            ['name' => 'Contact Types', 'slug' => 'contact_type', 'meta' => true],
+            ['name' => 'Employee', 'slug' => 'employee'],
+            ['name' => 'Ticket', 'slug' => 'ticket'],
+            ['name' => 'Admin Setting', 'slug' => 'adminsetting'],
+            // ['name' => 'Unsafe Behavior', 'slug' => 'unsafe_behavior'],
+            // ['name' => 'Hazard', 'slug' => 'hazard'],
+            // ['name' => 'Near Miss', 'slug' => 'near_miss'],
+            // ['name' => 'Fire and Property Damage', 'slug' => 'fire_property_damage'],
+            // ['name' => 'Injury', 'slug' => 'injury'],
+            // ['name' => 'Permit To Work', 'slug' => 'ptw'],
+            // ['name' => 'IE Audit Clause', 'slug' => 'ie_audit_cluase'],
+            // ['name' => 'Reports', 'slug' => 'report'],
+            // ['name' => 'Meta Data', 'slug' => 'meta_data'],
+            // ['name' => 'Site Settings', 'slug' => 'setting'],
+            // ['name' => 'IE Audit Questions', 'slug' => 'ie_audit_question', 'meta' => true],
+            // ['name' => 'IE Audit Type', 'slug' => 'ie_audit_type', 'meta' => true],
+            // ['name' => 'Designations', 'slug' => 'designation', 'meta' => true],
+            // ['name' => 'Lines', 'slug' => 'line', 'meta' => true],
+            // ['name' => 'Departments', 'slug' => 'department', 'meta' => true],
+            // ['name' => 'Risk Levels', 'slug' => 'risk_level', 'meta' => true],
+            // ['name' => 'Incident Status', 'slug' => 'incident_status', 'meta' => true],
+            // ['name' => 'Unsafe Behavior Type', 'slug' => 'unsafe_behavior_type', 'meta' => true],
+            // ['name' => 'Incident Categories', 'slug' => 'incident_category', 'meta' => true],
+            // ['name' => 'Injury Categories', 'slug' => 'injury_category', 'meta' => true],
+            // ['name' => 'Permit To Work Types', 'slug' => 'ptw_type', 'meta' => true],
+            // ['name' => 'Permit To Work Items', 'slug' => 'ptw_item', 'meta' => true],
+            // ['name' => 'Property Damaged', 'slug' => 'property_damage', 'meta' => true],
+            // ['name' => 'Audit Halls', 'slug' => 'audit_hall', 'meta' => true],
+            // ['name' => 'Audit Types', 'slug' => 'audit_type', 'meta' => true],
+            // ['name' => 'Immediate Causes', 'slug' => 'immediate_cause', 'meta' => true],
+            // ['name' => 'Basic Causes', 'slug' => 'basic_cuase', 'meta' => true],
+            // ['name' => 'Root Causes', 'slug' => 'root_cause', 'meta' => true],
+            // ['name' => 'Contact Types', 'slug' => 'contact_type', 'meta' => true],
         ]);
     }
 }

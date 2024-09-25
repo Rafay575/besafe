@@ -1,67 +1,179 @@
 @extends('layouts.main')
 @section('breadcrumb')
-<x-templates.bread-crumb page-title="Edit User">
-  <li class="breadcrumb-item text-sm text-white"><a class="text-white" href="{{route('users.index')}}">Edit User</a></li>
-</x-templates.bread-crumb>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+      <li class="breadcrumb-item text-sm">
+        <a class="text-white" href="javascript:;">
+          <i class="ni ni-box-2"></i>
+        </a>
+      </li>
+      <li class="breadcrumb-item text-sm text-white active"><a class="opacity-5 text-white" href="javascript:;">Edit User</a></li>
+    </ol>
+    <h6 class="font-weight-bolder mb-0 text-white">Edit User</h6>
+  </nav>
 @endsection
 
 @section('content')
-{{-- <x-templates.basic-page-temp page-title="Users List" page-desc="List of Registered Users"> --}}
-        {{-- x-slot:pageheader referes to the second slot in one componenet --}}
-        {{-- <x-slot:pageHeader>
-          <div class="ms-auto my-auto mt-lg-0 mt-4">
-            <div class="ms-auto my-auto">
-              <a href="#" class="btn bg-gradient-primary btn-sm mb-0" type="button" data-bs-toggle="modal" data-bs-target="#recordCreate">+&nbsp; Add</a>
-              <button class="btn btn-outline-primary btn-sm export mb-0 mt-sm-0 mt-1" data-type="csv" type="button" name="button">Export</button>
+<div class="row">
+  <div class="col-12 mx-auto">
+    <form action="{{ route('users.update',$user->id) }}" method="post" enctype="multipart/form-data">
+      @method('PUT')
+      @csrf
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+
+                  <div class="form-group col-md-3 @error('name') is-invalid @enderror">
+                    <label for="name">Name</label>
+                    <input type="text" name="name" class="form-control" id="name" value="{{$user->name}}" placeholder="Name">
+                    @error('name')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                  </div>
+
+                  <div class="form-group col-md-3 @error('department_id') is-invalid @enderror">
+                    <label for="department_id" class="form-control-label">Department</label>
+                  <select class="form-control" name="department_id" id="department_id" >
+                      @foreach($departments as $department)
+                        <option {{$user->department_id == $department->id ? "selected" : ""}} value="{{$department->id}}">{{$department->name}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+
+                  <div class="form-group col-md-3 @error('designation_id') is-invalid @enderror">
+                    <label for="designation_id" class="form-control-label">Designation</label>
+                  <select class="form-control" name="designation_id" id="designation_id" >
+                      @foreach($designations as $designation)
+                        <option {{$user->designation_id == $designation->id ? "selected" : ""}} value="{{$designation->id}}">{{$designation->name}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+
+                  <div class="form-group col-md-3 @error('mobile') is-invalid @enderror">
+                    <label for="name">Mobile</label>
+                    <input type="number" name="mobile" class="form-control" id="mobile" value="{{$user->mobile}}" placeholder="Mobile Number">
+                    @error('mobile')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                  </div>
+
+                  <div class="form-group col-md-2 @error('grade') is-invalid @enderror">
+                    <label for="grade">Grade</label>
+                    <input type="text" name="grade" class="form-control" id="grade" value="{{$user->grade}}" placeholder="Grade">
+                    @error('grade')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                  </div>
+
+                  <div class="form-group col-md-2 @error('user_id') is-invalid @enderror">
+                    <label for="name">User ID</label>
+                    <input type="text" name="user_id" value="{{$user->user_id}}" class="form-control" id="user_id" placeholder="User ID">
+                    @error('user_id')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                  </div>
+
+                  <div class="form-group col-md-2 @error('roles') is-invalid @enderror">
+                    <label for="roles" class="form-control-label">Role</label>
+                  <select class="form-control" name="roles" id="roles" >
+                      @foreach($roles as $role)
+                        <option {{$user->roles->pluck('name')->first() == $role->name ? "selected" : ""}} value="{{$role->name}}">{{$role->name}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+
+                  <div class="form-group col-md-2 @error('region_id') is-invalid @enderror">
+                    <label for="region_id" class="form-control-label">Region</label>
+                  <select class="form-control" name="region_id" id="region_id" >
+                      @foreach($regions as $region)
+                        <option {{$user->region_id == $region->id ? "selected" : ""}} value="{{$region->id}}">{{$region->name}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+
+                  <div class="form-group col-md-2 @error('sub_region_id') is-invalid @enderror">
+                    <label for="sub_region_id" class="form-control-label">Sub-Region</label>
+                  <select class="form-control" name="sub_region_id" id="sub_region_id" >
+                      @foreach($sub_regions as $sub_region)
+                        <option {{$user->sub_region_id == $sub_region->id ? "selected" : ""}} value="{{$sub_region->id}}">{{$sub_region->name}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+
+                  <input type="hidden" name="poc_user" value="0">
+                  <div class="form-group col-md-2 mt-4">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="1" id="poc_user" name="poc_user" {{$user->poc_user == 1 ? "checked" : ""}}>
+                      <label class="form-control-label" for="poc_user">POC User</label>
+                    </div>
+                  </div>
+
+                  <div class="form-group col-md-3 @error('email') is-invalid @enderror">
+                    <label for="email">Email</label>
+                    <input type="text" name="email" value="{{$user->email}}" class="form-control" id="email" placeholder="Email Address">
+                    @error('email')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                  </div>
+
+                  <div class="form-group col-md-3 @error('secondary_email') is-invalid @enderror">
+                    <label for="secondary_email">Secondary Email (optional)</label>
+                    <input type="text" name="secondary_email" value="{{$user->secondary_email}}" class="form-control" id="secondary_email" placeholder="Secondary Email Address">
+                    @error('secondary_email')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                  </div>
+
+                  <div class="form-group col-md-3 @error('profile_picture') is-invalid @enderror">
+                    <label for="profile_picture">Profile Picture</label>
+                    <input type="file" name="image" class="form-control" id="profile_picture">
+                    @error('profile_picture')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                  </div>
+
+                  <div class="form-group col-md-3">
+                    <div class="text-center">
+                      <button type="submit" class="btn btn-primary w-50 mt-4 ">Update</button>
+                    </div>
+                  </div>
+
+              </div>
             </div>
           </div>
-        </x-slot> --}}
-        {{-- x slot page header ends here --}}
-        @canany(['user.create','user.edit'])
-          @include('users.partials.user_create_form')
-        @endcanany
-{{-- </x-templates.basic-page-temp>  --}}
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 @endsection
-@section('script')
-<script src="{{asset('assets/js/plugins/multistep-form.js')}}"></script>
-<script>
-  // auto generate password script starts here
-  let el_down = $('span#generated_password');
-  /* Function to generate combination of password */
-  function generateP() {
-    let firstname = $('input#first_name').val();
-    if (firstname.length < 6) {
-      firstname = "{{App\Models\About::first()->name}}"
+
+
+@section('script') 
+
+    <script type="text/javascript">
+        document.getElementById("mobile").addEventListener("input", function() {
+            var inputValue = this.value;
+            console.log(inputValue);
+            if (inputValue === "" || inputValue < 923) {
+                this.value = "923";
+            }
+            if (inputValue.length > 12) {
+                this.value = inputValue.slice(0, 12);
+            }
+        });
+    </script>
+
+<!--   <script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+      var options = {
+        damping: '0.5'
+      }
+      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     }
-      var pass = '';
-      // var str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
-      //         'abcdefghijklmnopqrstuvwxyz0123456789@#$';
-      // for (let i = 1; i <= 8; i++) {
-      //     var char = Math.floor(Math.random()
-      //                 * str.length + 1);
-            
-      //     pass += str.charAt(char)
-    // }
-    pass = firstname + 1 + Math.floor(Math.random() * 6) +Math.floor(Math.random() * 3);
-        
-      return pass;
-  }
-    
-  function gfg_Run() {
-    const password = generateP();
-      el_down.empty().append(password);
-      $('input#password').val(password);
-      $('input#password_confirmation').val(password).select();
-      document.execCommand("copy");
-  }
-  $('button#auto_generate_pass').on('click',function(){
-    gfg_Run();
-    Swal.fire(
-      'Password copied to clipboard',
-      '',
-      'success'
-    )
-  });
-  // auto generate password scripts ends here
-</script>   
+  </script> -->
+
 @endsection

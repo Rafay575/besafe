@@ -18,7 +18,7 @@
       {{-- x slot page header ends here --}}
       {{-- Data Table --}}
       <div class="table-responsive">
-        <table class="table table-flush" id="dataTable">
+        <table class="table table-flush table-striped" id="dataTable">
           <thead class="thead-light">
             <x-table.tblhead heads="Name,Username,Email,Role,Status,Action"></x-table.tblhead>
           </thead>

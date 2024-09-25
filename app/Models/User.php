@@ -19,9 +19,19 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'first_name',
-        'last_name',
+        'name',
+        'department_id',
+        'designation_id',
+        'mobile',
+        'grade',
+        'user_id',
+        'region_id',
+        'sub_region_id',
         'email',
+        'user_type',
+        'poc_user',
+        'secondary_email',
+        'image',
         'password',
     ];
     public static function getRouteName()
@@ -98,12 +108,27 @@ class User extends Authenticatable
 
     public function department()
     {
-        return $this->belongsTo(MetaDepartment::class, 'meta_department_id');
+        return $this->belongsTo(Department::class, 'department_id');
     }
 
     public function designation()
     {
-        return $this->belongsTo(MetaDesignation::class, 'meta_designation_id');
+        return $this->belongsTo(Designation::class, 'designation_id');
+    }
+
+    public function region()
+    {
+        return $this->belongsTo(Region::class, 'region_id');
+    }
+
+    public function employee()
+    {
+        return $this->hasOne(Employee::class, 'user_id');
+    }
+
+    public function subregion()
+    {
+        return $this->belongsTo(Region::class, 'sub_region_id');
     }
 
     public function line()

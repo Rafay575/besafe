@@ -18,9 +18,9 @@
         {{-- x slot page header ends here --}}
 
         {{-- default slot start here --}}
-      <div class="row container">
+      <div class="row container bg-white-custom lightborder-unique shadow-lg">
         <div class="table-responsive col-6">
-            <table class="table align-items-center mb-0 table-bordered">
+            <table class="table align-items-center mb-0 table-bordered table-striped">
                 <tbody>
                   <tr>
                     <th>ID</th>

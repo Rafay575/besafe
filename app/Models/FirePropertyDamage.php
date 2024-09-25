@@ -64,5 +64,12 @@ class FirePropertyDamage extends Model
         return $this->belongsTo(MetaPropertyDamage::class, 'meta_property_damage_id');
     }
 
+    public static function getHighestRefForYear($year)
+    {
+        return self::whereYear('date', $year)
+                    ->selectRaw('MAX(SUBSTRING_INDEX(reference, "-", -1)) AS highest_ref')
+                    ->first()->highest_ref;
+    }
+
 
 }

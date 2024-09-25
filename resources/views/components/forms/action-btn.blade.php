@@ -11,7 +11,7 @@
         <i class="fas fa-check-double text-success" {{$attributes}}></i>
             @break
         @case("edit")
-      <i class="fas fa-user-edit text-primary" {{$attributes}}></i>
+      <i class="fas fa-user-edit text-purple" {{$attributes}}></i>
             @break
         @case("delete")
           <i class="fas fa-trash text-danger" {{$attributes}}></i>

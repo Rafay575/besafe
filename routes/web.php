@@ -25,6 +25,21 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RolesPermissionController;
 use App\Http\Controllers\UnsafeBehaviorController;
 use App\Http\Controllers\UserController;
+///////////////////////////////////////////////////////////////////////////
+use App\Http\Controllers\DesignationController;
+use App\Http\Controllers\CronJobController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\GradeController;
+use App\Http\Controllers\RegionController;
+use App\Http\Controllers\TicketTypeController;
+use App\Http\Controllers\TicketSubTypeController;
+use App\Http\Controllers\TicketSettingController;
+use App\Http\Controllers\EmployeesController;
+use App\Http\Controllers\TicketsController;
+use App\Http\Controllers\BusinessHoursController;
+use App\Http\Controllers\SlaPolicyController;
+
+///////////////////////////////////////////////////////////////////////////
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,15 +52,41 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 
 // Route::redirect('/dashboard', '/users');
-Route::redirect('/', '/dashboard');
+// Route::redirect('/', '/dashboard');
 
 Route::middleware('auth')->group(function () {
+
+    Route::resource('slapolicies', SlaPolicyController::class);
+    Route::resource('businesshours', BusinessHoursController::class);
+    Route::resource('designations', DesignationController::class);
+    Route::resource('departments', DepartmentController::class);
+    Route::resource('grades', GradeController::class);
+    Route::resource('regions', RegionController::class);
+    Route::resource('tickettypes', TicketTypeController::class);
+    Route::resource('ticketsubtypes', TicketSubTypeController::class);
+    Route::resource('ticketsetting', TicketSettingController::class);
+    Route::resource('employees', EmployeesController::class);
+    Route::resource('tickets', TicketsController::class);
+    Route::get('tickets_assign', [TicketsController::class, 'tickets_assign'])->name('tickets.assign');
+    Route::get('tickets_reassign/{id}', [TicketsController::class, 'tickets_reassign'])->name('tickets.reassign');
+    Route::post('tickets_assignto', [TicketsController::class, 'tickets_assignto'])->name('tickets.assignto');
+    Route::get('tickets_view/{id}', [TicketsController::class, 'tickets_view'])->name('ticket.view');
+    Route::get('tickets_feedback/{id}', [TicketsController::class, 'tickets_feedback'])->name('ticket.feedback');
+    Route::post('feedback_add', [TicketsController::class, 'feedback_add'])->name('feedback.add');
+    Route::get('ticket/attachment/download/{id}', [TicketsController::class, 'ticket_attachment_download'])->name('ticket.attachment.download');
+    Route::post('comment/add', [TicketsController::class, 'comment_add'])->name('comment.add');
+    Route::get('comment/attachment/download/{id}', [TicketsController::class, 'comment_attachment_download'])->name('comment.attachment.download');
+    Route::get('comment/attachment/view/{id}', [TicketsController::class, 'comment_attachment_view'])->name('comment.attachment.view');
+    Route::post('ticket/close/{id}', [TicketsController::class, 'ticket_close'])->name('ticket.close');
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    Route::get('users/profile/{user_id}', [UserController::class, 'profife_view'])->name('users.view');
     Route::get('line_chart', [LineChartController::class, 'index']);
     Route::get('card_chart', [CardChartController::class, 'index']);
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -97,5 +138,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/line_chart/all_timelines', [LineChartController::class, 'prepareForLineChart'])->name('line_chart');
 
 });
+
+Route::get('/', function () {
+    return redirect('/dashboard');
+});
+
+Route::get('/ticket/escalation/level', [CronJobController::class, 'ticket_escalation_level'])->name('ticket.escalation.level');
 
 require __DIR__ . '/auth.php';

@@ -30,8 +30,9 @@
   
   
             <li class="nav-item px-4 d-flex align-items-center">
+              
               <a href="javascript:;" class="nav-link text-white p-0">
-                <a href="{{route('incidents.index')}}" class="btn btn-light btn-sm mt-3 p-2">Incidents Assign</a>
+                <a href="{{route('tickets.assign')}}" class="btn btn-light btn-sm mt-3 shadow-lg px-4 py-3" style="border-radius:50px;">Tickets Assign</a>
               </a>
             </li>
   
@@ -39,29 +40,26 @@
             <li class="nav-item  d-flex align-items-center">
               <div class="dropdown">
                 <a href="/login" class="nav-link text-white font-weight-bold px-0" target="_blank" data-bs-toggle="dropdown" id="navbarDropdownMenuLink2">
-                 @if (auth()->user()->image != "")
-                 <img class="border-radius-lg avatar-sm" alt="profile" src="{{asset('images/profile/' . auth()->user()->image)}}">
-                  @else 
-                  <i class="fa fa-user me-sm-1"></i>
-                 @endif
-                  <span class="d-sm-inline d-none">{{auth()->user()->first_name}} {{auth()->user()->last_name}}</span>
+                  @if (auth()->user()->image != "")
+                  <img class="relative border-radius-lg avatar-sm rounded-circle" alt="profile" src="{{ asset('images/profile/' . auth()->user()->image) }}">
+                  @else
+                  <div class="relative rounded-circle bg-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                      <i class="fa fa-user" style="font-size: 20px; color: black;"></i>
+                    </div>
+                  @endif
+                  <span class="d-sm-inline d-none">{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}</span>
                 </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
-                   
-                    <li>
-                        <a class="dropdown-item" href="{{route('users.profileCreate')}}">Profile Settings</a>
-                    </li>
-                    
-                    <li>
-                        <a class="dropdown-item" href="{{ route('logout') }}" 
-                        onclick="event.preventDefault();
-                        document.getElementById('logout-form').submit();"">Logout</a>
-                    </li>
-                    
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink2">
+                  <li>
+                    <a class="dropdown-item" href="{{ route('users.profileCreate') }}">Profile Settings</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                  </li>
                 </ul>
               </div>
             </li>
-                  
+
               <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
                 <a href="javascript:;" class="nav-link text-white p-0" id="iconNavbarSidenav">
                 <div class="sidenav-toggler-inner">

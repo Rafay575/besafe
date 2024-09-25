@@ -1,14 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Http\Controllers\Api\ApiResponseController;
 use App\Http\Resources\UserCollection;
-use App\Models\MetaDepartment;
-use App\Models\MetaDesignation;
+use App\Models\Department;
+use App\Models\Designation;
+use App\Models\Region;
 use App\Models\MetaLine;
 use App\Models\MetaUnit;
 use App\Models\User;
+use App\Http\Requests\StoreUserRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -25,30 +26,9 @@ class UserController extends Controller
      */
     public function index(Request $request, $channel = "web")
     {
-
-        $users = User::query();
-        if ($channel == "api") {
-            return $users;
-        }
-        if ($request->ajax()) {
-            $data = [];
-            $i = 0;
-            foreach ($users->get() as $user) {
-                $i++;
-                $data[] = [
-                    'sno' => $i,
-                    'first_name' => $user->first_name,
-                    'last_name' => $user->last_name,
-                    'email' => $user->email,
-                    'status' => $user->status ? 'Active' : 'InActive',
-                    'role' => $user->roles->pluck('name'),
-                    'action' => view('users.partials.action-buttons', ['user' => $user])->render()
-                ];
-            }
-
-            return DataTables::of($data)->toJson();
-        }
-        return view('users.index', compact('users'));
+        $data = [];
+        $data['users'] = User::where('user_type','user')->get();
+        return view('users.index', $data);
     }
 
     public function departmentUsers(Request $request)
@@ -61,61 +41,38 @@ class UserController extends Controller
      */
     public function create()
     {
-        $units = MetaUnit::select('unit_title', 'id')->get();
-        $departments = MetaDepartment::select('department_title', 'id')->get();
-        $designations = MetaDesignation::select('designation_title', 'id')->get();
-        $lines = MetaLine::select('line_title', 'id')->get();
-        $roles = Role::select('name', 'id')->get();
-        return view('users.create', compact('units', 'departments', 'designations', 'lines', 'roles'));
+        $data = [];
+        $data['departments']    = Department::get();
+        $data['designations']   = Designation::get();
+        $data['regions']        = Region::where('sub_region_id', null)->get();
+        $data['sub_regions']    = Region::where('sub_region_id', '>', 0)->get();
+        $data['roles']          = Role::select('name', 'id')->get();
+        return view('users.create', $data);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $channel = "web")
+    public function store(StoreUserRequest $request, $channel = "web")
     {
-        $validator = $this->validateData($request);
-
-        $formErrorsResponse = FormValidatitionDispatcherController::Response($validator, $channel);
-        if ($formErrorsResponse) {
-            return $formErrorsResponse;
-        }
-
-        $user = new User();
-        $user->first_name = $request->first_name;
-        $user->last_name = $request->last_name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->mobile = $request->mobile;
-        $user->status = $request->status ?: 0;
-        $user->ein = $request->ein;
-        $user->gender = $request->gender;
-        $user->dob = $request->dob;
-        $user->res_address = $request->res_address;
-        $user->perm_address = $request->perm_address;
-        $user->id_type = $request->id_type;
-        $user->id_no = $request->id_no;
-        $user->meta_department_id = $request->meta_department_id ?? null;
-        $user->meta_line_id = $request->meta_line_id ?? null;
-        $user->meta_designation_id = $request->meta_designation_id ?? null;
-        $user->meta_unit_id = $request->meta_unit_id ?? null;
+        $input = $request->all();
 
         if ($request->hasFile('image')) {
             $imageName = time() . '.' . $request->image->getClientOriginalExtension();
             $request->image->move(public_path('images/profile'), $imageName);
-            $user->image = $imageName;
+            $input['image'] = $imageName;
         }
+
+        $input['password']  = Hash::make(12345678);
+        $input['user_type'] = "user";
+
+        $user = User::create($input);
+        
         if ($request->has('roles') && $request->roles != "") {
             $user->syncRoles($request->roles);
         }
 
-        $user->save();
-
-        if ($channel === 'api') {
-
-            return ApiResponseController::successWithData('User Registered Successfully!', new UserCollection($user));
-        }
-        return ['success', 'User has been stored', $request->redirect];
+        return redirect()->route('users.index')->with('success', 'User Registered Successfully!');
     }
 
 
@@ -132,13 +89,14 @@ class UserController extends Controller
      */
     public function edit(Request $request, $user_id)
     {
-        $user = User::where('id', $user_id)->firstOrfail();
-        $units = MetaUnit::select('unit_title', 'id')->get();
-        $departments = MetaDepartment::select('department_title', 'id')->get();
-        $designations = MetaDesignation::select('designation_title', 'id')->get();
-        $lines = MetaLine::select('line_title', 'id')->get();
-        $roles = Role::select('name', 'id')->get();
-        return view('users.edit', compact('user', 'units', 'departments', 'lines', 'roles', 'designations'));
+        $data = [];
+        $data['user']           = User::find($user_id);
+        $data['departments']    = Department::get();
+        $data['designations']   = Designation::get();
+        $data['regions']        = Region::where('sub_region_id', null)->get();
+        $data['sub_regions']    = Region::where('sub_region_id', '>', 0)->get();
+        $data['roles']          = Role::select('name', 'id')->get();
+        return view('users.edit', $data);
     }
 
     /**
@@ -146,58 +104,34 @@ class UserController extends Controller
      */
     public function update(Request $request, string $user_id, $channel = "web")
     {
-        $validator = $this->validateData($request, $user_id);
-
-        $formErrorsResponse = FormValidatitionDispatcherController::Response($validator, $channel);
-        if ($formErrorsResponse) {
-            return $formErrorsResponse;
-        }
-        $user = User::find($user_id);
-        if (!$user && $channel === 'api') {
-            return ApiResponseController::error('User not found', 404);
-        }
-
-        if (!$user)
-            return ['error', 'User not found'];
-
-        $user->first_name = $request->first_name;
-        $user->last_name = $request->last_name;
-        // $user->email = $request->email;
-        if ($request->has('password') && $request->password != "") {
-            $user->password = Hash::make($request->password);
-        }
-        $user->mobile = $request->mobile;
-        $user->status = $request->status ?? $user->status;
-        $user->ein = $request->ein ?? $user->ein;
-        $user->gender = $request->gender ?? $user->gender;
-        $user->dob = $request->dob ?? $user->dob;
-        $user->res_address = $request->res_address;
-        $user->perm_address = $request->perm_address;
-        $user->id_type = $request->id_type;
-        $user->id_no = $request->id_no;
-        $user->meta_department_id = $request->meta_department_id ?? $user->meta_department_id;
-        $user->meta_line_id = $request->meta_line_id ?? $user->meta_line_id;
-        $user->meta_designation_id = $request->meta_designation_id ?? $user->meta_designation_id;
-        $user->meta_unit_id = $request->meta_unit_id ?? $user->meta_unit_id;
-
+        $input = $request->all();
+        $user  = User::find($user_id);
+        
         if ($request->hasFile('image')) {
             $imageName = time() . '.' . $request->image->getClientOriginalExtension();
             $request->image->move(public_path('images/profile'), $imageName);
-            $user->image = $imageName;
+            $input['image'] = $imageName;
         }
 
         if ($request->has('roles') && $request->roles != "") {
             $user->syncRoles($request->roles);
         }
 
-
+        $user->fill($input);
         $user->save();
 
-
-        if ($channel === 'api') {
-            return ApiResponseController::successWithData('User updated Successfully!', new UserCollection($user));
-        }
-        return ['success', 'User has been updated', $request->redirect];
+        return redirect()->route('users.index')->with('success', 'User has been updated');
+    }
+    public function profife_view($user_id){
+        $data = [];
+        $user = User::find($user_id);
+        $data['user']           =  $user;
+        $data['departments']    = Department::where('id', $user->department_id)->first();
+        $data['designations']   =  Designation::where('id', $user->designation_id)->first();
+        $data['regions']        = Region::where('id', $user->region_id)->first();
+        $data['sub_regions']    = Region::where('id', '>', 0)->get();
+        $data['roles']          = Role::select('name', 'id')->get();
+        return view('users.view', $data);
     }
 
     /**
@@ -206,68 +140,12 @@ class UserController extends Controller
     public function destroy(string $user_id, $channel = "web")
     {
         $user = User::find($user_id);
-        if (!$user && $channel === "api") {
-            return ApiResponseController::error('User not found', 404);
-        }
 
-        if (!$user) {
-            return ['User not found'];
-        }
-
-        if ($user_id == auth()->user()->id) {
-            return ['Cannot delete yourself'];
-        }
-
-        // deleting the user
         if ($user->delete()) {
-            if ($channel === 'api') {
-                return ApiResponseController::success('User has been delete');
-            } else {
-                return ['deleted', 'User has been deleted'];
-            }
+            return redirect()->route('users.index')->with('success', 'User has been deleted');
         } else {
-            if ($channel === 'api') {
-                return ApiResponseController::error('Could not delete the user.');
-            } else {
-                return ['Could not delete the user'];
-            }
+            return redirect()->route('users.index')->with('error', 'Could not delete the user.');
         }
-
-    }
-
-
-    /**
-     * Summary of validateData
-     * @param Request $request
-     * @return \Illuminate\Validation\Validator
-     */
-    public function validateData(Request $request, $user_id = 0)
-    {
-
-        $rules = [
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'mobile' => 'nullable|regex:/^[0-9]{10,}$/',
-            'status' => 'boolean',
-            'roles' => 'nullable|string|max:30|min:3',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'email' => 'required|email|unique:users,email,' . $user_id . '|max:255',
-            // 'password' => 'required|string|min:8|max:255|confirmed',
-            'ein' => 'nullable|string|unique:users,ein|max:255',
-            'gender' => ['nullable', Rule::in(['Male', 'Female', 'male', 'female'])],
-            'dob' => 'nullable|date',
-            'res_addres' => 'nullable|string|max:255',
-            'perm_addres' => 'nullable|string|max:255',
-            'id_type' => 'nullable|string|max:255',
-            'id_no' => 'nullable|string|unique:users,id_no|max:255',
-        ];
-        if ($request->has('password') && $request->_method != "PUT") {
-            $rules['password'] = 'required|string|min:8|max:255|confirmed';
-        }
-        if ($request->_method == "PUT" && $request->password != "") {
-            $rules['password'] = 'required|string|min:8|max:255|confirmed';
-        }
-        return Validator::make($request->all(), $rules);
     }
 
     public function profileCreate()

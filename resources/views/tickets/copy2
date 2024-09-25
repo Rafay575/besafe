@@ -1,0 +1,203 @@
+@extends('layouts.main')
+
+@section('breadcrumb')
+<nav aria-label="breadcrumb">
+	<ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+		<li class="breadcrumb-item text-sm">
+			<a class="text-white" href="javascript:;">
+				<i class="ni ni-box-2"></i>
+			</a>
+		</li>
+		<li class="breadcrumb-item text-sm text-white active">
+			<a class="opacity-5 text-white" href="javascript:;">Ticket Chat</a>
+		</li>
+	</ol>
+	<h6 class="font-weight-bolder mb-0 text-white">Ticket Chat View</h6>
+</nav>
+@endsection
+
+@section('content')
+<div class="row">
+	<div class="col-12">
+		<div class="card">
+			<div class="card-header d-flex bg-light justify-content-between align-items-center px-4 py-2">
+				<div class="d-flex align-items-center">
+					<!-- Avatar -->
+					<img src="https://via.placeholder.com/40" class="rounded-circle me-2" alt="Avatar">
+
+					<!-- Status and Date -->
+					<div>
+						<p class="mb-0 text-muted" style="font-size: 12px;">Open</p>
+						<p class="mb-0 text-muted" style="font-size: 12px;">Created at 2024/20/2</p>
+					</div>
+				</div>
+
+				<!-- Ticket Info -->
+				<div class="text-center">
+					<h5 class="mb-0" style="font-size: 16px;">Ticket: #{{$ticket->id}}</h5>
+					<small class="text-muted">Assigned Ticket View</small>
+				</div>
+
+				<!-- Icons -->
+				<div class="d-flex align-items-center">
+					<i class="fas fa-search me-3" style="font-size: 20px;"></i>
+					<i class="fas fa-ellipsis-v" style="font-size: 20px;"></i>
+				</div>
+			</div>
+
+
+			<div class="card-body chat-body">
+				<div class="chat-container" id="chat-container">
+					<!-- Loop through each comment and display as chat bubbles -->
+					@foreach($ticket->comments as $comment)
+						<div
+							class="chat-message  @if(auth()->user()->id === $comment->commenter_user->id) chat-message-right @else chat-message-left @endif">
+							<div class="message-bubble position-relative">
+								<div class="message-info">
+									<strong>{{$comment->commenter_user->name}}</strong>
+									<small class="text-muted position-absolute "
+										style="right:5px;bottom:5px ">{{$comment->created_at}}</small>
+								</div>
+								<p class="mb-3 text-muted" style="font-size: 12px;">{{$comment->description}}</p>
+
+								@if($comment->comment_attachment)
+									<a href="{{route('comment.attachment.download', $comment->id)}}"
+										class="btn btn-sm btn-outline-primary mt-1">Download Attachment</a>
+								@endif
+							</div>
+						</div>
+					@endforeach
+				</div>
+			</div>
+
+			<!-- New comment form (chat input area) -->
+			@if($ticket->status == "Open")
+				<form action="{{ route('comment.add') }}" method="POST" enctype="multipart/form-data">
+					@csrf
+					<input type="hidden" name="ticket_id" value="{{$ticket->id}}">
+					<input type="hidden" name="commenter" value="{{auth()->user()->id}}">
+					<div class="bg-light px-4 py-2">
+
+						<div class="d-flex align-items-center bg-white rounded-pill p-2 chat-input-container">
+							<!-- Attachment Button -->
+							<button class=" rounded-circle me-2 " style="width:50px;height:50px;border:none">
+								<i class="fas fa-plus text-muted"></i>
+							</button>
+
+							<!-- Input Field -->
+							<input type="text" name="description" class=" flex-grow-1 bg-transparent border-0 " style="outline:none"
+								placeholder="Type a message..." style="height: 45px;">
+
+							<!-- Send Button -->
+							<button type="submit" class=" rounded-circle " style="width:50px;height:50px;border:none">
+								<i class="fas fa-paper-plane text-muted"></i>
+							</button>
+						</div>
+					</div>
+				</form>
+
+				<!-- 
+							<div class="card-footer bg-light">
+								<form action="{{ route('comment.add') }}" method="POST" enctype="multipart/form-data">
+									@csrf
+									<input type="hidden" name="ticket_id" value="{{$ticket->id}}">
+									<input type="hidden" name="commenter" value="{{auth()->user()->id}}">
+
+									<div class="d-flex align-items-center">
+										<div class="flex-grow-1 me-2">
+											<textarea name="description" class="form-control" rows="2"
+												placeholder="Type a message..."></textarea>
+										</div>
+										<div class="me-2">
+											<input type="file" name="comment_attachment" class="form-control-file"
+												id="comment_attachment">
+										</div>
+										<button type="submit" class="btn btn-primary">Send</button>
+									</div>
+								</form>
+							</div> -->
+			@endif
+		</div>
+	</div>
+</div>
+@endsection
+
+@section('style')
+<style>
+	/* General styling for chat */
+	.chat-body {
+		max-height: 500px;
+		overflow-y: auto;
+		padding: 20px;
+		background-color: #f8f9fa;
+	}
+
+	.chat-container {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.chat-message {
+		display: flex;
+		align-items: flex-start;
+		margin-bottom: 10px;
+	}
+
+	.chat-message-right {
+		justify-content: flex-end;
+	}
+
+	.chat-message-left {
+		justify-content: flex-start;
+	}
+
+	.message-bubble {
+		max-width: 60%;
+		min-width: 20%;
+		padding: 10px;
+		border-radius: 10px;
+		background-color: #fff;
+		box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+	}
+
+	.chat-message-right .message-bubble {
+		background-color: #d1e7dd;
+	}
+
+	.message-info {
+		display: flex;
+		justify-content: space-between;
+		font-size: 12px;
+		margin-bottom: 5px;
+	}
+
+	/* Input area */
+	.card-footer {
+		padding: 15px;
+		border-top: 1px solid #dee2e6;
+	}
+
+	textarea.form-control {
+		resize: none;
+	}
+
+	/* Scroll to bottom for latest message */
+	.chat-body {
+		overflow-y: scroll;
+		max-height: 400px;
+	}
+</style>
+@endsection
+
+@section('script')
+<script>
+	// Scroll to the bottom of the chat when the page loads
+	const chatContainer = document.getElementById('chat-container');
+	chatContainer.scrollTop = chatContainer.scrollHeight;
+
+	$(document).ready(function () {
+		new DataTable('#tickets-table');
+	});
+</script>
+@endsection

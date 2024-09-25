@@ -18,30 +18,61 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Ticket;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(Request $request)
     {
-        $incidentStats = (new DataStatsController)->incidentSummary($request, 'web');
-        return view('dashboard.index', compact('incidentStats'));
+        $user = Auth::user();
+
+        $userType = $user->user_type;
+        $userId = $user->id;
+
+        $incidentStats = [
+            'open' => Ticket::where('status', 'Open')->where('assigned_to', $userId)->count(),
+
+            'in_progress' => Ticket::where('status', 'in_progress')->where('assigned_to', $userId)->count(),
+            'closed' => Ticket::where('status', 'Closed')->where('assigned_to', $userId)->count(),
+            'feedback' => Ticket::where('status', 'feedback')->where('assigned_to', $userId)->count(),
+        ];
+
+        $total_tickets = Ticket::where("assigned_to", auth()->user()->id)->count();
+
+        $tickets = Ticket::where('assigned_to', $userId)->paginate(perPage: 3);
+
+        $priorityCounts = DB::table('tickets')
+            ->join('ticket_sub_types', 'tickets.ticketsubtype_id', '=', 'ticket_sub_types.id')
+            ->select('ticket_sub_types.priority', DB::raw('count(*) as total'))
+            ->where('tickets.assigned_to', $userId)
+            ->groupBy('ticket_sub_types.priority')
+            ->get();
+
+        // Prepare the data for view
+        $priorityData = [
+            'Urgent' => 0,
+            'High' => 0,
+            'Medium' => 0,
+            'Low' => 0,
+        ];
+
+        foreach ($priorityCounts as $count) {
+            $priorityData[$count->priority] = $count->total;
+        }
+
+
+        return view('dashboard.index', compact('incidentStats', 'userType', 'total_tickets', "tickets", 'priorityData'));
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         //
